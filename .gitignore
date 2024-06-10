@@ -31,3 +31,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# extra
+*.txt
+design/ 
