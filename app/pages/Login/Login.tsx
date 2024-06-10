@@ -1,29 +1,54 @@
-import {View, Text, StyleSheet, Image, Dimensions} from "react-native"
-import LoginForm from "./components/LoginForm"
+import { useState } from 'react'
+import {View, StyleSheet, Button, Dimensions, TextInput} from "react-native"
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Template } from "../../components/LoginSignupForm"
 
 const screenWidth: number = Dimensions.get("window").width; 
 
-export default function LoginPage() {
+export const LoginForm = () => {
+    const [showPassword, setShowPassword] = useState(false)
+    const [password, setPassword] = useState("")
+
+    function toggleShowPassword(){
+        setShowPassword(!showPassword)
+    }
+    
     return (
-        <View style= { styles.container }>
-            <Image 
-            source={require("../../assets/logo.png") }
-            style = {styles.logo}
-            />
-            <LoginForm/> 
-        </View>
+        <Template>
+            <View style= { styles.container }>
+                <TextInput style = {styles.textInput} placeholder="Email"/>
+                <View style={styles.passwordContainer}> 
+                    <TextInput style = {styles.textInput} placeholder="Password" secureTextEntry = {!showPassword} value={password} onChangeText={setPassword}/>
+                    <MaterialCommunityIcons name={showPassword ? "eye-off" : "eye"} onPress={toggleShowPassword} color="#aaa" style={styles.icon} size={24}/>
+                </View>
+                <Button title="Log In"/>
+            </View>
+        </Template>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     logo: {
         resizeMode: "contain",
         width: screenWidth * 0.7
     },
+    passwordContainer: {
+    },
+    textInput:{ 
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: "black", 
+        padding: 5, 
+        paddingLeft: 10,
+        margin: 1,
+        fontSize: 16, 
+        width: screenWidth * 0.7
+    },
+    icon:{  
+        position: "absolute",
+        top: 8, 
+        right: 10,  
+    }
 });
