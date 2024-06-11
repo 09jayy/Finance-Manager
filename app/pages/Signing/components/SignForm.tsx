@@ -3,42 +3,32 @@ import { StyleSheet, Image, Dimensions, SafeAreaView, View, Text, Linking, Touch
 
 const screenWidth: number = Dimensions.get("window").width; 
 
-interface TemplateProps {
+type SignTemplateProps = {
     children: ReactNode 
     prefixLink: string 
     linkText: string 
-    linkURL: any
+    redirect: () => void
+    styles: any
 }
 
-export const Template = ({children, prefixLink, linkText, linkURL}: TemplateProps) => {
+export const SignTemplate = ({children, prefixLink, linkText, redirect, styles}: SignTemplateProps) => {
+    console.log("SignTemplate")
+    console.log(styles)
     return (
         <SafeAreaView style= { styles.container }>
             <View>
                 <Image 
-                source={require("../assets/logo.png") }
+                source={require("../../../assets/logo.png") }
                 style = {styles.logo}
                 />
                 {children}
             </View>
             <Text>
                 {prefixLink} 
-                <TouchableOpacity onPress={linkURL}>
+                <TouchableOpacity onPress={redirect}>
                     <Text>{linkText}</Text>
                 </TouchableOpacity>
             </Text>
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo: {
-        resizeMode: "contain",
-        width: screenWidth * 0.7
-    },
-});
