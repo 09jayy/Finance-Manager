@@ -2,12 +2,12 @@ import {View, StyleSheet, Button, Dimensions, TextInput, } from "react-native"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SignInForm } from "../Signing/SignIn"
 import { SignUpForm } from "../Signing/SignUp"
-import { createContext } from 'react';
+import { StyleContext } from "./StyleContext"
 
-const Tab = createBottomTabNavigator(); 
 const screenWidth = Dimensions.get("window").width
+const Tab = createBottomTabNavigator(); 
 
-const styles = StyleSheet.create({
+const pageStyles = StyleSheet.create({
     container:{
         flex: 1,
         alignItems: "center",
@@ -35,15 +35,14 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.8
     }
 }) 
-export const styleContext = createContext(styles)
 
 export const SignRoot = () =>{
     return (
-    <styleContext.Provider value={styles}>
+    <StyleContext.Provider value={pageStyles}>
         <Tab.Navigator screenOptions={ { headerShown: false}}>
             <Tab.Screen name="SignIn" component={SignInForm}/>
             <Tab.Screen name="SignUp" component={SignUpForm}/>
         </Tab.Navigator>
-    </styleContext.Provider>
+    </StyleContext.Provider>
     ); 
 } 
