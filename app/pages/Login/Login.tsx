@@ -1,20 +1,25 @@
 import { useState } from 'react'
 import {View, StyleSheet, Button, Dimensions, TextInput} from "react-native"
+import { NavigationProp } from "@react-navigation/native"
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Template } from "../../components/LoginSignupForm"
 
 const screenWidth: number = Dimensions.get("window").width; 
 
-export const LoginForm = () => {
+export const LoginForm = ({navigation} : any) => {
     const [showPassword, setShowPassword] = useState(false)
     const [password, setPassword] = useState("")
 
-    function toggleShowPassword(){
+    const toggleShowPassword = () => {
         setShowPassword(!showPassword)
+    }
+
+    const linkURL = (navigation: NavigationProp<any>, page: string) => {
+        navigation.navigate(page)
     }
     
     return (
-        <Template>
+        <Template prefixLink="Don't have an account?" linkText='Sign up' linkURL={() => linkURL(navigation, "SignUp")}>
             <View style= { styles.container }>
                 <TextInput style = {styles.textInput} placeholder="Email"/>
                 <View style={styles.passwordContainer}> 
