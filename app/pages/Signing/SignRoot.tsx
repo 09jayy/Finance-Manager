@@ -13,7 +13,7 @@ export const SignRoot = () =>{
         headerShown: false,
         tabBarIcon: ({ focused }) => {
             let iconName: "login" | "adduser" | undefined = undefined; 
-            let iconColor = focused ? "#054af7" : "black"; 
+            let iconColor = focused ? "#054af7" : "gray"; 
 
             if (route.name === 'Login') {
                 iconName = "login";
@@ -23,6 +23,8 @@ export const SignRoot = () =>{
 
             return <AntDesign name={iconName} size={22} color={iconColor} />;
             },
+            tabBarActiveTintColor: '#054af7',
+            tabBarInactiveTintColor: 'gray',
         }
     )}>
         <Tab.Screen name="Login" component={LoginForm}/>
