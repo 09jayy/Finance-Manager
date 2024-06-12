@@ -5,9 +5,9 @@ import { InputEmail } from "./components/InputEmail"
 import { InputPassword } from "./components/InputPassword"
 import { styles } from './StyleSheet'
 
-export const SignInForm = ({navigation}: any) => {
+export const LoginForm = ({navigation}: any) => {
     return ( 
-        <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("SignUp")}>
+        <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")}>
             <View style={styles.inputContainer}>
                 <InputEmail style={styles.textInput}/>
                 <InputPassword textStyle={styles.textInput}/>

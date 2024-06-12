@@ -8,7 +8,7 @@ const screenWidth: number = Dimensions.get("window").width;
 
 export const SignUpForm = ({navigation} : any) => {
     return (
-        <SignTemplate prefixLink="Already have an Account?" linkText='Sign In' redirect={() => navigation.navigate("SignIn")}>
+        <SignTemplate prefixLink="Already have an Account?" linkText='Login' redirect={() => navigation.navigate("Login")}>
             <View>
             </View>
         </SignTemplate>
