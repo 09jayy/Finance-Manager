@@ -5,5 +5,5 @@ type EmailProps = {
 }
 
 export const InputEmail = ({style} : EmailProps) => {
-    return <TextInput style = {style} placeholder="Email"/>
+    return <TextInput style = {style} placeholder="Email..."/>
 }

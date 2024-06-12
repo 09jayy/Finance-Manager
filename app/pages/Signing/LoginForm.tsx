@@ -10,7 +10,7 @@ export const LoginForm = ({navigation}: any) => {
         <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")}>
             <View style={styles.inputContainer}>
                 <InputEmail style={styles.textInput}/>
-                <InputPassword textStyle={styles.textInput}/>
+                <InputPassword textStyle={styles.textInput} placeholder='Password...' showOption={true}/>
             </View>
             <Pressable style={styles.btn}>
                 <Text style={styles.btnText}>LOGIN</Text>
