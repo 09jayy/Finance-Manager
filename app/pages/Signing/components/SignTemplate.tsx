@@ -1,8 +1,6 @@
-import { ReactNode, useContext } from "react";
-import { StyleSheet, Image, Dimensions, SafeAreaView, View, Text, Linking, TouchableOpacity, StyleProp, ViewStyle} from "react-native"
+import { ReactNode } from "react";
+import { Image, SafeAreaView, View, Text, TouchableOpacity} from "react-native"
 import { styles } from "../StyleSheet"
-
-const screenWidth: number = Dimensions.get("window").width; 
 
 type SignTemplateProps = {
     children: ReactNode 
@@ -20,14 +18,16 @@ export const SignTemplate = ({children, prefixLink, linkText, redirect}: SignTem
                     source={require("../../../assets/logo.png") }
                     style = {styles.logo}
                     />
-                    {children}
                 </View>
-                <Text>
-                    {prefixLink} 
+                {children}
+                <View style={styles.redirectContainer}>
+                    <Text style={styles.redirectText}>
+                        {prefixLink} 
+                    </Text>
                     <TouchableOpacity onPress={redirect}>
-                        <Text>{linkText}</Text>
+                        <Text style={styles.redirectLink}>{linkText}</Text>
                     </TouchableOpacity>
-                </Text>
+                </View>
             </View>
         </SafeAreaView>
     );

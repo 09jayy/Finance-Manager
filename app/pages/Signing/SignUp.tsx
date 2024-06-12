@@ -1,6 +1,6 @@
 import { styles } from "./StyleSheet";
 import { InputEmail } from "./components/InputEmail";
-import {SignTemplate} from "./components/SignForm"
+import {SignTemplate} from "./components/SignTemplate"
 import { View, Text, StyleSheet, Dimensions } from "react-native"
 import { useContext } from 'react'
 

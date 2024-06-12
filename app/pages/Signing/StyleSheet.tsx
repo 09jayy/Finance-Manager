@@ -7,39 +7,49 @@ export const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 3,
-        borderColor: 'blue',
     },
     formContainer: {
         width: screenWidth,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 3,
-        borderColor: 'purple',
-    },
-    contentContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%', 
     },
     inputContainer: {  
-        borderWidth: 3,
-        borderColor: 'red',
     },
     logo: {
         resizeMode: 'contain',
-        width: 250,
-        borderWidth: 3,
-        borderColor: 'black',
-        marginBottom: 20,  
+        marginBottom: 10,  
+        width: 300
     },
     textInput: {
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: 'black',
         padding: 5,
         paddingLeft: 10,
-        margin: 1,
+        margin: 3,
         fontSize: 16, 
+        width: screenWidth * 0.7,
+        borderWidth: 1,
+        borderColor: "black",
+        borderRadius: 6, 
     },
+    btn: {
+        marginTop: 10, 
+        backgroundColor: "#1776e3",
+        borderRadius: 5,  
+        width: 230,
+        height: 30,  
+        justifyContent: "center",
+        alignItems: "center"
+    }, 
+    btnText: {
+        color: "white"
+    },
+    redirectText: {
+        marginRight: 5
+    }, 
+    redirectLink: {
+        color: "blue", 
+    },
+    redirectContainer: {
+        flexDirection: "row", 
+        marginTop: 5
+    }
 })

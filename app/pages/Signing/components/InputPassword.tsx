@@ -25,7 +25,7 @@ export const InputPassword = ({textStyle} : PasswordProps) => {
 const styles = StyleSheet.create({
     icon:{  
         position: "absolute",
-        top: 8, 
+        top: 10, 
         right: 10,  
     }
 }); 
