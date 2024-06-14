@@ -2,8 +2,8 @@ import { styles } from "./StyleSheet";
 import { InputEmail } from "./components/InputEmail";
 import {SignTemplate} from "./components/SignTemplate"
 import { View, Text, Dimensions, Pressable } from "react-native"
-import { useContext } from 'react'
 import { InputPassword } from "./components/InputPassword";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 
 const screenWidth: number = Dimensions.get("window").width; 
 

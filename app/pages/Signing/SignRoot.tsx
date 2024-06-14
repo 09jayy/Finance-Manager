@@ -3,7 +3,6 @@ import { LoginForm } from "./LoginForm"
 import { SignUpForm } from "./SignupForm"
 import { AntDesign } from '@expo/vector-icons';
 
-
 const Tab = createBottomTabNavigator(); 
 
 export const SignRoot = () =>{
@@ -11,9 +10,8 @@ export const SignRoot = () =>{
     <Tab.Navigator
     screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ focused }) => {
+        tabBarIcon: ({ focused, color, size }) => {
             let iconName: "login" | "adduser" | undefined = undefined; 
-            let iconColor = focused ? "#054af7" : "gray"; 
 
             if (route.name === 'Login') {
                 iconName = "login";
@@ -21,9 +19,9 @@ export const SignRoot = () =>{
                 iconName = "adduser"; 
             }
 
-            return <AntDesign name={iconName} size={22} color={iconColor} />;
+            return <AntDesign name={iconName} size={size+2} color={color} />;
             },
-            tabBarActiveTintColor: '#054af7',
+            tabBarActiveTintColor: '#397dfa',
             tabBarInactiveTintColor: 'gray',
         }
     )}>
