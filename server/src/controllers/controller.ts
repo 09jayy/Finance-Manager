@@ -1,13 +1,11 @@
 import { Request, Response, NextFunction} from "express"
 import bcrypt from "bcrypt"
-import User from "../models/user"
+import User, {IUser, ITransaction } from "../models/user"
 
 type User = {
     name: string
     password: string
 }
-
-const users = [] 
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
@@ -20,13 +18,16 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 export const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {name, password} = req.body
+        const {name, password} : {name: String, password: String} = req.body
 
-        const hashedPassword: string = await bcrypt.hash(password, 10)
+        const hashedPassword: String = await bcrypt.hash(password, 10)
         
-        const user = new User({
-            name,
-            password: hashedPassword
+        const user = new User<IUser>({
+            name: name,
+            password: hashedPassword,
+            balance: 0, 
+            transactions: new Array<ITransaction>,
+            dateCreated: undefined
         })
 
         const newUser = await user.save()
@@ -37,7 +38,10 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const findUser = async (req: Request, res: Response): Promise<Response> => {
-    const user: User = users.find(user => user.name === req.body.name)
+    const user: IUser | null = await User.findOne({name: req.body.name})
+
+    console.log(user)
+
     if (user == null){
         return res.status(400).send("User not found")
     }
@@ -50,5 +54,5 @@ export const findUser = async (req: Request, res: Response): Promise<Response> =
         }
     } catch {
         res.status(500).send()
-    }
+    } 
 }
