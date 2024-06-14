@@ -1,18 +1,33 @@
 import mongoose, {Schema} from "mongoose"
 
-const TransactionSchema: Schema = new Schema({
+export interface ITransaction {
+    date: Date
+    transType: String
+    des: String
+    pay: Number
+}
+
+export interface IUser {
+    name: String
+    transactions: Array<ITransaction>
+    dateCreated: Date | undefined, 
+    balance: Number, 
+    password: String
+}
+
+const TransactionSchema: Schema = new Schema<ITransaction>({
     date: {type: Date, required: true},
     transType: String, 
     des: String,
     pay: { type: Number, required: true}
 })
 
-const userSchema: Schema = new Schema({
+const userSchema: Schema = new Schema<IUser>({
     name: {
         type: String, 
         required: true
     },
-    transations: {
+    transactions: {
         type: [TransactionSchema]
     }, 
     dateCreated: {
