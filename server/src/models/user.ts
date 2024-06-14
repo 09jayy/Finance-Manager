@@ -15,8 +15,8 @@ export interface IUser {
     password: String
 }
 
-export interface UserMethods extends Model<IUser>{
-    findByName(name: String): any
+interface UserMethods extends Model<IUser>{
+    findByName(name: String): IUser
 }
 
 const TransactionSchema: Schema = new Schema<ITransaction>({

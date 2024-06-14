@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction} from "express"
 import bcrypt from "bcrypt"
-import User, {IUser, ITransaction, UserMethods } from "../models/user"
+import User, {IUser, ITransaction } from "../models/user"
 
 type User = {
     name: string
