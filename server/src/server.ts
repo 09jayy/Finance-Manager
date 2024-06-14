@@ -15,8 +15,6 @@ app.use(express.json())
 
 app.use("/",router)
 
-console.log(config.mongoURI)
-
 mongoose.connect(config.mongoURI)
     .then(() => console.log('MongoDB CONNECTED'))
     .catch(err => console.log(err));

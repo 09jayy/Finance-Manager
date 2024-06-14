@@ -1,4 +1,5 @@
 import mongoose, {Schema, Model} from "mongoose"
+import { NextFunction } from "express"
 
 export interface ITransaction {
     date: Date
@@ -51,6 +52,18 @@ const userSchema: Schema = new Schema<IUser>({
         }
     }
 })
+
+userSchema.pre('save', async function (next: NextFunction) {
+    const user = this 
+
+    const userArr = await User.find().where({name: new RegExp(user.name.toString(), 'i')})
+
+    if (userArr.length > 0){
+        return next(new Error("A user with this name already exits"))
+    }
+
+    next() 
+});
 
 const User = mongoose.model<IUser, UserMethods>("User", userSchema)
 
