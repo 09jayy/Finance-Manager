@@ -21,7 +21,10 @@ const userSchema: Schema = new Schema({
         default: () => Date.now()
     }, 
     balance: Number,
-    password: String
+    password: {
+        type: String,
+        required: true
+    } 
 })
 
 const User = mongoose.model("User", userSchema)

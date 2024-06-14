@@ -7,10 +7,15 @@ type User = {
     password: string
 }
 
-const users = []
+const users = [] 
 
-export const getUsers = (req: Request, res: Response): void => {
-    res.json(users)
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
+    try{
+        const users = await User.find()
+        res.status(200).json(users)
+    } catch (err){
+        res.status(500).json( { message: "Error fetching users", error: err})
+    }
 }
 
 export const addUser = async (req: Request, res: Response): Promise<void> => {
@@ -21,11 +26,11 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
         
         const user = new User({
             name,
-            password
+            password: hashedPassword
         })
 
         const newUser = await user.save()
-        res.status(201).send()
+        res.status(201).send(newUser)
     } catch (err) {
         res.status(500).send({message: err.message})
     }
