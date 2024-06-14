@@ -20,7 +20,8 @@ const userSchema: Schema = new Schema({
         immutable: true,
         default: () => Date.now()
     }, 
-    balance: Number
+    balance: Number,
+    password: String
 })
 
 const User = mongoose.model("User", userSchema)

@@ -15,12 +15,19 @@ export const getUsers = (req: Request, res: Response): void => {
 
 export const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const hashedPassword: string = await bcrypt.hash(req.body.password, 10)
-        const user: User = { name: req.body.name, password: hashedPassword}
-        users.push(user)
+        const {name, password} = req.body
+
+        const hashedPassword: string = await bcrypt.hash(password, 10)
+        
+        const user = new User({
+            name,
+            password
+        })
+
+        const newUser = await user.save()
         res.status(201).send()
-    } catch {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).send({message: err.message})
     }
 }
 
