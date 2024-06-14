@@ -18,11 +18,12 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 export const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {name, password} : {name: String, password: String} = req.body
+        const {name, password, email} : {name: String, password: String, email: String} = req.body
 
         const hashedPassword: String = await bcrypt.hash(password, 10)
         
         const user = new User<IUser>({
+            email: email, 
             name: name,
             password: hashedPassword,
             balance: 0, 
@@ -39,7 +40,11 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
 
 export const findUser = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const user: IUser | null = await User.findByName(req.body.name)
+        console.log(req.body.email)
+
+        const user: IUser | null = await User.findByEmail(req.body.email)
+
+        console.log(user)
 
         if (user == null){
             return res.status(400).send("User not found")

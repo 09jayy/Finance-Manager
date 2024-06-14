@@ -10,14 +10,15 @@ export interface ITransaction {
 
 export interface IUser {
     name: String
+    email: String
     transactions: Array<ITransaction>
-    dateCreated: Date | undefined, 
-    balance: Number, 
+    dateCreated: Date | undefined
+    balance: Number 
     password: String
 }
 
 interface UserMethods extends Model<IUser>{
-    findByName(name: String): IUser
+    findByEmail(email: String): IUser
 }
 
 const TransactionSchema: Schema = new Schema<ITransaction>({
@@ -32,6 +33,10 @@ const userSchema: Schema = new Schema<IUser>({
         type: String, 
         required: true
     },
+    email: {
+        type: String, 
+        required: true
+    }, 
     transactions: {
         type: [TransactionSchema]
     }, 
@@ -47,8 +52,8 @@ const userSchema: Schema = new Schema<IUser>({
     } 
 }, {
     statics: {
-        findByName(name: string){
-            return User.findOne({name: new RegExp(name, "i")})
+        findByEmail(email: string){
+            return User.findOne({email: new RegExp("^" + email + "$", "i")})
         }
     }
 })
@@ -56,7 +61,9 @@ const userSchema: Schema = new Schema<IUser>({
 userSchema.pre('save', async function (next: NextFunction) {
     const user = this 
 
-    const userArr = await User.find().where({name: new RegExp(user.name.toString(), 'i')})
+    console.log(user.email.toString())
+
+    const userArr = await User.find().where({email: new RegExp(user.email.toString(), 'i')})
 
     if (userArr.length > 0){
         return next(new Error("A user with this name already exits"))
