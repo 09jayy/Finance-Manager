@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose"
+import mongoose, {Schema, Model} from "mongoose"
 
 export interface ITransaction {
     date: Date
@@ -13,6 +13,10 @@ export interface IUser {
     dateCreated: Date | undefined, 
     balance: Number, 
     password: String
+}
+
+export interface UserMethods extends Model<IUser>{
+    findByName(name: String): any
 }
 
 const TransactionSchema: Schema = new Schema<ITransaction>({
@@ -40,8 +44,14 @@ const userSchema: Schema = new Schema<IUser>({
         type: String,
         required: true
     } 
+}, {
+    statics: {
+        findByName(name: string){
+            return User.findOne({name: new RegExp(name, "i")})
+        }
+    }
 })
 
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model<IUser, UserMethods>("User", userSchema)
 
 export default User
