@@ -76,14 +76,26 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
     }
 }
 
-export const updateUser = async (req: Request, res: Response) : Promise<void> => {
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = await User.findByIdAndUpdate(req.body.id, req.body.update)
+        const { id, update } = req.body;
 
-        console.log(user)
+        // Checks user with id exists
+        const existingUser: IUser | null = await User.findById(id);
+        if (!existingUser) {
+            res.status(404).send("User not found");
+            return
+        }
 
-        res.status(200).send("Update Successful")
-    } catch {
-        res.status(500).send()
+        // User exists, update user
+        const updatedUser: IUser | null = await User.findByIdAndUpdate(id, update, { new: true });
+        if (!updatedUser) {
+            res.status(500).send("Failed to update user");
+        } else {
+            res.status(200).send("Update Successful");
+        }
+        
+    } catch (err) {
+        res.status(500).send("Internal Server Error");
     }
-}
+};
