@@ -3,21 +3,6 @@ import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 import mongoose from "mongoose"
 
-// Checks whether user id is valid and exists
-const isValidId = async (id: String, res: Response): Promise<boolean> => {
-    if (!mongoose.isValidObjectId(id)){
-        res.status(400).send("Invalid ID")
-        return false
-    } 
-
-    if (await User.findById(id) == null){
-        res.status(404).send("User ID: " + id + " not found")
-        return false
-    }
-
-    return true
-}
-
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
         const users = await User.find()
@@ -39,7 +24,7 @@ export const addUser = async (req: Request<{},{},{name: String, email: String, p
         // Save user to database
         const {name, password, email} : {name: String, password: String, email: String} = req.body
         const hashedPassword: String = await bcrypt.hash(password, 10)
-        const user = new User<IUser>({
+        const user = new User({
             email: email, 
             name: name,
             password: hashedPassword,
@@ -93,8 +78,14 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}
     try {
         const { id, update } : {id : String, update: IUser} = req.body;
 
-        if (!(await isValidId(id, res))) { 
-            return 
+        if (!mongoose.isValidObjectId(id)){
+            res.status(400).send("Invalid ID")
+            return
+        } 
+
+        if (await User.findById(id) == null){
+            res.status(404).send("User ID: " + id + " not found")
+            return
         }
 
         // User exists, update user
@@ -108,4 +99,30 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}
     } catch (err) {
         res.status(500).send("Internal Server Error" + err.message);
     }
-};
+}
+
+export const addTransaction = async (req: Request<{},{},{id: String, transaction: ITransaction}>, res: Response): Promise<void> => {
+    try {
+        const transaction : ITransaction = req.body.transaction
+        const id: String = req.body.id
+
+        if (!mongoose.isValidObjectId(id)){
+            res.status(400).send("Invalid ID")
+            return
+        } 
+
+        const user = await User.findById(id)
+
+        if (user == null){
+            res.status(404).send("User ID not found")
+            return
+        }
+
+        user.transactions.push(transaction)
+
+        await user.save()
+        res.status(201).send("Transaction added")
+    } catch (err){
+        res.status(500).send("Internal Server Error\n" + err)
+    }
+}
