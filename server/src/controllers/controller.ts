@@ -75,3 +75,15 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
         res.status(400).send(err)
     }
 }
+
+export const updateUser = async (req: Request, res: Response) : Promise<void> => {
+    try {
+        const user = await User.findByIdAndUpdate(req.body.id, req.body.update)
+
+        console.log(user)
+
+        res.status(200).send("Update Successful")
+    } catch {
+        res.status(500).send()
+    }
+}
