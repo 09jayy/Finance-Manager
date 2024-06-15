@@ -30,7 +30,6 @@ const TransactionSchema: Schema = new Schema<ITransaction>({
 })
 
 const userSchema: Schema = new Schema<IUser>({
-    balance: Number,
     name: {
         type: String, 
         required: true
@@ -38,6 +37,10 @@ const userSchema: Schema = new Schema<IUser>({
     email: {
         type: String, 
         required: true
+    }, 
+    balance: {
+        type: Number, 
+        default: 0
     }, 
     transactions: {
         type: [TransactionSchema]

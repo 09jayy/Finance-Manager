@@ -11,7 +11,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const addUser = async (req: Request, res: Response): Promise<void> => {
+export const addUser = async (req: Request<{},{},{name: String, email: String, password: String}>, res: Response): Promise<void> => {
     try {
         // Checks if email already has an assigned user
         const userArr: Array<IUser> = await User.find().where({email: new RegExp(req.body.email.toString(), 'i')})
@@ -27,7 +27,7 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
             email: email, 
             name: name,
             password: hashedPassword,
-            balance: 0, 
+            balance: undefined, 
             transactions: new Array<ITransaction>,
             dateCreated: undefined,
             lastUpdated: undefined, 
@@ -41,12 +41,13 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 
-export const findUser = async (req: Request, res: Response): Promise<Response> => {
+export const findUser = async (req: Request<{},{},{email: String, password: String}>, res: Response): Promise<void> => {
     try {
         const user: IUser | null = await User.findByEmail(req.body.email)
 
         if (user == null){
-            return res.status(400).send("User not found")
+            res.status(400).send("User not found")
+            return
         }
 
         if (await bcrypt.compare(req.body.password, user.password)){
@@ -59,7 +60,7 @@ export const findUser = async (req: Request, res: Response): Promise<Response> =
     }
 }
 
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Response): Promise<void> => {
     try {
         const deletedUser: IUser | null = await User.findByIdAndDelete(req.body.id)
         if (deletedUser != null){
@@ -72,7 +73,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
     }
 }
 
-export const updateUser = async (req: Request, res: Response): Promise<void> => {
+export const updateUser = async (req: Request<{},{},{ id: String, update: Object}>, res: Response): Promise<void> => {
     try {
         const { id, update } = req.body;
 
