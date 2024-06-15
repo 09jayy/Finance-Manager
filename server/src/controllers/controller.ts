@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction} from "express"
+import { Request, Response} from "express"
 import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 
@@ -40,11 +40,7 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
 
 export const findUser = async (req: Request, res: Response): Promise<Response> => {
     try {
-        console.log(req.body.email)
-
         const user: IUser | null = await User.findByEmail(req.body.email)
-
-        console.log(user)
 
         if (user == null){
             return res.status(400).send("User not found")
@@ -57,5 +53,18 @@ export const findUser = async (req: Request, res: Response): Promise<Response> =
         }
     } catch (err) {
         res.status(500).send(err.message)
+    }
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const deletedUser: IUser | null = await User.findByIdAndDelete(req.body.id)
+        if (deletedUser != null){
+            res.status(200).send("id: " + req.body.id + " successfully deleted")
+        } else {
+            res.status(404).send("User _id: " + req.body.id + " not found")
+        } 
+    } catch (err){
+        res.status(400).send(err)
     }
 }

@@ -53,6 +53,7 @@ const userSchema: Schema = new Schema<IUser>({
 }, {
     statics: {
         findByEmail(email: string){
+            // RegExp defines strictly matching string without case sensitivity 
             return User.findOne({email: new RegExp("^" + email + "$", "i")})
         }
     }
@@ -60,10 +61,8 @@ const userSchema: Schema = new Schema<IUser>({
 
 userSchema.pre('save', async function (next: NextFunction) {
     const user = this 
-
-    console.log(user.email.toString())
-
-    const userArr = await User.find().where({email: new RegExp(user.email.toString(), 'i')})
+    
+    const userArr: Array<IUser> = await User.find().where({email: new RegExp(user.email.toString(), 'i')})
 
     if (userArr.length > 0){
         return next(new Error("A user with this name already exits"))
