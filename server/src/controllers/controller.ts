@@ -3,6 +3,21 @@ import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 import mongoose from "mongoose"
 
+// Checks whether user id is valid and exists
+const isValidId = async (id: String, res: Response): Promise<boolean> => {
+    if (!mongoose.isValidObjectId(id)){
+        res.status(400).send("Invalid ID")
+        return false
+    } 
+
+    if (await User.findById(id) == null){
+        res.status(404).send("User ID: " + id + " not found")
+        return false
+    }
+
+    return true
+}
+
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
         const users = await User.find()
@@ -47,7 +62,7 @@ export const findUser = async (req: Request<{},{},{email: String, password: Stri
         const user: IUser | null = await User.findByEmail(req.body.email)
 
         if (user == null){
-            res.status(400).send("User not found")
+            res.status(404).send("User not found")
             return
         }
 
@@ -74,20 +89,12 @@ export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Respons
     }
 }
 
-export const updateUser = async (req: Request<{},{},{ id: String, update: Object}>, res: Response): Promise<void> => {
+export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}>, res: Response): Promise<void> => {
     try {
-        const { id, update } = req.body;
+        const { id, update } : {id : String, update: IUser} = req.body;
 
-        if (mongoose.isValidObjectId(id) == false){
-            res.status(400).send("User id: " + id + " is an invalid object id")
-            return
-        }
-
-        // Checks user with id exists
-        const existingUser: IUser | null = await User.findById(id);
-        if (!existingUser) {
-            res.status(404).send("User not found");
-            return
+        if (!(await isValidId(id, res))) { 
+            return 
         }
 
         // User exists, update user
@@ -99,6 +106,6 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: Object
         }
 
     } catch (err) {
-        res.status(500).send("Internal Server Error");
+        res.status(500).send("Internal Server Error" + err.message);
     }
 };
