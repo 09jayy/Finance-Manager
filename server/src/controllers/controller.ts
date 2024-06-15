@@ -1,6 +1,7 @@
-import { Request, Response} from "express"
+import {Request, Response} from "express"
 import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
+import mongoose from "mongoose"
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
@@ -76,6 +77,11 @@ export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Respons
 export const updateUser = async (req: Request<{},{},{ id: String, update: Object}>, res: Response): Promise<void> => {
     try {
         const { id, update } = req.body;
+
+        if (mongoose.isValidObjectId(id) == false){
+            res.status(400).send("User id: " + id + " is an invalid object id")
+            return
+        }
 
         // Checks user with id exists
         const existingUser: IUser | null = await User.findById(id);
