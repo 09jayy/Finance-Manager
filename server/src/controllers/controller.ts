@@ -33,7 +33,8 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
             password: hashedPassword,
             balance: 0, 
             transactions: new Array<ITransaction>,
-            dateCreated: undefined
+            dateCreated: undefined,
+            lastUpdated: undefined, 
         })
 
         const newUser = await user.save()

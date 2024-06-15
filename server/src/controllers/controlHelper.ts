@@ -1,4 +1,3 @@
-import { Request, Response} from "express"
 import User, {IUser, ITransaction } from "../models/user"
 
 

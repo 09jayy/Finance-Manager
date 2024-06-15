@@ -13,6 +13,7 @@ export interface IUser {
     email: String
     transactions: Array<ITransaction>
     dateCreated: Date | undefined
+    lastUpdated: Date | undefined
     balance: Number 
     password: String
 }
@@ -29,6 +30,7 @@ const TransactionSchema: Schema = new Schema<ITransaction>({
 })
 
 const userSchema: Schema = new Schema<IUser>({
+    balance: Number,
     name: {
         type: String, 
         required: true
@@ -45,7 +47,10 @@ const userSchema: Schema = new Schema<IUser>({
         immutable: true,
         default: () => Date.now()
     }, 
-    balance: Number,
+    lastUpdated: {
+        type: Date, 
+        default: () => Date.now()
+    }, 
     password: {
         type: String,
         required: true
@@ -57,6 +62,11 @@ const userSchema: Schema = new Schema<IUser>({
             return User.findOne({email: new RegExp("^" + email + "$", "i")})
         }
     }
+})
+
+userSchema.pre('save', async function (next: NextFunction) {
+    this.lastUpdated = Date.now()
+    next() 
 })
 
 const User = mongoose.model<IUser, UserMethods>("User", userSchema)
