@@ -3,11 +3,6 @@ import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 import doesUserExist from "./controlHelper"
 
-type User = {
-    name: string
-    password: string
-}
-
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
         const users = await User.find()
@@ -20,6 +15,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const addUser = async (req: Request, res: Response): Promise<void> => {
     if (await doesUserExist(req.body.email) == true){
         res.status(400).send("Email already has associated account")
+        return
     }
 
     try {
@@ -94,7 +90,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
         } else {
             res.status(200).send("Update Successful");
         }
-        
+
     } catch (err) {
         res.status(500).send("Internal Server Error");
     }
