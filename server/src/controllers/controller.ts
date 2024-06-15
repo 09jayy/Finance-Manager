@@ -1,6 +1,7 @@
 import { Request, Response} from "express"
 import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
+import doesUserExist from "./controlHelper"
 
 type User = {
     name: string
@@ -17,6 +18,10 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const addUser = async (req: Request, res: Response): Promise<void> => {
+    if (await doesUserExist(req.body.email) == true){
+        res.status(400).send("Email already has associated account")
+    }
+
     try {
         const {name, password, email} : {name: String, password: String, email: String} = req.body
 
@@ -38,6 +43,7 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+
 export const findUser = async (req: Request, res: Response): Promise<Response> => {
     try {
         const user: IUser | null = await User.findByEmail(req.body.email)
@@ -56,7 +62,7 @@ export const findUser = async (req: Request, res: Response): Promise<Response> =
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const deletedUser: IUser | null = await User.findByIdAndDelete(req.body.id)
         if (deletedUser != null){
