@@ -1,7 +1,6 @@
 import { Request, Response} from "express"
 import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
-import doesUserExist from "./controlHelper"
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
@@ -13,16 +12,17 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const addUser = async (req: Request, res: Response): Promise<void> => {
-    if (await doesUserExist(req.body.email) == true){
-        res.status(400).send("Email already has associated account")
-        return
-    }
-
     try {
-        const {name, password, email} : {name: String, password: String, email: String} = req.body
+        // Checks if email already has an assigned user
+        const userArr: Array<IUser> = await User.find().where({email: new RegExp(req.body.email.toString(), 'i')})
+        if (userArr.length > 0){
+            res.status(400).send("Email already has associated account")
+            return
+        }
 
+        // Save user to database
+        const {name, password, email} : {name: String, password: String, email: String} = req.body
         const hashedPassword: String = await bcrypt.hash(password, 10)
-        
         const user = new User<IUser>({
             email: email, 
             name: name,
