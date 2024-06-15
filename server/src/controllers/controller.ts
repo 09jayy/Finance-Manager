@@ -126,3 +126,42 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
         res.status(500).send("Internal Server Error\n" + err)
     }
 }
+
+export const deleteTransaction = async (req: Request<{},{}, {userId: String, transactionId: String}>, res: Response): Promise<void> => {
+    try {
+        const {userId, transactionId} = req.body
+
+        if (!mongoose.isValidObjectId(userId)){
+            res.status(400).send("Invalid User ID: " + userId)
+            return
+        }
+
+        if (!mongoose.isValidObjectId(transactionId)){
+            res.status(400).send("Invalid Transaction ID: " + transactionId)
+            return
+        }
+
+        const user = await User.findByIdAndUpdate(
+            userId, 
+            {$pull: {transactions: {_id: transactionId}}}
+        )
+
+        if (user == null) {
+            res.status(404).send("User not found");
+            return
+        }
+
+        // Purpose: Find whether transaction exists in original user
+        // if returns a transaction, it would've been deleted so assume deleted
+        // returns undefined if not found, therefore it was never deleted return 404
+        const transactionRemoved = user.transactions.find(transaction => transaction._id == transactionId)
+        
+        if (transactionRemoved){
+            res.status(200).send("Transaction deleted successfully");
+        } else {
+            res.status(404).send("Transaction ID is not found")
+        }
+    } catch (err){
+        res.status(500).send("Internal Server Error\n" + err)
+    }
+}

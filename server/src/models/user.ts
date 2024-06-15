@@ -2,6 +2,7 @@ import mongoose, {Schema, Model} from "mongoose"
 import { NextFunction } from "express"
 
 export interface ITransaction {
+    _id: String
     date: Date
     transType: String
     des: String
@@ -9,6 +10,7 @@ export interface ITransaction {
 }
 
 export interface IUser extends Document{
+    _id: String
     name: String
     email: String
     transactions: Array<ITransaction>
