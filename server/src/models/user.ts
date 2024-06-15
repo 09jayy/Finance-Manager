@@ -8,7 +8,7 @@ export interface ITransaction {
     pay: Number
 }
 
-export interface IUser {
+export interface IUser extends Document{
     name: String
     email: String
     transactions: Array<ITransaction>
@@ -23,7 +23,7 @@ interface UserMethods extends Model<IUser>{
 }
 
 const TransactionSchema: Schema = new Schema<ITransaction>({
-    date: {type: Date, required: true},
+    date: {type: Date, required: true, default: () => Date.now()},
     transType: String, 
     des: String,
     pay: { type: Number, required: true}
@@ -67,8 +67,8 @@ const userSchema: Schema = new Schema<IUser>({
     }
 })
 
-userSchema.pre('save', async function (next: NextFunction) {
-    this.lastUpdated = Date.now()
+userSchema.pre<IUser>('save', async function (next: NextFunction) {
+    this.lastUpdated = new Date()
     next() 
 })
 
