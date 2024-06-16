@@ -8,7 +8,7 @@ router.post("/users", addUser)
 router.post("/users/login", findUser)
 router.delete("/users/delete", deleteUser)
 router.patch("/users/update", updateUser)
-router.patch("/users/transaction/add", addTransaction)
+router.post("/users/transaction/add", addTransaction)
 router.delete("/users/transaction/delete", deleteTransaction)
 
 export default router
