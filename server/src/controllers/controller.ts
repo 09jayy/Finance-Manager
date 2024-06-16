@@ -208,3 +208,24 @@ export const updateTransaction = async (req: Request<{},{},{userId: String, tran
         }
     }
 }
+
+export const getTransactions = async (req: Request<{},{},{userId: String}>, res: Response): Promise<void> => {
+    try {
+        const userId = req.body.userId
+
+        const user = await User.findOne({_id: userId})
+
+        if (user == null){
+            res.status(404).send("User not Found")
+            return
+        }
+
+        res.status(200).send(user.transactions)
+    } catch (err){
+        if (err instanceof InvalidIdFormatException){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
+    }
+}

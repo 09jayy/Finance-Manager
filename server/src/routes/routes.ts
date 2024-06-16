@@ -1,5 +1,15 @@
 import {Router} from "express"
-import {getUsers, addUser, findUser, deleteUser, updateUser, addTransaction, deleteTransaction, updateTransaction} from "../controllers/controller"
+import {
+    getUsers, 
+    addUser, 
+    findUser, 
+    deleteUser, 
+    updateUser, 
+    addTransaction, 
+    deleteTransaction, 
+    updateTransaction, 
+    getTransactions
+} from "../controllers/controller"
 
 const router: Router = Router()
 
@@ -14,5 +24,6 @@ router.patch("/users/update", updateUser)
 router.post("/users/transaction/add", addTransaction)
 router.delete("/users/transaction/delete", deleteTransaction)
 router.patch("/users/transaction/update", updateTransaction)
+router.get("/users/transaction", getTransactions)
 
 export default router
