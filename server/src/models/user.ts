@@ -1,5 +1,6 @@
 import mongoose, {Schema, Model} from "mongoose"
 import { NextFunction } from "express"
+import { InvalidIdFormatException } from "../exceptions"
 
 export interface ITransaction {
     _id: String
@@ -72,6 +73,48 @@ const userSchema: Schema = new Schema<IUser>({
 userSchema.pre<IUser>('save', async function (next: NextFunction) {
     this.lastUpdated = new Date()
     next() 
+})
+
+// Function returns error when ID given is in an invalid format
+// Ensures that a 400 status code can be sent rather than 500
+function isIdValid(query) : InvalidIdFormatException{
+    const find = query.getQuery()
+
+    for (const condition in find){
+        if (condition === "_id"){
+            if (!mongoose.isValidObjectId(find[condition])){
+                return new InvalidIdFormatException("Search ID is invalid format")
+            } 
+        }
+    }
+    return null
+}
+
+userSchema.pre('findOneAndUpdate', function(next: NextFunction){
+    const err = isIdValid(this)
+    if (isIdValid == null){
+        next()
+    } else {
+        next(err)
+    }
+})
+
+userSchema.pre('findOne', function(next: NextFunction){
+    const err = isIdValid(this)
+    if (isIdValid == null){
+        next()
+    } else {
+        next(err)
+    }
+})
+
+userSchema.pre('findOneAndDelete', function(next: NextFunction){
+    const err = isIdValid(this)
+    if (isIdValid == null){
+        next()
+    } else {
+        next(err)
+    }
 })
 
 const User = mongoose.model<IUser, UserMethods>("User", userSchema)

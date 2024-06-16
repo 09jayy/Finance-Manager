@@ -2,6 +2,7 @@ import {Request, Response} from "express"
 import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 import mongoose from "mongoose"
+import { InvalidIdFormatException } from "../exceptions"
 
 /*
     USER RELATED METHODS
@@ -44,7 +45,6 @@ export const addUser = async (req: Request<{},{},{name: String, email: String, p
     }
 }
 
-
 export const findUser = async (req: Request<{},{},{email: String, password: String}>, res: Response): Promise<void> => {
     try {
         const user: IUser | null = await User.findByEmail(req.body.email)
@@ -66,14 +66,19 @@ export const findUser = async (req: Request<{},{},{email: String, password: Stri
 
 export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Response): Promise<void> => {
     try {
-        const deletedUser: IUser | null = await User.findByIdAndDelete(req.body.id)
+        const deletedUser: IUser | null = await User.findOneAndDelete({_id: req.body.id})
+
         if (deletedUser != null){
             res.status(200).send("id: " + req.body.id + " successfully deleted")
         } else {
             res.status(404).send("User _id: " + req.body.id + " not found")
         } 
     } catch (err){
-        res.status(400).send(err)
+        if (err instanceof InvalidIdFormatException){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
     }
 }
 
@@ -81,18 +86,13 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}
     try {
         const { id, update } : {id : String, update: IUser} = req.body;
 
-        if (!mongoose.isValidObjectId(id)){
-            res.status(400).send("Invalid ID")
-            return
-        } 
-
-        if (await User.findById(id) == null){
+        if (await User.findOne({_id: id}) == null){
             res.status(404).send("User ID: " + id + " not found")
             return
         }
 
         // User exists, update user
-        const updatedUser: IUser | null = await User.findByIdAndUpdate(id, update, { new: true });
+        const updatedUser: IUser | null = await User.findOneAndUpdate({_id: id}, update, { new: true });
         if (!updatedUser) {
             res.status(500).send("Failed to update user");
         } else {
@@ -100,7 +100,11 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}
         }
 
     } catch (err) {
-        res.status(500).send("Internal Server Error" + err.message);
+        if (err instanceof InvalidIdFormatException){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
     }
 }
 
@@ -112,12 +116,7 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
         const transaction : ITransaction = req.body.transaction
         const id: String = req.body.id
 
-        if (!mongoose.isValidObjectId(id)){
-            res.status(400).send("Invalid ID")
-            return
-        } 
-
-        const user = await User.findById(id)
+        const user = await User.findOne({_id: id})
 
         if (user == null){
             res.status(404).send("User ID not found")
@@ -129,7 +128,11 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
         await user.save()
         res.status(201).send("Transaction added")
     } catch (err){
-        res.status(500).send("Internal Server Error\n" + err)
+        if (err instanceof InvalidIdFormatException){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
     }
 }
 
@@ -137,18 +140,13 @@ export const deleteTransaction = async (req: Request<{},{}, {userId: String, tra
     try {
         const {userId, transactionId} = req.body
 
-        if (!mongoose.isValidObjectId(userId)){
-            res.status(400).send("Invalid User ID: " + userId)
-            return
-        }
-
         if (!mongoose.isValidObjectId(transactionId)){
             res.status(400).send("Invalid Transaction ID: " + transactionId)
             return
         }
 
-        const user = await User.findByIdAndUpdate(
-            userId, 
+        const user = await User.findOneAndUpdate(
+            {_id: userId}, 
             {$pull: {transactions: {_id: transactionId}}}
         )
 
@@ -168,7 +166,11 @@ export const deleteTransaction = async (req: Request<{},{}, {userId: String, tra
             res.status(404).send("Transaction ID is not found")
         }
     } catch (err){
-        res.status(500).send("Internal Server Error\n" + err)
+        if (err instanceof InvalidIdFormatException){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
     }
 }
 
@@ -177,7 +179,7 @@ export const updateTransaction = async (req: Request<{},{},{userId: String, tran
         const {userId, transactionId, update} = req.body
 
         // Check user exists
-        const userCheck = await User.findById(userId)
+        const userCheck = await User.findOne({_id: userId})
         if (!userCheck){
             res.status(404).send("User not found")
             return
@@ -195,13 +197,14 @@ export const updateTransaction = async (req: Request<{},{},{userId: String, tran
             setObject[`transactions.$.${key}`] = update[key]
         }
 
-        console.log(setObject)
-
         // Get User
         const user = await User.updateOne({_id: userId, "transactions._id": transactionId}, {$set: setObject})
-        console.log(user)
         res.status(200).send("Update Successful")
     } catch (err){
-        res.status(500).send("Internal Server Err\n" + err)
+        if (err instanceof InvalidIdFormatException){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
     }
 }
