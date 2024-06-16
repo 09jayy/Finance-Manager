@@ -3,6 +3,9 @@ import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 import mongoose from "mongoose"
 
+/*
+    USER RELATED METHODS
+*/
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try{
         const users = await User.find()
@@ -101,6 +104,9 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}
     }
 }
 
+/*
+    TRANSACTION RELATED METHODS
+*/
 export const addTransaction = async (req: Request<{},{},{id: String, transaction: ITransaction}>, res: Response): Promise<void> => {
     try {
         const transaction : ITransaction = req.body.transaction
@@ -163,5 +169,39 @@ export const deleteTransaction = async (req: Request<{},{}, {userId: String, tra
         }
     } catch (err){
         res.status(500).send("Internal Server Error\n" + err)
+    }
+}
+
+export const updateTransaction = async (req: Request<{},{},{userId: String, transactionId: String, update: ITransaction}>, res: Response): Promise<void> => {
+    try{
+        const {userId, transactionId, update} = req.body
+
+        // Check user exists
+        const userCheck = await User.findById(userId)
+        if (!userCheck){
+            res.status(404).send("User not found")
+            return
+        }
+
+        // Check transaction exists
+        if (!userCheck.transactions.find(transaction => transaction._id == transactionId)){
+            res.status(404).send("Transaction not found")
+            return
+        }
+
+        // Create object to set spesific fields
+        const setObject = {} 
+        for (const key in update){
+            setObject[`transactions.$.${key}`] = update[key]
+        }
+
+        console.log(setObject)
+
+        // Get User
+        const user = await User.updateOne({_id: userId, "transactions._id": transactionId}, {$set: setObject})
+        console.log(user)
+        res.status(200).send("Update Successful")
+    } catch (err){
+        res.status(500).send("Internal Server Err\n" + err)
     }
 }
