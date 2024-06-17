@@ -6,13 +6,16 @@ import { InputPassword } from "./components/InputPassword"
 import { styles } from './StyleSheet'
 
 export const LoginForm = ({navigation}: any) => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
     return ( 
         <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")}>
             <View style={styles.inputContainer}>
-                <InputEmail style={styles.textInput}/>
-                <InputPassword textStyle={styles.textInput} placeholder='Password...' showOption={true}/>
+                <InputEmail style={styles.textInput} email={email} setEmail={setEmail}/>
+                <InputPassword textStyle={styles.textInput} placeholder='Password...' showOption={true} password={password} setPassword={setPassword}/>
             </View>
-            <Pressable style={styles.btn}>
+            <Pressable style={styles.btn} onPress={() => console.log("EMAIL: " + email + "\n Password: " + password)}>
                 <Text style={styles.btnText}>LOGIN</Text>
             </Pressable>
         </SignTemplate> 

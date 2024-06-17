@@ -6,11 +6,12 @@ type PasswordProps = {
     textStyle: any
     showOption: boolean
     placeholder: string
+    password: string
+    setPassword: (password: string) => void
 }
 
-export const InputPassword = ({textStyle, showOption, placeholder} : PasswordProps) => {
+export const InputPassword = ({textStyle, showOption, placeholder, password, setPassword} : PasswordProps) => {
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState("")
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword)
