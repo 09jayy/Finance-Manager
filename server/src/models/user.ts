@@ -10,6 +10,12 @@ export interface ITransaction {
     pay: Number
 }
 
+export interface IBank {
+    _id: String
+    name: String
+    balance: Number
+}
+
 export interface IUser extends Document{
     _id: String
     name: String
@@ -17,7 +23,7 @@ export interface IUser extends Document{
     transactions: Array<ITransaction>
     dateCreated: Date | undefined
     lastUpdated: Date | undefined
-    balance: Number 
+    banks: Array<IBank> 
     password: String
 }
 
@@ -32,6 +38,17 @@ const TransactionSchema: Schema = new Schema<ITransaction>({
     pay: { type: Number, required: true}
 })
 
+const BankSchema: Schema = new Schema<IBank>({
+    name: {
+        type: String,
+        required: true
+    },
+    balance: {
+        type: Number,
+        required: true
+    }
+})
+
 const userSchema: Schema = new Schema<IUser>({
     name: {
         type: String, 
@@ -41,9 +58,8 @@ const userSchema: Schema = new Schema<IUser>({
         type: String, 
         required: true
     }, 
-    balance: {
-        type: Number, 
-        default: 0
+    banks: {
+        type: [BankSchema], 
     }, 
     transactions: {
         type: [TransactionSchema]
