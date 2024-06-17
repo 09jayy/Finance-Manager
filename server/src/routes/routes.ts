@@ -8,7 +8,8 @@ import {
     addTransaction, 
     deleteTransaction, 
     updateTransaction, 
-    getTransactions
+    getTransactions,
+    sendDataTest
 } from "../controllers/controller"
 
 const router: Router = Router()
@@ -25,5 +26,8 @@ router.post("/users/transaction/add", addTransaction)
 router.delete("/users/transaction/delete", deleteTransaction)
 router.patch("/users/transaction/update", updateTransaction)
 router.get("/users/transaction", getTransactions)
+
+// TESTING ROUTE
+router.get("/test", sendDataTest)
 
 export default router

@@ -238,3 +238,16 @@ export const getTransactions = async (req: Request<{},{},{userId: String}>, res:
         }
     }
 }
+
+/* 
+    MISCELLANEOUS METHODS
+*/
+export const sendDataTest = (req: Request, res: Response): void =>{
+    try{
+        console.log(req.body)
+
+        res.status(200).json(req.body)
+    } catch (err){
+        res.status(500).send(err.message)
+    }
+}
