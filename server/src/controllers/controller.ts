@@ -3,6 +3,15 @@ import bcrypt from "bcrypt"
 import User, {IUser, ITransaction } from "../models/user"
 import mongoose from "mongoose"
 import { InvalidIdFormatException } from "../exceptions"
+import jwt from "jsonwebtoken"
+
+type genTokenPayload = {
+    userId: String
+}
+
+const generateAccessToken = (payload: genTokenPayload): string => {
+    return jwt.sign({payload}, process.env.TOKEN_SECRET, {expiresIn: '1800s'})
+}
 
 /*
     USER RELATED METHODS
@@ -55,9 +64,9 @@ export const findUser = async (req: Request<{},{},{email: String, password: Stri
         }
 
         if (await bcrypt.compare(req.body.password, user.password)){
-            res.send("Success")
+            res.status(200).json(generateAccessToken({userId: user._id}))
         } else {
-            res.send("Incorrect")
+            res.status(400).send("Incorrect")
         }
     } catch (err) {
         res.status(500).send(err.message)
