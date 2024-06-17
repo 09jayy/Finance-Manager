@@ -28,6 +28,6 @@ router.patch("/users/transaction/update", updateTransaction)
 router.get("/users/transaction", getTransactions)
 
 // TESTING ROUTE
-router.get("/test", sendDataTest)
+router.post("/test", sendDataTest)
 
 export default router
