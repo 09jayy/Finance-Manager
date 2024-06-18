@@ -1,20 +1,8 @@
 import mongoose, {Schema, Model} from "mongoose"
 import { NextFunction } from "express"
 import { InvalidIdFormatException } from "../exceptions"
-
-export interface ITransaction {
-    _id: String
-    date: Date
-    transType: String
-    des: String
-    pay: Number
-}
-
-export interface IBank {
-    _id: String
-    name: String
-    balance: Number
-}
+import {bankSchema, IBank} from "./bank"
+import {transactionSchema, ITransaction} from "./transaction"
 
 export interface IUser extends Document{
     _id: String
@@ -31,24 +19,6 @@ interface UserMethods extends Model<IUser>{
     findByEmail(email: String): IUser
 }
 
-const TransactionSchema: Schema = new Schema<ITransaction>({
-    date: {type: Date, required: true, default: () => Date.now()},
-    transType: String, 
-    des: String,
-    pay: { type: Number, required: true}
-})
-
-const BankSchema: Schema = new Schema<IBank>({
-    name: {
-        type: String,
-        required: true
-    },
-    balance: {
-        type: Number,
-        required: true
-    }
-})
-
 const userSchema: Schema = new Schema<IUser>({
     name: {
         type: String, 
@@ -59,10 +29,10 @@ const userSchema: Schema = new Schema<IUser>({
         required: true
     }, 
     banks: {
-        type: [BankSchema], 
+        type: [bankSchema], 
     }, 
     transactions: {
-        type: [TransactionSchema]
+        type: [transactionSchema]
     }, 
     dateCreated: {
         type: Date, 
