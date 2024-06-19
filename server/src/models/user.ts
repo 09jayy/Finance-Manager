@@ -103,6 +103,15 @@ userSchema.pre('findOneAndDelete', function(next: NextFunction){
     }
 })
 
+userSchema.pre('updateOne', function(next: NextFunction){
+    const err = isIdValid(this)
+    if (isIdValid == null){
+        next()
+    } else {
+        next(err)
+    }
+})
+
 const User = mongoose.model<IUser, UserMethods>("User", userSchema)
 
 export default User

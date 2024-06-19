@@ -1,16 +1,20 @@
 import {Router} from "express"
+
 import {
     getUsers, 
     addUser, 
     findUser, 
     deleteUser, 
     updateUser, 
-    addTransaction, 
-    deleteTransaction, 
-    updateTransaction, 
-    getTransactions,
     sendDataTest
-} from "../controllers/controller"
+} from "../controllers/userController"
+
+import {
+    getTransactions,
+    updateTransaction,
+    deleteTransaction,
+    addTransaction
+} from "../controllers/transactionController"
 
 const router: Router = Router()
 
