@@ -14,8 +14,7 @@ export const bankSchema: Schema = new Schema<IBank>({
     },
     balance: {
         type: Number,
-        required: true,
-        min: 0.01
+        required: true
     }
 })
 
