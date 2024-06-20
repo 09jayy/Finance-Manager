@@ -14,10 +14,11 @@ export const bankSchema: Schema = new Schema<IBank>({
     },
     balance: {
         type: Number,
-        required: true
+        required: true,
+        min: 0.01
     }
 })
 
-const Bank = mongoose.model("Bank", bankSchema)
+const Bank = mongoose.model<IBank>("Bank", bankSchema)
 
 export default Bank

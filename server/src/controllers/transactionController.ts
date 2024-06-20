@@ -1,5 +1,4 @@
 import {Request, Response} from "express"
-import bcrypt from "bcrypt"
 import User, {IUser} from "../models/user"
 import Transaction, {transactionSchema, ITransaction} from "../models/transaction"
 import mongoose from "mongoose"
