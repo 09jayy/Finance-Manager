@@ -18,6 +18,8 @@ import {
 
 import {
     addBank, 
+    updateBank,
+    deleteBank
 } from "../controllers/bankController"
 
 const router: Router = Router()
@@ -37,6 +39,8 @@ router.get("/users/transaction", getTransactions)
 
 // BANK ROUTES
 router.post("/users/bank/add", addBank)
+router.post("/users/bank/update", updateBank)
+router.delete("/users/bank/delete", deleteBank)
 
 // TESTING ROUTE
 router.post("/test", sendDataTest)
