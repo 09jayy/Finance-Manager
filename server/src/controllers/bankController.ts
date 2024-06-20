@@ -1,7 +1,8 @@
 import {Request, Response} from "express"
 import User, {IUser} from "../models/user"
 import Bank, {bankSchema, IBank} from "../models/bank"
-import { InvalidIdFormatException } from "../exceptions"
+import Transaction from "../models/transaction"
+import { Error as MongooseError } from "mongoose"
 
 export const addBank = async (req: Request<{},{},{userId: String, name: String, balance: Number}>, res: Response): Promise<void> => {
     try {   
@@ -24,10 +25,10 @@ export const addBank = async (req: Request<{},{},{userId: String, name: String, 
 
         res.status(200).send("Success")
     } catch (err){
-        if (err instanceof InvalidIdFormatException){
+        if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
         } else {
-            res.status(500).send("Internal Server Error\n" + err)
+            res.status(500).send(err)
         }
     } 
 }
@@ -56,10 +57,10 @@ export const updateBank = async (req: Request<{},{},{userId: String, bankId: Str
 
         res.status(200).send("Update Successful")
     } catch (err){
-        if (err instanceof InvalidIdFormatException){
+        if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
         } else {
-            res.status(500).send("Internal Server Error\n" + err)
+            res.status(500).send(err)
         }
     }
 }
@@ -80,10 +81,10 @@ export const deleteBank = async (req: Request<{},{},{userId: String, bankId: Str
 
         res.status(200).send("Bank successfully deleted")
     } catch (err){
-        if (err instanceof InvalidIdFormatException){
+        if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
         } else {
-            res.status(500).send("Internal Server Error\n" + err)
+            res.status(500).send(err)
         }
     }
 }
