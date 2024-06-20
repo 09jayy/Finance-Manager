@@ -1,6 +1,5 @@
 import mongoose, {Schema, Model} from "mongoose"
 import { NextFunction } from "express"
-import { InvalidIdFormatException } from "../exceptions"
 import {bankSchema, IBank} from "./bank"
 import {transactionSchema, ITransaction} from "./transaction"
 
@@ -8,7 +7,7 @@ export interface IUser extends Document{
     _id: String
     name: String
     email: String
-    transactions: Array<ITransaction>
+    transactions: Array<mongoose.Schema.Types.ObjectId>
     dateCreated: Date | undefined
     lastUpdated: Date | undefined
     banks: Array<IBank> 
@@ -31,9 +30,10 @@ const userSchema: Schema = new Schema<IUser>({
     banks: {
         type: [bankSchema], 
     }, 
-    transactions: {
-        type: [transactionSchema]
-    }, 
+    transactions: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Transaction"
+    }], 
     dateCreated: {
         type: Date, 
         immutable: true,
@@ -59,57 +59,6 @@ const userSchema: Schema = new Schema<IUser>({
 userSchema.pre<IUser>('save', async function (next: NextFunction) {
     this.lastUpdated = new Date()
     next() 
-})
-
-// Function returns error when ID given is in an invalid format
-// Ensures that a 400 status code can be sent rather than 500
-function isIdValid(query) : InvalidIdFormatException{
-    const find = query.getQuery()
-
-    for (const condition in find){
-        if (condition === "_id"){
-            if (!mongoose.isValidObjectId(find[condition])){
-                return new InvalidIdFormatException("Search ID is invalid format")
-            } 
-        }
-    }
-    return null
-}
-
-userSchema.pre('findOneAndUpdate', function(next: NextFunction){
-    const err = isIdValid(this)
-    if (isIdValid == null){
-        next()
-    } else {
-        next(err)
-    }
-})
-
-userSchema.pre('findOne', function(next: NextFunction){
-    const err = isIdValid(this)
-    if (isIdValid == null){
-        next()
-    } else {
-        next(err)
-    }
-})
-
-userSchema.pre('findOneAndDelete', function(next: NextFunction){
-    const err = isIdValid(this)
-    if (isIdValid == null){
-        next()
-    } else {
-        next(err)
-    }
-})
-
-userSchema.pre('updateOne', function(next: NextFunction){
-    const err = isIdValid(this)
-    if (isIdValid == null){
-        next()
-    } else {
-        next(err)
-    }
 })
 
 const User = mongoose.model<IUser, UserMethods>("User", userSchema)

@@ -2,8 +2,8 @@ import {Request, Response} from "express"
 import bcrypt from "bcrypt"
 import User, {IUser} from "../models/user"
 import Transaction, {transactionSchema, ITransaction} from "../models/transaction"
-import { InvalidIdFormatException } from "../exceptions"
 import jwt from "jsonwebtoken"
+import { Error as MongooseError } from "mongoose"
 
 type genTokenPayload = {
     userId: String
@@ -84,7 +84,7 @@ export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Respons
             res.status(404).send("User _id: " + req.body.id + " not found")
         } 
     } catch (err){
-        if (err instanceof InvalidIdFormatException){
+        if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
         } else {
             res.status(500).send(err)
@@ -110,7 +110,7 @@ export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}
         }
 
     } catch (err) {
-        if (err instanceof InvalidIdFormatException){
+        if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
         } else {
             res.status(500).send(err)
