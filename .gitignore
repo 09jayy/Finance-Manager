@@ -37,3 +37,4 @@ yarn-error.*
 *.txt
 design/ 
 *.rest
+coverage/ 
