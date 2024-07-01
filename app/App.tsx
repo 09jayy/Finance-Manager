@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SignRoot } from "./pages/Signing/SignRoot";
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import {loginContext} from "./appContext"
+import {loginContext} from "./AppContext"
 import {Home} from "./pages/Home/HomePage"
 
 const Stack = createNativeStackNavigator(); 

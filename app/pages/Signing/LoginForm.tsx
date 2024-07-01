@@ -6,7 +6,7 @@ import { InputPassword } from "./components/InputPassword"
 import { styles } from './StyleSheet'
 import {API_URL} from "react-native-dotenv"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {loginContext} from "../../appContext"
+import {loginContext} from "../../AppContext"
 
 const storeJwt = async (token: string) => {
     try {

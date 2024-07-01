@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import React, {Dispatch, SetStateAction, useContext} from "react"
 import { View, Text, Pressable } from "react-native"
-import {loginContext} from "../../appContext"
+import {loginContext} from "../../AppContext"
 
 const logout = async (setLoggedIn: Dispatch<SetStateAction<boolean>>) => {
     await AsyncStorage.removeItem("token")
