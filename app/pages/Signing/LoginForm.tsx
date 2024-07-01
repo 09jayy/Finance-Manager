@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, Dispatch, SetStateAction } from 'react'
 import {View, Pressable, Text} from "react-native"
 import { SignTemplate } from "./components/SignTemplate"
 import { InputEmail } from "./components/InputEmail"
@@ -17,9 +17,24 @@ const storeJwt = async (token: string) => {
     }
 }
 
-const login = (email: string,password: string, setLoggedIn: any, navHome: any) => {
+const isEmailValid = (email: string): boolean => {
+    const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i
+    return emailPattern.test(email)
+}
+
+const login = (email: string,password: string, setLoggedIn: Dispatch<SetStateAction<boolean>>, setErrorMsg: Dispatch<SetStateAction<string>>) => {
     console.log("EMAIL: " + email + "\n Password: " + password)
 
+    /*
+    VALIDATION
+    */ 
+    if (!isEmailValid(email)) { setErrorMsg("Invalid Email"); return }
+    if (password.replace(/ /g,'') == "") { setErrorMsg("Invalid Password"); return}
+    
+
+    /*
+        REQUEST API FOR LOGIN
+    */
     const request = {
         method: "POST",
         headers: {
@@ -31,6 +46,7 @@ const login = (email: string,password: string, setLoggedIn: any, navHome: any) =
         }),
     }
 
+    console.log("MAKE REQUEST")
     fetch(`http://${API_URL}/finance-manager/users/login`, request)
         .then(response => {
             console.log(response.ok)
@@ -42,10 +58,11 @@ const login = (email: string,password: string, setLoggedIn: any, navHome: any) =
         }).then(async data => {
             await storeJwt(data)
             setLoggedIn(true)
-            navHome()
         }).catch( (error: Error) => {
-            if (error.message == "404"){
-                console.log("user not found")
+            if (error.message == "400"){
+                setErrorMsg("Incorrect email or password")
+            } else {
+                setErrorMsg("Error Code: " + error.message)
             }
         })
 }
@@ -53,7 +70,8 @@ const login = (email: string,password: string, setLoggedIn: any, navHome: any) =
 export const LoginForm = ({navigation}: any) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const {loggedIn, setLoggedIn} = useContext(loginContext)
+    const [errorMsg, setErrorMsg] = useState("")
+    const {setLoggedIn} = useContext(loginContext)
 
     return ( 
         <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")}>
@@ -61,9 +79,10 @@ export const LoginForm = ({navigation}: any) => {
                 <InputEmail style={styles.textInput} email={email} setEmail={setEmail}/>
                 <InputPassword textStyle={styles.textInput} placeholder='Password...' showOption={true} password={password} setPassword={setPassword}/>
             </View>
-            <Pressable style={styles.btn} onPress={() => login(email,password, setLoggedIn, () => navigation.navigate("Home"))}>
+            <Pressable style={styles.btn} onPress={() => login(email,password, setLoggedIn as Dispatch<SetStateAction<boolean>>, setErrorMsg)}>
                 <Text style={styles.btnText}>LOGIN</Text>
             </Pressable>
+            <Text style={styles.errorMsg}>{errorMsg}</Text>
         </SignTemplate> 
     );
 } 

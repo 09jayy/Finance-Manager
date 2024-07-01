@@ -51,5 +51,9 @@ export const styles = StyleSheet.create({
     redirectContainer: {
         flexDirection: "row", 
         marginTop: 5
+    },
+    errorMsg: {
+        color: "#d12304", 
+        marginTop: 2
     }
 })
