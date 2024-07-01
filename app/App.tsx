@@ -22,6 +22,8 @@ const getLoggedIn = async (): Promise<boolean> => {
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false)
 
+  getLoggedIn().then(data => { setLoggedIn(data); console.log(data) })
+
   return (
     <loginContext.Provider value={{loggedIn, setLoggedIn}}>
       <NavigationContainer>
