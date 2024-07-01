@@ -60,14 +60,15 @@ export const findUser = async (req: Request<{},{},{email: String, password: Stri
         const user: IUser | null = await User.findByEmail(req.body.email)
 
         if (user == null){
-            res.status(404).send("User not found")
+            res.status(400).send("Email or Password Incorrect")
             return
         }
 
         if (await bcrypt.compare(req.body.password, user.password)){
             res.status(200).json(generateAccessToken({userId: user._id}))
         } else {
-            res.status(400).send("Incorrect")
+            res.status(400).send("Email or Password incorrect")
+            return
         }
     } catch (err) {
         res.status(500).send(err.message)
