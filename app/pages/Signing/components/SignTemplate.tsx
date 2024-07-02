@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import { Image, SafeAreaView, View, Text, TouchableOpacity} from "react-native"
 import { styles } from "../StyleSheet"
 
@@ -7,9 +7,11 @@ type SignTemplateProps = {
     prefixLink: string 
     linkText: string 
     redirect: () => void
+    errorMsg: string
+    setErrorMsg: Dispatch<SetStateAction<string>>
 }
 
-export const SignTemplate = ({children, prefixLink, linkText, redirect}: SignTemplateProps) => {
+export const SignTemplate = ({children, prefixLink, linkText, redirect, errorMsg, setErrorMsg}: SignTemplateProps) => {
     return (
         <SafeAreaView style= { styles.container }>
             <View style={ styles.formContainer }>
@@ -20,6 +22,7 @@ export const SignTemplate = ({children, prefixLink, linkText, redirect}: SignTem
                     />
                 </View>
                 {children}
+                <Text style={styles.errorMsg}>{errorMsg}</Text>
                 <View style={styles.redirectContainer}>
                     <Text style={styles.redirectText}>
                         {prefixLink} 

@@ -7,6 +7,7 @@ import { styles } from './StyleSheet'
 import {API_URL} from "react-native-dotenv"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loginContext} from "../../AppContext"
+import { isEmailValid } from './functions/Validation'
 
 const storeJwt = async (token: string) => {
     try {
@@ -15,11 +16,6 @@ const storeJwt = async (token: string) => {
     } catch (err) {
         console.log(err)
     }
-}
-
-const isEmailValid = (email: string): boolean => {
-    const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i
-    return emailPattern.test(email)
 }
 
 const login = (email: string,password: string, setLoggedIn: Dispatch<SetStateAction<boolean>>, setErrorMsg: Dispatch<SetStateAction<string>>) => {
@@ -74,7 +70,7 @@ export const LoginForm = ({navigation}: any) => {
     const {setLoggedIn} = useContext(loginContext)
 
     return ( 
-        <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")}>
+        <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")} errorMsg={errorMsg} setErrorMsg={setErrorMsg}>
             <View style={styles.inputContainer}>
                 <InputEmail style={styles.textInput} email={email} setEmail={setEmail}/>
                 <InputPassword textStyle={styles.textInput} placeholder='Password...' showOption={true} password={password} setPassword={setPassword}/>
@@ -82,7 +78,6 @@ export const LoginForm = ({navigation}: any) => {
             <Pressable style={styles.btn} onPress={() => login(email,password, setLoggedIn as Dispatch<SetStateAction<boolean>>, setErrorMsg)}>
                 <Text style={styles.btnText}>LOGIN</Text>
             </Pressable>
-            <Text style={styles.errorMsg}>{errorMsg}</Text>
         </SignTemplate> 
     );
 } 
