@@ -3,7 +3,12 @@ import { LoginForm } from "./LoginForm"
 import { SignUpForm } from "./SignupForm"
 import { AntDesign } from '@expo/vector-icons';
 
-const Tab = createBottomTabNavigator(); 
+type SignRootTabParamList = {
+    Login: undefined
+    SignUp: undefined
+}
+
+const Tab = createBottomTabNavigator<SignRootTabParamList>(); 
 
 export const SignRoot = () =>{
     return (
@@ -15,7 +20,7 @@ export const SignRoot = () =>{
 
             if (route.name === 'Login') {
                 iconName = "login";
-            } else if (route.name === 'Sign Up') {
+            } else if (route.name === 'SignUp') {
                 iconName = "adduser"; 
             }
 
@@ -26,7 +31,7 @@ export const SignRoot = () =>{
         }
     )}>
         <Tab.Screen name="Login" component={LoginForm}/>
-        <Tab.Screen name="Sign Up" component={SignUpForm}/>
+        <Tab.Screen name="SignUp" component={SignUpForm}/>
     </Tab.Navigator>
     ); 
 } 
