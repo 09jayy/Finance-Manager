@@ -4,8 +4,6 @@ export type PasswordError = {
 
 const hasSymbol = (password: string): boolean => {
     const symbols: Set<string> = new Set(["~","`","!","@","#","$","%","^","&","*","(",")","_","-","+","=","{","[","}","]","|","\",",":",";","'","<",",",">",".","?","/",'"'])
-    
-    console.log("has symbol")
 
     // must contain at least 1 symbol
     for (let i = 0; i < password.length; i++){

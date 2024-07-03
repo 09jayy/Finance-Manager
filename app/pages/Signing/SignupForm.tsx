@@ -1,28 +1,34 @@
 import { styles } from "./StyleSheet";
 import { InputEmail } from "./components/InputEmail";
 import {SignTemplate} from "./components/SignTemplate"
-import { View, Text, Dimensions, Pressable, TextInput } from "react-native"
+import { View, Text, Pressable, TextInput } from "react-native"
 import React, {Dispatch, SetStateAction, useState} from "react"
 import { InputPassword } from "./components/InputPassword";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
-import { isEmailValid, isPasswordValid, PasswordError } from "./functions/Validation";
+import { isEmailValid, isPasswordValid, PasswordError } from "./functions/Validation"
+import {API_URL} from "react-native-dotenv"
 
-const screenWidth: number = Dimensions.get("window").width; 
+const isAccountValid = (name: string, email: string, password: string, confirmPassword: string, setErrorMsg: Dispatch<SetStateAction<string>>): boolean => {
+    if (name.replace(/ /g,'') == "") { setErrorMsg("Name must not be empty"); return false}
+    
+    if (!isEmailValid(email)) {setErrorMsg("Invalid Email"); return false}
 
-const createAccount = (name: string, email: string, password: string, confirmPassword: string, setErrorMsg: Dispatch<SetStateAction<string>>) => {
+    let passwordValid: PasswordError = isPasswordValid(password)
+    if (passwordValid.reason != null) {setErrorMsg(passwordValid.reason); return false}
+
+    if (password != confirmPassword) {setErrorMsg("Passwords do not match"); return false}
+
+    setErrorMsg("")
+    return true    
+}
+
+const createAccount = (name: string, email: string, password: string, confirmPassword: string, setErrorMsg: Dispatch<SetStateAction<string>>, redirect: () => {}) => {
     console.log(`Name: ${name}\nEmail: ${email}\npassowrd: ${password}\nconfirm: ${confirmPassword}`)
     /*
         VALIDATION
     */
-    if (!isEmailValid(email)) {setErrorMsg("Invalid Email"); return}
+    if (!isAccountValid(name, email, password, confirmPassword, setErrorMsg)) { return }
 
-    let passwordValid: PasswordError = isPasswordValid(password)
-    if (passwordValid.reason != null) {setErrorMsg(passwordValid.reason); return}
-
-    if (password != confirmPassword) {setErrorMsg("Passwords do not match"); return}
-
-    setErrorMsg("")
-    
     /*
         REQUEST
     */
@@ -37,6 +43,17 @@ const createAccount = (name: string, email: string, password: string, confirmPas
             name: name
         })
     }
+    
+    fetch(`http://${API_URL}/finance-manager/users`, request)
+        .then(response => {
+            console.log("response: " + response.ok)
+            if (!response.ok){
+                throw new Error(`${response.status}`)
+            }
+            redirect()
+        }).catch( (error: Error) => {
+            setErrorMsg(error.message)
+        })
 }
 
 export const SignUpForm = ({navigation} : any) => {
@@ -54,7 +71,7 @@ export const SignUpForm = ({navigation} : any) => {
                 <InputPassword textStyle={styles.textInput} showOption={true} placeholder="Password..." password={password} setPassword={setPassword}/>
                 <InputPassword textStyle={styles.textInput} showOption = {false} placeholder="Confirm Password..." password={confirmPassword} setPassword={setConfirmPassword}/>
             </View>
-            <Pressable style={styles.btn} onPress={() => createAccount(name, email, password, confirmPassword, setErrorMsg)}>
+            <Pressable style={styles.btn} onPress={() => createAccount(name, email, password, confirmPassword, setErrorMsg, () => navigation.navigate("Login"))}>
                 <Text style={styles.btnText}>SIGN UP</Text>
             </Pressable>
         </SignTemplate>
