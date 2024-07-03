@@ -8,10 +8,9 @@ type SignTemplateProps = {
     linkText: string 
     redirect: () => void
     errorMsg: string
-    setErrorMsg: Dispatch<SetStateAction<string>>
 }
 
-export const SignTemplate = ({children, prefixLink, linkText, redirect, errorMsg, setErrorMsg}: SignTemplateProps) => {
+export const SignTemplate = ({children, prefixLink, linkText, redirect, errorMsg}: SignTemplateProps) => {
     return (
         <SafeAreaView style= { styles.container }>
             <View style={ styles.formContainer }>

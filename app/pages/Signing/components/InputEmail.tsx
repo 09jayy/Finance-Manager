@@ -1,4 +1,4 @@
-import {TextInput, StyleSheet} from "react-native"
+import {TextInput} from "react-native"
 
 type EmailProps = {
     style: Object

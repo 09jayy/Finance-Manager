@@ -64,7 +64,7 @@ export const SignUpForm = ({navigation} : any) => {
     const [errorMsg, setErrorMsg] = useState("")
 
     return (
-        <SignTemplate prefixLink="Already have an account?" linkText='Login' redirect={() => navigation.navigate("Login")} errorMsg={errorMsg} setErrorMsg={setErrorMsg}>
+        <SignTemplate prefixLink="Already have an account?" linkText='Login' redirect={() => navigation.navigate("Login")} errorMsg={errorMsg}>
             <View style={styles.inputContainer}>
                 <TextInput style = {styles.textInput} placeholder="Name..." onChangeText={(value) => setName(value)} value={name}/>
                 <InputEmail style={styles.textInput} email={email} setEmail={setEmail}/>

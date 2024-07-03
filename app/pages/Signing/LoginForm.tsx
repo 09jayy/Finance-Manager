@@ -70,7 +70,7 @@ export const LoginForm = ({navigation}: any) => {
     const {setLoggedIn} = useContext(loginContext)
 
     return ( 
-        <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")} errorMsg={errorMsg} setErrorMsg={setErrorMsg}>
+        <SignTemplate prefixLink="Don't have an account?" linkText='Sign up' redirect={() => navigation.navigate("Sign Up")} errorMsg={errorMsg}>
             <View style={styles.inputContainer}>
                 <InputEmail style={styles.textInput} email={email} setEmail={setEmail}/>
                 <InputPassword textStyle={styles.textInput} placeholder='Password...' showOption={true} password={password} setPassword={setPassword}/>
