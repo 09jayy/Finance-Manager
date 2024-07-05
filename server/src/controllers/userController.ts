@@ -26,6 +26,19 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+export const getUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const users = await User.findOne({_id: res.locals.userId}, "name email -_id")
+        res.status(200).json(users)
+    } catch (err) {
+        if (err instanceof MongooseError.CastError){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
+    }
+}
+
 export const addUser = async (req: Request<{},{},{name: String, email: String, password: String}>, res: Response): Promise<void> => {
     try {
         const {name, password, email} : {name: String, password: String, email: String} = req.body
