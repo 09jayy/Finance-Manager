@@ -30,7 +30,7 @@ const router: Router = Router()
 router.get("/users", getUsers)
 router.post("/users", addUser)
 router.post("/users/login", findUser)
-router.delete("/users/delete", deleteUser)
+router.delete("/users/delete", checkToken, deleteUser)
 router.patch("/users/update", checkToken, updateUser)
 
 // TRANSACTION ROUTES

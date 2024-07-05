@@ -75,14 +75,16 @@ export const findUser = async (req: Request<{},{},{email: String, password: Stri
     }
 }
 
-export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Response): Promise<void> => {
+export const deleteUser = async (req: Request<{},{}, {}>, res: Response): Promise<void> => {
     try {
-        const deletedUser: IUser | null = await User.findOneAndDelete({_id: req.body.id})
+        const userId: String = res.locals.userId
+
+        const deletedUser: IUser | null = await User.findOneAndDelete({_id: userId})
 
         if (deletedUser != null){
-            res.status(200).send("id: " + req.body.id + " successfully deleted")
+            res.status(200).send("id successfully deleted")
         } else {
-            res.status(404).send("User _id: " + req.body.id + " not found")
+            res.status(404).send("User _id not found")
         } 
     } catch (err){
         if (err instanceof MongooseError.CastError){
