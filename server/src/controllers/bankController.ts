@@ -6,7 +6,8 @@ import { Error as MongooseError } from "mongoose"
 
 export const addBank = async (req: Request<{},{},{userId: String, name: String, balance: Number}>, res: Response): Promise<void> => {
     try {   
-        const {userId, name, balance} = req.body
+        const {name, balance} = req.body
+        const userId: String = res.locals.userId
 
         const newBank = await Bank.create({
             name: name, 
@@ -35,7 +36,9 @@ export const addBank = async (req: Request<{},{},{userId: String, name: String, 
 
 export const updateBank = async (req: Request<{},{},{userId: String, bankId: String, update: IBank}>, res: Response): Promise<void> => {
     try {
-        const {userId, bankId, update} = req.body
+        const {bankId, update} = req.body
+        const userId: String = res.locals.userId
+
 
         // Create object to set spesific fields
         const setObject = {} 
@@ -67,7 +70,8 @@ export const updateBank = async (req: Request<{},{},{userId: String, bankId: Str
 
 export const deleteBank = async (req: Request<{},{},{userId: String, bankId: String}>, res: Response): Promise<void> => {
     try {
-        const {userId, bankId} = req.body
+        const {bankId} = req.body
+        const userId: String = res.locals.userId
 
         const user = await User.updateOne(
             {_id: userId, "banks._id": bankId},
