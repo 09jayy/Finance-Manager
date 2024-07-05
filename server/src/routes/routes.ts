@@ -22,6 +22,8 @@ import {
     deleteBank
 } from "../controllers/bankController"
 
+import {checkToken} from "../middleware/authMiddleware"
+
 const router: Router = Router()
 
 // USER ROUTES
@@ -29,7 +31,7 @@ router.get("/users", getUsers)
 router.post("/users", addUser)
 router.post("/users/login", findUser)
 router.delete("/users/delete", deleteUser)
-router.patch("/users/update", updateUser)
+router.patch("/users/update", checkToken, updateUser)
 
 // TRANSACTION ROUTES
 router.post("/users/transaction/add", addTransaction)

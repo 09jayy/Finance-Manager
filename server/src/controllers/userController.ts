@@ -10,7 +10,7 @@ type genTokenPayload = {
 }
 
 const generateAccessToken = (payload: genTokenPayload): string => {
-    return jwt.sign({payload}, process.env.TOKEN_SECRET, {expiresIn: '1800s'})
+    return jwt.sign({payload}, process.env.TOKEN_SECRET, {expiresIn: '10m'})
 }
 
 /*
@@ -93,17 +93,18 @@ export const deleteUser = async (req: Request<{},{}, {id: String}>, res: Respons
     }
 }
 
-export const updateUser = async (req: Request<{},{},{ id: String, update: IUser}>, res: Response): Promise<void> => {
+export const updateUser = async (req: Request<{},{},{ userId: String, update: IUser}>, res: Response): Promise<void> => {
     try {
-        const { id, update } : {id : String, update: IUser} = req.body;
+        const { update } : {update: IUser} = req.body
+        const userId : String = res.locals.userId
 
-        if (await User.findOne({_id: id}) == null){
-            res.status(404).send("User ID: " + id + " not found")
+        if (await User.findOne({_id: userId}) == null){
+            res.status(404).send("User ID: not found")
             return
         }
 
         // User exists, update user
-        const updatedUser: IUser | null = await User.findOneAndUpdate({_id: id}, update, { new: true });
+        const updatedUser: IUser | null = await User.findOneAndUpdate({_id: userId}, update, { new: true });
         if (!updatedUser) {
             res.status(500).send("Failed to update user");
         } else {
