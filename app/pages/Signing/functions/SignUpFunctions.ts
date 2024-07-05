@@ -38,7 +38,7 @@ export const createAccount = (name: string, email: string, password: string, con
         })
     }
     
-    fetch(`http://${API_URL}/finance-manager/users`, request)
+    fetch(`http://${API_URL}/finance-manager/users/add`, request)
         .then(response => {
             console.log("response: " + response.ok)
             if (!response.ok){
