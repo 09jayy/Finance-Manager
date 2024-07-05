@@ -1,7 +1,6 @@
 import {Request, Response} from "express"
 import User, {IUser} from "../models/user"
 import Bank, {bankSchema, IBank} from "../models/bank"
-import Transaction from "../models/transaction"
 import { Error as MongooseError } from "mongoose"
 
 export const addBank = async (req: Request<{},{},{userId: String, name: String, balance: Number}>, res: Response): Promise<void> => {

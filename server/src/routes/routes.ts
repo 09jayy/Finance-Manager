@@ -5,7 +5,6 @@ import bankRouter from './bankRoutes'
 
 const router: Router = Router()
 
-// Use the individual route modules
 router.use("/users", userRouter)
 router.use("/transactions", transactionRouter)
 router.use("/banks", bankRouter)

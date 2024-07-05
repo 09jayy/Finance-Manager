@@ -10,7 +10,8 @@ type genTokenPayload = {
 }
 
 const generateAccessToken = (payload: genTokenPayload): string => {
-    return jwt.sign({payload}, process.env.TOKEN_SECRET, {expiresIn: '10m'})
+    const ACCESS_TOKEN_EXPIRATION: string = "30d" 
+    return jwt.sign({payload}, process.env.TOKEN_SECRET, {expiresIn: ACCESS_TOKEN_EXPIRATION})
 }
 
 /*
