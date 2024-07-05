@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SignRoot } from "./pages/Signing/SignRoot";
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import {loginContext} from "./AppContext"
-import {Home} from "./pages/Home/HomePage"
+import {Home} from "./pages/Home/Home"
 
 const Stack = createNativeStackNavigator(); 
 
