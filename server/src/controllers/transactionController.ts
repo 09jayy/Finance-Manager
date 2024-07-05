@@ -7,7 +7,7 @@ import { Error as MongooseError } from "mongoose"
 export const addTransaction = async (req: Request<{},{},{id: String, transaction: ITransaction}>, res: Response): Promise<void> => {
     try {
         const transactionData: ITransaction = req.body.transaction
-        const id: String = req.body.id
+        const id: String = res.locals.userId
 
         const newTransaction = await Transaction.create({
             date: transactionData.date,
@@ -39,7 +39,8 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
 
 export const deleteTransaction = async (req: Request<{},{}, {userId: String, transactionId: mongoose.Types.ObjectId}>, res: Response): Promise<void> => {
     try {
-        const {userId, transactionId} = req.body
+        const {transactionId} = req.body
+        const userId: String = res.locals.userId
 
         const transaction = await Transaction.deleteOne({_id: transactionId})
 
@@ -107,7 +108,7 @@ export const updateTransaction = async (req: Request<{},{},{transactionId: Strin
 
 export const getTransactions = async (req: Request<{},{},{userId: String}>, res: Response): Promise<void> => {
     try {
-        const userId = req.body.userId
+        const userId: String = res.locals.userId 
 
         const user = await User.findOne({_id: userId}).populate("transactions")
 
