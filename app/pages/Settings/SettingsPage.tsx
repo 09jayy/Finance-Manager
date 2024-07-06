@@ -28,6 +28,9 @@ export const SettingsPage = () => {
                         <Label title="Name" value={userData.name}/>
                         <Label title="Email" value={userData.email}/>
                         <Label title="Password" value={"***********"}/>
+                        <TouchableOpacity>
+                            <Text style={{...styles.btn,color: "#077cdb"}}>Change details</Text>
+                        </TouchableOpacity>
                     </CustomList>
 
                     <CustomList title="Actions">
