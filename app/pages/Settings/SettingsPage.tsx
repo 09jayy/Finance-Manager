@@ -1,12 +1,14 @@
-import {useState, useEffect, SetStateAction, Dispatch} from "react"
-import {View, Text, SafeAreaView, ActivityIndicator, TouchableOpacity, StyleSheet} from "react-native"
-import {getUserData, UserData} from "./functions"
+import {useState, useEffect, SetStateAction, Dispatch, useContext} from "react"
+import {View, Text, SafeAreaView, ActivityIndicator, TouchableOpacity, StyleSheet, Alert} from "react-native"
+import {getUserData, UserData, logout} from "./functions"
 import {Label} from "./components/Label"
 import {CustomList} from "./components/CustomList"
+import { loginContext } from "../../AppContext"
 
 export const SettingsPage = () => {
     const [userData, setUserData] : [UserData, Dispatch<SetStateAction<UserData>>] = useState({name: "", email: ""})
     const [loading, setLoading]= useState(true)
+    const {setLoggedIn} = useContext(loginContext)
 
     useEffect( () => {
         getUserData().then(data => {
@@ -17,6 +19,20 @@ export const SettingsPage = () => {
         })
     }, [])
 
+    const logoutAlert = () => {
+        Alert.alert("Logout","Are you sure you want to logout?",[
+            {
+                text: "Cancel",
+                onPress: () => {}, 
+                style: "cancel"
+            },
+            {
+                text: "Confirm",
+                onPress: () => {logout(setLoggedIn as Dispatch<SetStateAction<boolean>>)},
+            }
+        ])
+    }
+
     return (
         <SafeAreaView>
             {
@@ -24,7 +40,7 @@ export const SettingsPage = () => {
                     <ActivityIndicator/> 
                 ) : (
                     <View>
-                    <CustomList title="Account">
+                    <CustomList title="Account Details">
                         <Label title="Name" value={userData.name}/>
                         <Label title="Email" value={userData.email}/>
                         <Label title="Password" value={"***********"}/>
@@ -34,7 +50,7 @@ export const SettingsPage = () => {
                     </CustomList>
 
                     <CustomList title="Actions">
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => {logoutAlert()}}>
                             <Text style={{...styles.btn, color: "#077cdb"}}>Logout</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>

@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import React, {Dispatch, SetStateAction, useContext} from "react"
 import { View, Text, Pressable } from "react-native"
 import {loginContext} from "../../AppContext"
@@ -10,16 +9,9 @@ import {SettingsPage} from "../Settings/SettingsPage"
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-const logout = async (setLoggedIn: Dispatch<SetStateAction<boolean>>) => {
-    await AsyncStorage.removeItem("token")
-    setLoggedIn(false)
-}
-
 const Tab = createBottomTabNavigator()
 
 export const Home = () => {
-    const {setLoggedIn} = useContext(loginContext)
-
     return (
         <Tab.Navigator
         screenOptions={ ({route}) => ({
