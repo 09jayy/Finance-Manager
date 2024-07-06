@@ -23,7 +23,7 @@ export const Home = () => {
     return (
         <Tab.Navigator
         screenOptions={ ({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
+            tabBarIcon: ({color, size}) => {
                 let iconName: "dashboard" | "settings" | undefined = undefined
 
                 switch (route.name){

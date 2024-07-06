@@ -15,7 +15,7 @@ export const SignRoot = () =>{
     <Tab.Navigator
     screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ color, size }) => {
             let iconName: "login" | "adduser" | undefined = undefined; 
 
             if (route.name === 'Login') {
