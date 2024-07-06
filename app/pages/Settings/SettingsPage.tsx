@@ -33,36 +33,37 @@ export const SettingsPage = () => {
         ])
     }
 
-    return (
-        <SafeAreaView>
-            {
-                loading ? (
-                    <ActivityIndicator/> 
-                ) : (
-                    <View>
-                    <CustomList title="Account Details">
-                        <Label title="Name" value={userData.name}/>
-                        <Label title="Email" value={userData.email}/>
-                        <Label title="Password" value={"***********"}/>
-                        <TouchableOpacity>
-                            <Text style={{...styles.btn,color: "#077cdb"}}>Change details</Text>
-                        </TouchableOpacity>
-                    </CustomList>
+    return ( 
+        <>
+            { loading ? (
+            <SafeAreaView style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                <ActivityIndicator size="large"/>
+            </SafeAreaView> 
+        ) : (
+            <View>
+                <CustomList title="Account Details">
+                    <Label title="Name" value={userData.name}/>
+                    <Label title="Email" value={userData.email}/>
+                    <Label title="Password" value={"***********"}/>
+                    <TouchableOpacity>
+                        <Text style={{...styles.btn,color: "#077cdb"}}>Change details</Text>
+                    </TouchableOpacity>
+                </CustomList>
 
-                    <CustomList title="Actions">
-                        <TouchableOpacity onPress={() => {logoutAlert()}}>
-                            <Text style={{...styles.btn, color: "#077cdb"}}>Logout</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={{...styles.btn, color: "#f00707"}}>Delete Account</Text>
-                        </TouchableOpacity>
-                    </CustomList>
-                    </View>
-                )
-            }
-        </SafeAreaView>
+                <CustomList title="Actions">
+                    <TouchableOpacity onPress={() => {logoutAlert()}}>
+                        <Text style={{...styles.btn, color: "#077cdb"}}>Logout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={{...styles.btn, color: "#f00707"}}>Delete Account</Text>
+                    </TouchableOpacity>
+                </CustomList>
+            </View>
+        )}
+    </>
     )
 }
+
 
 const styles = StyleSheet.create({
     btn: {
