@@ -6,7 +6,7 @@ import {CustomList} from "./components/CustomList"
 import { loginContext } from "../../AppContext"
 import { settingsContext} from "./SettingsContext"
 
-export const SettingsPage = () => {
+export const SettingsPage = ({navigation}:any) => {
     const {setLoggedIn} = useContext(loginContext)
     const {userData} = useContext(settingsContext)
 
@@ -36,7 +36,7 @@ export const SettingsPage = () => {
                         <Label title="Name" value={userData.name}/>
                         <Label title="Email" value={userData.email}/>
                         <Label title="Password" value={"***********"}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => {navigation.navigate("DetailsForm")}}>
                             <Text style={{...styles.btn,color: "#077cdb"}}>Change details...</Text>
                         </TouchableOpacity>
                     </CustomList>

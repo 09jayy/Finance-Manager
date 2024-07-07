@@ -1,11 +1,13 @@
+import {useContext} from "react"
+import { View, Text } from "react-native"
+import {settingsContext} from "./SettingsContext"
 
-type DetailsFormProps = {
-    name: string, 
-    email: string
-}
-
-export const DetailsForm = ({name, email}: DetailsFormProps) => {
+export const DetailsForm = () => {
+    const {userData, setUserData} = useContext(settingsContext)
+    
     return (
-
+        <View>
+            <Text>Details</Text>
+        </View>
     )
 }
