@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, createContext } from 'react';
+import { Dispatch, SetStateAction, createContext } from 'react'
 
 interface LoginContextType {
-    loggedIn: boolean;
-    setLoggedIn: Dispatch<SetStateAction<boolean>> | undefined;
+    loggedIn: boolean
+    setLoggedIn: Dispatch<SetStateAction<boolean>> | undefined
 }
 
 export const loginContext = createContext<LoginContextType>({
