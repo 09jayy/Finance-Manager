@@ -4,20 +4,11 @@ import {getUserData, UserData, logout} from "./functions"
 import {Label} from "./components/Label"
 import {CustomList} from "./components/CustomList"
 import { loginContext } from "../../AppContext"
+import { settingsContext} from "./SettingsContext"
 
 export const SettingsPage = () => {
-    const [userData, setUserData] : [UserData, Dispatch<SetStateAction<UserData>>] = useState({name: "", email: ""})
-    const [loading, setLoading]= useState(true)
     const {setLoggedIn} = useContext(loginContext)
-
-    useEffect( () => {
-        getUserData().then(data => {
-            setUserData(data)
-            setLoading(false)
-        }).catch( (error: Error) => {
-            console.log(error)
-        })
-    }, [])
+    const {userData} = useContext(settingsContext)
 
     const logoutAlert = () => {
         Alert.alert("Logout","Are you sure you want to logout?",[
@@ -35,32 +26,32 @@ export const SettingsPage = () => {
 
     return ( 
         <>
-            { loading ? (
-            <SafeAreaView style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <ActivityIndicator size="large"/>
-            </SafeAreaView> 
-        ) : (
-            <View>
-                <CustomList title="Account Details">
-                    <Label title="Name" value={userData.name}/>
-                    <Label title="Email" value={userData.email}/>
-                    <Label title="Password" value={"***********"}/>
-                    <TouchableOpacity>
-                        <Text style={{...styles.btn,color: "#077cdb"}}>Change details</Text>
-                    </TouchableOpacity>
-                </CustomList>
+            { userData == undefined ? (
+                <SafeAreaView style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                    <ActivityIndicator size="large"/>
+                </SafeAreaView> 
+            ) : (
+                <View>
+                    <CustomList title="Account Details">
+                        <Label title="Name" value={userData.name}/>
+                        <Label title="Email" value={userData.email}/>
+                        <Label title="Password" value={"***********"}/>
+                        <TouchableOpacity>
+                            <Text style={{...styles.btn,color: "#077cdb"}}>Change details...</Text>
+                        </TouchableOpacity>
+                    </CustomList>
 
-                <CustomList title="Actions">
-                    <TouchableOpacity onPress={() => {logoutAlert()}}>
-                        <Text style={{...styles.btn, color: "#077cdb"}}>Logout</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{...styles.btn, color: "#f00707"}}>Delete Account</Text>
-                    </TouchableOpacity>
-                </CustomList>
-            </View>
-        )}
-    </>
+                    <CustomList title="Actions">
+                        <TouchableOpacity onPress={() => {logoutAlert()}}>
+                            <Text style={{...styles.btn, color: "#077cdb"}}>Logout</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={{...styles.btn, color: "#f00707"}}>Delete Account</Text>
+                        </TouchableOpacity>
+                    </CustomList>
+                </View>
+            )}
+        </>
     )
 }
 

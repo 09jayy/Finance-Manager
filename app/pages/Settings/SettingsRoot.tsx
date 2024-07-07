@@ -1,13 +1,28 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import {View} from "react-native"
 import {SettingsPage} from "./SettingsPage"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { getUserData, UserData } from "./functions"
+import {settingsContext} from "./SettingsContext"
 
 const Stack = createNativeStackNavigator() 
 
 export const SettingsRoot = () => {
+    const [userData, setUserData] = useState(null as unknown as UserData)
+
+    useEffect( () => {
+        getUserData().then(data => {
+            setUserData(data)
+        }).catch( (error: Error) => {
+            console.log(error)
+        })
+    }, [])
+
     return (
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="SettingsPage" component={SettingsPage}/>
-        </Stack.Navigator>
+        <settingsContext.Provider value={{userData, setUserData}}>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="SettingsPage" component={SettingsPage}/>
+            </Stack.Navigator>
+        </settingsContext.Provider>
     )
 }
