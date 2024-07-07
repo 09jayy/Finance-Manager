@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import {View} from "react-native"
 import {SettingsPage} from "./SettingsPage"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { getUserData, UserData } from "./functions"
+import { getUserData, UserData } from "./functions/rootFunctions"
 import {settingsContext} from "./SettingsContext"
 import {DetailsForm} from "./DetailsForm"
 

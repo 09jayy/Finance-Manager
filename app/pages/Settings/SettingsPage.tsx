@@ -1,6 +1,6 @@
 import {useState, useEffect, SetStateAction, Dispatch, useContext} from "react"
 import {View, Text, SafeAreaView, ActivityIndicator, TouchableOpacity, StyleSheet, Alert} from "react-native"
-import {getUserData, UserData, logout} from "./functions"
+import {getUserData, UserData, logout} from "./functions/rootFunctions"
 import {Label} from "./components/Label"
 import {CustomList} from "./components/CustomList"
 import { loginContext } from "../../AppContext"

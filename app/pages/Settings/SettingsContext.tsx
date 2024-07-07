@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction, createContext} from "react"
-import { UserData } from "./functions"
+import { UserData } from "./functions/rootFunctions"
 
 interface AccountDetailsType {
     userData: UserData | null, 
