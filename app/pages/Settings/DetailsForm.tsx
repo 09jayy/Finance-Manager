@@ -12,7 +12,7 @@ export interface DetailsType {
     confirmPassword: string
 }
 
-export const DetailsForm = () => {
+export const DetailsForm = ({navigation}: any) => {
     const {userData, setUserData} = useContext(settingsContext)
     const [submitError, setSubmitError] = useState("")
 
@@ -39,14 +39,18 @@ export const DetailsForm = () => {
             <Text style={styles.title}>Password: </Text>
             <InputPassword textStyle={styles.input} showOption={true} placeholder="Current Password..." password={details.currentPassword} setPassword={val => updateDetail("currentPassword",val)}/>
             <InputPassword textStyle={styles.input} showOption={true} placeholder="New Password..." password={details.newPassword} setPassword={val => updateDetail("newPassword",val)}/>
-            <InputPassword textStyle={styles.input} showOption={true} placeholder="Confirm Password..." password={details.confirmPassword} setPassword={val => updateDetail("confirmPassword",val)}/>
+            <InputPassword textStyle={styles.input} showOption={false} placeholder="Confirm Password..." password={details.confirmPassword} setPassword={val => updateDetail("confirmPassword",val)}/>
 
 
             <Text style={styles.submitError}>{submitError}</Text>
 
-            <View style={styles.submitContainer}>
-                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError)} style={styles.submit}>
-                    <Text style={styles.submitText}>SUBMIT</Text>
+            <View style={styles.btnContainer}>
+                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError)} style={styles.btn}>
+                    <Text style={styles.btnText}>SUBMIT</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{...styles.btn, backgroundColor: "#e01414"}} onPress={() => navigation.navigate("SettingsPage")}>
+                    <Text style={styles.btnText}>BACK</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -70,19 +74,20 @@ const styles = StyleSheet.create({
         margin: 5, 
         marginLeft: 15
     },
-    submitContainer: {
+    btnContainer: {
         flex: 1,
         alignItems: "center",  
     },
-    submit: {
+    btn: {
         backgroundColor: "#1776e3",
         borderRadius: 5,  
         width: 230,
         height: 30, 
         justifyContent: "center", 
-        alignItems: "center", 
+        alignItems: "center",
+        margin: 10 
     },
-    submitText: {
+    btnText: {
         color: "white",
         fontSize: 16,
     },
