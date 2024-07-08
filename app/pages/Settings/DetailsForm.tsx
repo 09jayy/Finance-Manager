@@ -1,5 +1,6 @@
 import {useContext, useState} from "react"
 import { Text, TextInput, SafeAreaView, TouchableOpacity, StyleSheet, Dimensions, View } from "react-native"
+import {InputPassword} from "../../components/InputPassword"
 import {settingsContext} from "./SettingsContext"
 import {submitDetails} from "./functions/detailsFormFunctions"
 
@@ -36,9 +37,10 @@ export const DetailsForm = () => {
             <TextInput placeholder={userData!.email} value={details.email} onChangeText={val => updateDetail("email", val)} style={styles.input}/>
 
             <Text style={styles.title}>Password: </Text>
-            <TextInput placeholder="Current Password..." value={details.currentPassword} onChangeText={val => updateDetail("currentPassword",val)} style={styles.input}/>
-            <TextInput placeholder="New Password..." value={details.newPassword} onChangeText={val => updateDetail("newPassword", val)} style={styles.input}/>
-            <TextInput placeholder="Confirm Password..." value={details.confirmPassword} onChangeText={val => updateDetail("confirmPassword", val)} style={styles.input}/>
+            <InputPassword textStyle={styles.input} showOption={true} placeholder="Current Password..." password={details.currentPassword} setPassword={val => updateDetail("currentPassword",val)}/>
+            <InputPassword textStyle={styles.input} showOption={true} placeholder="New Password..." password={details.newPassword} setPassword={val => updateDetail("newPassword",val)}/>
+            <InputPassword textStyle={styles.input} showOption={true} placeholder="Confirm Password..." password={details.confirmPassword} setPassword={val => updateDetail("confirmPassword",val)}/>
+
 
             <Text style={styles.submitError}>{submitError}</Text>
 
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
     },
     input: {
         width: Dimensions.get("window").width, 
-        height: 30,
+        height: 40,
         backgroundColor: "white", 
         fontSize: 16, 
         paddingLeft: 30,
