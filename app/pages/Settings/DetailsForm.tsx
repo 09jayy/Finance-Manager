@@ -1,5 +1,5 @@
 import {useContext, useState} from "react"
-import { Text, TextInput, SafeAreaView, TouchableOpacity } from "react-native"
+import { Text, TextInput, SafeAreaView, TouchableOpacity, StyleSheet, Dimensions } from "react-native"
 import {settingsContext} from "./SettingsContext"
 import {submitDetails} from "./functions/detailsFormFunctions"
 
@@ -23,21 +23,21 @@ export const DetailsForm = () => {
     })
 
     const updateDetail = (key: string, value: string) => {
-        setDetails(prevDetails => ({...prevDetails, [key]: value}))
+        setDetails(preDetails => ({...preDetails, [key]: value}))
     }
 
     return (
         <SafeAreaView>
-            <Text>Change Name: </Text>
-            <TextInput placeholder={userData!.name} value={details.name} onChange={e => updateDetail("name", details.name)}/>
+            <Text style={styles.title}>Name: </Text>
+            <TextInput placeholder={userData!.name} value={details.name} onChangeText={val => updateDetail("name", val)} style={styles.input}/>
 
-            <Text>Change Email: </Text>
-            <TextInput placeholder={userData!.email} value={details.email} onChange={e => updateDetail("email", details.email)}/>
+            <Text style={styles.title}>Email: </Text>
+            <TextInput placeholder={userData!.email} value={details.email} onChangeText={val => updateDetail("email", val)} style={styles.input}/>
 
-            <Text>Change Password</Text>
-            <TextInput placeholder="Current Password..." value={details.currentPassword} onChange={e => updateDetail("currentPassword",details.currentPassword)}/>
-            <TextInput placeholder="New Password..." value={details.newPassword} onChange={e => updateDetail("newPassword", details.newPassword)}/>
-            <TextInput placeholder="Confirm Password..." value={details.confirmPassword} onChangeText={e => updateDetail("confirmPassword", details.confirmPassword)}/>
+            <Text style={styles.title}>Password</Text>
+            <TextInput placeholder="Current Password..." value={details.currentPassword} onChangeText={val => updateDetail("currentPassword",val)} style={styles.input}/>
+            <TextInput placeholder="New Password..." value={details.newPassword} onChangeText={val => updateDetail("newPassword", val)} style={styles.input}/>
+            <TextInput placeholder="Confirm Password..." value={details.confirmPassword} onChangeText={val => updateDetail("confirmPassword", val)} style={styles.input}/>
 
             <TouchableOpacity onPress={() => submitDetails(details)}>
                 <Text>Submit</Text>
@@ -45,3 +45,17 @@ export const DetailsForm = () => {
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+        width: Dimensions.get("window").width, 
+        height: 30,
+        backgroundColor: "white", 
+        fontSize: 16, 
+        paddingLeft: 10
+    },
+    title: {
+        fontSize: 18, 
+        margin: 5
+    }
+})
