@@ -11,14 +11,6 @@ const Stack = createNativeStackNavigator()
 export const SettingsRoot = () => {
     const [userData, setUserData] = useState(null as unknown as UserData)
 
-    useEffect( () => {
-        getUserData().then(data => {
-            setUserData(data)
-        }).catch( (error: Error) => {
-            console.log(error)
-        })
-    }, [])
-
     return (
         <settingsContext.Provider value={{userData, setUserData}}>
             <Stack.Navigator screenOptions={{headerShown: false}}>
