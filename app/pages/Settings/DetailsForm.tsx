@@ -15,6 +15,7 @@ export interface DetailsType {
 export const DetailsForm = ({navigation}: any) => {
     const {userData, setUserData} = useContext(settingsContext)
     const [submitError, setSubmitError] = useState("")
+    const [submitSuccess, setSubmitSuccess] = useState("")
 
     const [details, setDetails] = useState<DetailsType>({
         name: "",
@@ -43,9 +44,10 @@ export const DetailsForm = ({navigation}: any) => {
 
 
             <Text style={styles.submitError}>{submitError}</Text>
+            <Text style={styles.submitSuccess}>{submitSuccess}</Text>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError)} style={styles.btn}>
+                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError, setSubmitSuccess)} style={styles.btn}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
 
@@ -93,6 +95,11 @@ const styles = StyleSheet.create({
     },
     submitError: {
         color: "#d12304",
+        textAlign: "center",
+        padding: 10
+    },
+    submitSuccess: {
+        color: "#10b510",
         textAlign: "center",
         padding: 10
     }

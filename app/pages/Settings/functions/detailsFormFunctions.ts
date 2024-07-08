@@ -48,7 +48,8 @@ const createUpdateJson = (details: DetailsType): object => {
     return update
 }
 
-export const submitDetails = async (details: DetailsType, setSubmitError: Dispatch<SetStateAction<string>>) => {
+export const submitDetails = async (details: DetailsType, setSubmitError: Dispatch<SetStateAction<string>>, setSubmitSuccess: Dispatch<SetStateAction<string>>) => {
+    setSubmitError("")
     if (validInput(details, setSubmitError) == false ) {return}
     const token = await AsyncStorage.getItem("token")
 
@@ -77,4 +78,6 @@ export const submitDetails = async (details: DetailsType, setSubmitError: Dispat
     
     if (await response.status == 400) { setSubmitError("Error 400: Incorrect Password"); return}
     if (await response.status == 500) { setSubmitError("Error 500: Server Error"); return}
+
+    setSubmitSuccess("Update Successful")
 }
