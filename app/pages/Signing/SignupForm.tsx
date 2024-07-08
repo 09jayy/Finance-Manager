@@ -3,7 +3,7 @@ import { InputEmail } from "./components/InputEmail";
 import {SignTemplate} from "./components/SignTemplate"
 import { View, Text, Pressable, TextInput } from "react-native"
 import React, {useState} from "react"
-import { InputPassword } from "./components/InputPassword";
+import { InputPassword } from "../../components/InputPassword";
 import {createAccount} from "./functions/SignUpFunctions"
 
 export const SignUpForm = ({navigation} : any) => {

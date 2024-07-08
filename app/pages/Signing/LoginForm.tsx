@@ -2,7 +2,7 @@ import { useState, useContext, Dispatch, SetStateAction } from 'react'
 import {View, Pressable, Text} from "react-native"
 import { SignTemplate } from "./components/SignTemplate"
 import { InputEmail } from "./components/InputEmail"
-import { InputPassword } from "./components/InputPassword"
+import { InputPassword } from "../../components/InputPassword"
 import { styles } from './StyleSheet'
 import {loginContext} from "../../AppContext"
 import {login} from "./functions/LoginFunctions"
