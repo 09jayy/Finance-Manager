@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch, SetStateAction } from 'react'
 import { API_URL } from 'react-native-dotenv'
-import { isEmailValid } from './Validation'
+import { isEmailValid } from '../../../functions/validation'
 
 const storeJwt = async (token: string) => {
     try {

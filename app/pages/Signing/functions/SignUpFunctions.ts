@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { API_URL } from "react-native-dotenv";
-import { isEmailValid, PasswordError, isPasswordValid } from "./Validation";
+import { isEmailValid, PasswordError, isPasswordValid } from "../../../functions/validation";
 
 const isAccountValid = (name: string, email: string, password: string, confirmPassword: string, setErrorMsg: Dispatch<SetStateAction<string>>): boolean => {
     if (name.replace(/ /g,'') == "") { setErrorMsg("Name must not be empty"); return false}
