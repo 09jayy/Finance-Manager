@@ -136,6 +136,27 @@ export const updateUser = async (req: Request<{},{},{ userId: String, update: IU
     }
 }
 
+export const checkPassword = async (req: Request<{},{},{password: string}>, res: Response): Promise<void> => {
+    try {
+        const userId: String = res.locals.userId
+        
+        const user = await User.findOne({_id: userId})
+
+        if (await bcrypt.compare(req.body.password, user.password)){
+            res.status(200).send()
+        } else {
+            res.status(400).send("Email or Password incorrect")
+            return
+        }
+    } catch (err){
+        if (err instanceof MongooseError.CastError){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
+    }
+}
+
 /* 
     MISCELLANEOUS METHODS
 */
