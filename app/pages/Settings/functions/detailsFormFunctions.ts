@@ -19,23 +19,6 @@ const validInput = (details: DetailsType, setSubmitError: Dispatch<SetStateActio
     return true
 }
 
-const checkPassword = async (currentPassword: string, token: string): Promise<number> => {
-    const request = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            "password": currentPassword
-        })
-    }
-
-    const response = await fetch(`http://${API_URL}/finance-manager/users/password`, request)
-
-    return response.status
-} 
-
 const createUpdateJson = (details: DetailsType): object => {
     let update: { [key: string]: string } = {}
 
@@ -53,14 +36,6 @@ export const submitDetails = async (details: DetailsType, setSubmitError: Dispat
     if (validInput(details, setSubmitError) == false ) {return}
     const token = await AsyncStorage.getItem("token")
 
-    // if password to be changed - check if current password is correct
-    if (details.newPassword.length > 0){ 
-        const code = checkPassword(details.currentPassword, token as string)
-        
-        if (await code == 400) { setSubmitError("Error 400: Incorrect Password"); return}
-        if (await code == 500) { setSubmitError("Error 500: Server Error"); return}
-    }
-
     const update = createUpdateJson(details)
 
     const request = {
@@ -74,10 +49,13 @@ export const submitDetails = async (details: DetailsType, setSubmitError: Dispat
         })
     }
 
-    const response = await fetch(`http://${API_URL}/finance-manager/users/update`, request)
-    
-    if (await response.status == 400) { setSubmitError("Error 400: Incorrect Password"); return}
-    if (await response.status == 500) { setSubmitError("Error 500: Server Error"); return}
-
-    setSubmitSuccess("Update Successful")
+    fetch(`http://${API_URL}/finance-manager/users/update`, request)
+        .then(async response => {
+            if (!response.ok){
+                throw new Error(await response.text())
+            }
+            setSubmitSuccess("Update Successful")
+        }).catch( (error: Error) => {
+            setSubmitError(error.message)
+        })
 }

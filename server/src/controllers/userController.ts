@@ -9,6 +9,14 @@ type genTokenPayload = {
     userId: String
 }
 
+type updateRequest = {
+    name: string
+    email: string
+    currentPassword: string
+    newPassword: string
+    password: string
+}
+
 const generateAccessToken = (payload: genTokenPayload): string => {
     const ACCESS_TOKEN_EXPIRATION: string = "30d" 
     return jwt.sign({payload}, process.env.TOKEN_SECRET, {expiresIn: ACCESS_TOKEN_EXPIRATION})
@@ -109,22 +117,38 @@ export const deleteUser = async (req: Request<{},{}, {}>, res: Response): Promis
     }
 }
 
-export const updateUser = async (req: Request<{},{},{ userId: String, update: IUser}>, res: Response): Promise<void> => {
+export const updateUser = async (req: Request<{},{},{update: updateRequest}>, res: Response): Promise<void> => {
     try {
-        const { update } : {update: IUser} = req.body
+        const {update} = req.body
         const userId : String = res.locals.userId
 
-        if (await User.findOne({_id: userId}) == null){
+        const user = await User.findOne({_id: userId})
+
+        if (user == null){
             res.status(404).send("User ID: not found")
             return
         }
 
+        for (let key in update){
+            if (key == "currentPassword"){
+                if (await bcrypt.compare(update.currentPassword, user.password)){
+                    update.password = await bcrypt.hash(update.newPassword, 10)
+                } else {
+                    res.status(400).send("Current Password is Incorrect")
+                    return
+                }
+            }
+        }
+
         // User exists, update user
-        const updatedUser: IUser | null = await User.findOneAndUpdate({_id: userId}, update, { new: true });
+        const updatedUser: IUser | null = await User.findOneAndUpdate({_id: userId}, update, { new: true })
+
         if (!updatedUser) {
-            res.status(500).send("Failed to update user");
+            res.status(500).send("Failed to update user")
+            return
         } else {
-            res.status(200).send("Update Successful");
+            res.status(200).send("Update Successful")
+            return
         }
 
     } catch (err) {
