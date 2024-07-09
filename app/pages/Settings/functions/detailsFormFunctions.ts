@@ -31,9 +31,9 @@ const createUpdateJson = (details: DetailsType): object => {
     return update
 }
 
-export const submitDetails = async (details: DetailsType, setSubmitError: Dispatch<SetStateAction<string>>, setSubmitSuccess: Dispatch<SetStateAction<string>>) => {
+export const submitDetails = async (details: DetailsType, setSubmitError: Dispatch<SetStateAction<string>>, setSubmitSuccess: Dispatch<SetStateAction<string>>): Promise<boolean> => {
     setSubmitError("")
-    if (validInput(details, setSubmitError) == false ) {return}
+    if (validInput(details, setSubmitError) == false ) {return false}
     const token = await AsyncStorage.getItem("token")
 
     const update = createUpdateJson(details)
@@ -49,13 +49,15 @@ export const submitDetails = async (details: DetailsType, setSubmitError: Dispat
         })
     }
 
-    fetch(`http://${API_URL}/finance-manager/users/update`, request)
+    return fetch(`http://${API_URL}/finance-manager/users/update`, request)
         .then(async response => {
             if (!response.ok){
                 throw new Error(await response.text())
             }
             setSubmitSuccess("Update Successful")
+            return true
         }).catch( (error: Error) => {
             setSubmitError(error.message)
+            return false
         })
 }

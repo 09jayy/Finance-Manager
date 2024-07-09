@@ -47,7 +47,7 @@ export const DetailsForm = ({navigation}: any) => {
             <Text style={styles.submitSuccess}>{submitSuccess}</Text>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError, setSubmitSuccess)} style={styles.btn}>
+                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError, setSubmitSuccess).then(success => {if (success) { navigation.navigate("SettingsPage") }})} style={styles.btn}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
 
