@@ -1,7 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext} from "react"
-import { View, Text, Pressable } from "react-native"
 import {loginContext} from "../../AppContext"
-import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import {Dashboard} from "../Dashboard/Dashboard"
 import {BanksPage} from "../Bank/BanksPage"
@@ -32,7 +30,7 @@ export const Home = () => {
                 } else {
                     return <MaterialIcons name={iconName} size={size} color={color}/>
                 }
-            }
+            }, headerTitleAlign: "center"
         })
         }
         >
