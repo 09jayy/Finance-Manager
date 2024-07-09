@@ -3,6 +3,7 @@ import { Text, TextInput, SafeAreaView, TouchableOpacity, StyleSheet, Dimensions
 import {InputPassword} from "../../components/InputPassword"
 import {settingsContext} from "./SettingsContext"
 import {submitDetails} from "./functions/detailsFormFunctions"
+import { getUserData } from "./functions/rootFunctions"
 
 export interface DetailsType {
     name: string,
@@ -47,7 +48,16 @@ export const DetailsForm = ({navigation}: any) => {
             <Text style={styles.submitSuccess}>{submitSuccess}</Text>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity onPress={() => submitDetails(details, setSubmitError, setSubmitSuccess).then(success => {if (success) { navigation.navigate("SettingsPage") }})} style={styles.btn}>
+                <TouchableOpacity style={styles.btn} onPress={() => submitDetails(details, setSubmitError, setSubmitSuccess)
+                    .then(success => {
+                        if (success) { 
+                            navigation.navigate("SettingsPage")
+                            getUserData().then(data => {
+                                setUserData(data)
+                            })
+                        }
+                    }
+                )}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
 

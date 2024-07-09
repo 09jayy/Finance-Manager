@@ -13,18 +13,12 @@ export const SettingsPage = ({navigation}:any) => {
     // const navigationFocus = useNavigation()
 
     useEffect(() => {
-        const getDataOnFocus = navigation.addListener('focus', () => {
-            getUserData().then(data => {
-                setUserData(data)
-            }).catch((error: Error) => {
-                console.error(error)
-            })
+        getUserData().then(data => {
+            setUserData(data)
+        }).catch((error: Error) => {
+            console.error(error)
         })
-
-        return () => {
-            getDataOnFocus()
-        }
-    }, [navigation])
+    }, [])
 
     const logoutAlert = () => {
         Alert.alert("Logout","Are you sure you want to logout?",[
