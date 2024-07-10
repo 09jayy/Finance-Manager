@@ -91,3 +91,19 @@ export const deleteBank = async (req: Request<{},{},{userId: String, bankId: Str
         }
     }
 }
+
+export const getAllBanks = async (res: Response): Promise<void> => {
+    try {
+        const userId: String = res.locals.userId
+
+        const banks = await User.findOne({_id: userId}, "banks -_id")
+
+        res.status(200).json(banks)
+    } catch (err){
+        if (err instanceof MongooseError.CastError){
+            res.status(400).send(err.message)
+        } else {
+            res.status(500).send(err)
+        }
+    }
+}
