@@ -1,9 +1,9 @@
-import {View, Text} from "react-native"
+import { View, Text } from "react-native"
 
 export const BanksPage = () => {
     return (
         <View>
-            <Text>Bank</Text>
+            <Text>Banks Page</Text>
         </View>
     )
 }

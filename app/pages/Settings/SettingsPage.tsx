@@ -10,8 +10,6 @@ export const SettingsPage = ({navigation}:any) => {
     const {setLoggedIn} = useContext(loginContext)
     const {userData, setUserData} = useContext(settingsContext)
 
-    // const navigationFocus = useNavigation()
-
     useEffect(() => {
         getUserData().then(data => {
             setUserData(data)

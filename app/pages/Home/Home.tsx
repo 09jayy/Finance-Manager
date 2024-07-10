@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useContext} from "react"
 import {loginContext} from "../../AppContext"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import {Dashboard} from "../Dashboard/Dashboard"
-import {BanksPage} from "../Bank/BanksPage"
+import {BanksRoot} from "../Bank/BanksRoot"
 import {SettingsRoot} from "../Settings/SettingsRoot"
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -35,7 +35,7 @@ export const Home = () => {
         }
         >
             <Tab.Screen name="Dashboard" component={Dashboard}/>
-            <Tab.Screen name="Banks" component={BanksPage}/>
+            <Tab.Screen name="Banks" component={BanksRoot}/>
             <Tab.Screen name="Settings" component={SettingsRoot}/>
         </Tab.Navigator>
     )
