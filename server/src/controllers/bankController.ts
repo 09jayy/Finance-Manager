@@ -92,7 +92,7 @@ export const deleteBank = async (req: Request<{},{},{userId: String, bankId: Str
     }
 }
 
-export const getAllBanks = async (res: Response): Promise<void> => {
+export const getAllBanks = async (req: Request,res: Response): Promise<void> => {
     try {
         const userId: String = res.locals.userId
 
