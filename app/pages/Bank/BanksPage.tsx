@@ -15,7 +15,7 @@ export const BanksPage = () => {
 
     return (
         <View>
-            <ParentWidget title="BANKS" showAdd={true}>
+            <ParentWidget title="Bank Accounts" showAdd={true}>
                 <Text>Banks will go here</Text>
             </ParentWidget>
         </View>
