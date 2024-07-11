@@ -1,6 +1,7 @@
 import { View, Text } from "react-native"
 import {useState, useEffect} from "react"
 import {getBankData} from "./functions/banksPageFunction"
+import {ParentWidget} from "../../components/ParentWidget"
 
 export const BanksPage = () => {
     const [banks, setBanks] = useState([])
@@ -14,8 +15,9 @@ export const BanksPage = () => {
 
     return (
         <View>
-            <Text>Banks Page</Text>
-            <Text>{banks}</Text>
+            <ParentWidget title="BANKS" showAdd={true}>
+                <Text>Banks will go here</Text>
+            </ParentWidget>
         </View>
     )
 }
