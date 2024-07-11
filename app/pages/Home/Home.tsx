@@ -1,42 +1,45 @@
 import React, {Dispatch, SetStateAction, useContext} from "react"
 import {loginContext} from "../../AppContext"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import {createDrawerNavigator, DrawerContent} from "@react-navigation/drawer"
 import {Dashboard} from "../Dashboard/Dashboard"
 import {BanksRoot} from "../Bank/BanksRoot"
 import {SettingsRoot} from "../Settings/SettingsRoot"
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import {CustomDrawer} from "./CustomDrawer"
 
-const Tab = createBottomTabNavigator()
+const Drawer = createDrawerNavigator()
 
 export const Home = () => {
     return (
-        <Tab.Navigator
-        screenOptions={ ({route}) => ({
-            tabBarIcon: ({color, size}) => {
-                let iconName: "dashboard" | "settings" | undefined = undefined
+        <Drawer.Navigator
+            screenOptions = { ({route}) => ({
+                drawerIcon: ({color, size}) => {
+                    let iconName: "dashboard" | "settings" | undefined = undefined
 
-                switch (route.name){
-                    case "Dashboard":
-                        iconName = "dashboard"
-                        break
-                    case "Settings":
-                        iconName = "settings"
-                        break
-                }
+                    switch (route.name){
+                        case "Dashboard":
+                            iconName = "dashboard"
+                            break
+                        case "Settings":
+                            iconName = "settings"
+                            break
+                    }
 
-                if (route.name == "Banks"){
-                    return <MaterialCommunityIcons name="bank" size={size} color={color}/>
-                } else {
-                    return <MaterialIcons name={iconName} size={size} color={color}/>
-                }
-            }, headerTitleAlign: "center"
-        })
-        }
+                    if (route.name == "Banks"){
+                        return <MaterialCommunityIcons name="bank" size={size} color={color}/>
+                    } else {
+                        return <MaterialIcons name={iconName} size={size} color={color}/>
+                    }
+                }, headerTitleAlign: "center", drawerType: "front"
+            })
+        } 
+        drawerContent={(props) => <CustomDrawer {...props}/>}
         >
-            <Tab.Screen name="Dashboard" component={Dashboard}/>
-            <Tab.Screen name="Banks" component={BanksRoot}/>
-            <Tab.Screen name="Settings" component={SettingsRoot}/>
-        </Tab.Navigator>
+            <Drawer.Screen name="Dashboard" component={Dashboard}/>
+            <Drawer.Screen name="Banks" component={BanksRoot}/>
+            <Drawer.Screen name="Settings" component={SettingsRoot}/>
+        </Drawer.Navigator>
     )
 }
