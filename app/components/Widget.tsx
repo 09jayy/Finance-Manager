@@ -8,7 +8,7 @@ type ParentWidgetProps = {
     children: ReactNode
 }
 
-export const ParentWidget = ({title, showAdd, addFunction, children}: ParentWidgetProps) => {
+export const Widget = ({title, showAdd, addFunction, children}: ParentWidgetProps) => {
     return (
         <View style={styles.widget}>
             <View style={styles.header}>

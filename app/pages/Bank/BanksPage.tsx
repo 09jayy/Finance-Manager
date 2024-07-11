@@ -1,23 +1,27 @@
 import { View, Text } from "react-native"
-import {useState, useEffect} from "react"
-import {getBankData} from "./functions/banksPageFunction"
-import {ParentWidget} from "../../components/ParentWidget"
+import {useState, useEffect, Dispatch, SetStateAction} from "react"
+import {getBankData, Bank} from "./functions/banksPageFunction"
+import {Widget} from "../../components/Widget"
 
 export const BanksPage = () => {
-    const [banks, setBanks] = useState([])
+    const [banks, setBanks]: [Bank[], Dispatch<SetStateAction<Bank[]>>]= useState([] as Bank[])
 
     useEffect(()=> {
         getBankData()
-        .then(data => {
-            console.log(data)
+        .then( (data: Bank[]) => {
+            setBanks(data)
         })
     },[])
 
     return (
         <View>
-            <ParentWidget title="Bank Accounts" showAdd={true}>
-                <Text>Banks will go here</Text>
-            </ParentWidget>
+            <Widget title="Bank Accounts" showAdd={true}>
+                {banks.map((bank: Bank, index) => (
+                    <Widget key={index} title={bank.name} showAdd={false}>
+                        <Text>{bank.balance}</Text>
+                    </Widget>
+                ))}
+            </Widget>
         </View>
     )
 }

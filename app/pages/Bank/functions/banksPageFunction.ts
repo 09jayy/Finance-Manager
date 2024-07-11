@@ -1,17 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import {API_URL} from "react-native-dotenv"
 
-type Bank = {
+export type Bank = {
     _id: string
     name: string
     balance: number
 }
 
 type Banks = {
-    banks: [Bank]
+    banks: Bank[]
 }
 
-export const getBankData = async () => {
+export const getBankData = async (): Promise<Bank[]> => {
     const token = await AsyncStorage.getItem("token")
 
     const request = {
@@ -31,6 +31,6 @@ export const getBankData = async () => {
         }).then( (data: Banks) => {
             return data.banks
         }).catch((error: Error) => {
-            console.log(error)
+            return []
         })
 }
