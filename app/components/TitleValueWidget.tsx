@@ -8,7 +8,6 @@ type TitleValueWidgetProps = {
 }
 
 export const TitleValueWidget = ({title,value, direction, styleProp}: TitleValueWidgetProps) => {
-    console.log(title)
     return (
         <View style={{...styles.container, flexDirection: direction}}>
             <Text style={styleProp.title}>{title}</Text>

@@ -1,18 +1,18 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import {useState, useEffect, SetStateAction} from "react"
+import {useState, useEffect, SetStateAction, useContext} from "react"
 import {getBankData, Bank} from "./functions/banksPageFunction"
 import {Widget} from "../../components/Widget"
 import {TitleValueWidget} from "../../components/TitleValueWidget"
 import {EditForm} from "../../components/EditForm"
+import { banksContext } from "./BanksContext"
 
-export const BanksPage = () => {
+export const BanksPage = ({navigation}: any) => {
     const [banks, setBanks] = useState([] as Bank[])
-    const [visible, setVisible] = useState(false) 
+    const {editObject, setEditObject} = useContext(banksContext)
 
     useEffect(()=> {
         getBankData()
         .then( (data: Bank[]) => {
-            console.log(data)
             setBanks(data)
         })
     },[])
@@ -22,7 +22,7 @@ export const BanksPage = () => {
             <Widget title="Bank Accounts" showAdd={true}>
                 <View style={styles.bankList}>
                     {banks.map((bank: Bank) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => {setEditObject(bank); navigation.navigate("EditForm")}} key={bank._id}>
                             <TitleValueWidget title={bank.name} value={`£${bank.balance}`} key={bank._id} direction="column" styleProp={bankAccountStyles}/>
                         </TouchableOpacity>
                     ))}
