@@ -3,13 +3,16 @@ import { View, Text, StyleSheet } from "react-native"
 type TitleValueWidgetProps = {
     title: string 
     value: string
+    direction: "row" | "column"
+    styleProp: {title: object, value: object}
 }
 
-export const TitleValueWidget = ({title,value}: TitleValueWidgetProps) => {
+export const TitleValueWidget = ({title,value, direction, styleProp}: TitleValueWidgetProps) => {
+    console.log(title)
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.value}>{value}</Text>
+        <View style={{...styles.container, flexDirection: direction}}>
+            <Text style={styleProp.title}>{title}</Text>
+            <Text style={styleProp.value}>{value}</Text>
         </View>
     )
 }
@@ -19,15 +22,8 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingBottom: 10, 
         paddingTop: 10,
-        flexDirection: "row",
         backgroundColor: "#f2f2f2", 
-        borderRadius: 10
-    },
-    title: {
-        flex: 1, 
-        fontSize: 16
-    },
-    value: {
-        fontSize: 16
+        borderRadius: 10,
+        margin: 2
     }
 })

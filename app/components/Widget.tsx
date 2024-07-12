@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        flexGrow: 1
+        flexGrow: 1,
+        fontWeight: "600"
     },
     plusBtn: {
         marginRight: 10,
