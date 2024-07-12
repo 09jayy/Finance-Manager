@@ -27,9 +27,15 @@ export const EditForm = () => {
             }
             </View>
 
-            <TouchableOpacity>
-                <Text>SUBMIT</Text>
-            </TouchableOpacity>
+            <View style={styles.btnContainer}>
+                <TouchableOpacity style={styles.btn}>
+                    <Text style={styles.btnText}>SUBMIT</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{...styles.btn, backgroundColor: "#e01414"}}>
+                        <Text style={styles.btnText}>BACK</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
@@ -56,6 +62,23 @@ const styles = StyleSheet.create({
         margin: 10
     },
     titleContainer: {
+        alignItems: "center"
+    },
+    btn: {
+        backgroundColor: "#1776e3",
+        borderRadius: 5,  
+        width: 230,
+        height: 30, 
+        justifyContent: "center", 
+        alignItems: "center",
+        margin: 10 
+    },
+    btnText: {
+        color: "white",
+        fontSize: 16,
+    },
+    btnContainer: {
+        marginTop: 60,
         alignItems: "center"
     }
 })
