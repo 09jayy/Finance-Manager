@@ -1,7 +1,8 @@
-import { View, Text } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import {useState, useEffect, Dispatch, SetStateAction} from "react"
 import {getBankData, Bank} from "./functions/banksPageFunction"
 import {Widget} from "../../components/Widget"
+import {TitleValueWidget} from "../../components/TitleValueWidget"
 
 export const BanksPage = () => {
     const [banks, setBanks]: [Bank[], Dispatch<SetStateAction<Bank[]>>]= useState([] as Bank[])
@@ -16,12 +17,18 @@ export const BanksPage = () => {
     return (
         <View>
             <Widget title="Bank Accounts" showAdd={true}>
-                {banks.map((bank: Bank, index) => (
-                    <Widget key={index} title={bank.name} showAdd={false}>
-                        <Text>{bank.balance}</Text>
-                    </Widget>
-                ))}
+                <View style={styles.bankList}>
+                    {banks.map((bank: Bank, index) => (
+                        <TitleValueWidget title={bank.name} value={`£${bank.balance}`} key={index}/>
+                    ))}
+                </View>
             </Widget>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    bankList: {
+        marginTop: 20
+    }
+})
