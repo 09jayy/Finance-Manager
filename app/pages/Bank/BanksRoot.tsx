@@ -10,9 +10,10 @@ const Stack = createNativeStackNavigator()
 
 export const BanksRoot = () => {
     const [editObject, setEditObject] = useState({})
+    const [title, setTitle] = useState("")
 
     return (
-        <banksContext.Provider value={{editObject, setEditObject}}>
+        <banksContext.Provider value={{editObject, setEditObject, title, setTitle}}>
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen component={BanksPage} name="BanksPage"/>
                 <Stack.Screen component={TransactionForm} name="TransactionForm"/>
