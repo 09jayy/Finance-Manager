@@ -8,7 +8,8 @@ import {SettingsRoot} from "../Settings/SettingsRoot"
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import {CustomDrawer} from "./CustomDrawer"
-import { CustomBackBtn } from "../../components/CustomBackBtn"
+import { CustomHeaderBtn } from "../../components/CustomHeaderBtn"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 const Drawer = createDrawerNavigator()
 
@@ -23,12 +24,12 @@ export const Home = () => {
                         case "Dashboard":
                             iconName = "dashboard"
                             break
-                        case "Settings":
+                        case "SettingsRoot":
                             iconName = "settings"
                             break
                     }
 
-                    if (route.name == "Banks"){
+                    if (route.name == "BanksRoot"){
                         return <MaterialCommunityIcons name="bank" size={size} color={color}/>
                     } else {
                         return <MaterialIcons name={iconName} size={size} color={color}/>
@@ -38,9 +39,9 @@ export const Home = () => {
         } 
         drawerContent={(props) => <CustomDrawer {...props}/>}
         >
-            <Drawer.Screen name="Dashboard" component={Dashboard} options={{headerShown: true}}/>
-            <Drawer.Screen name="Banks" component={BanksRoot}/>
-            <Drawer.Screen name="Settings" component={SettingsRoot}/>
+                <Drawer.Screen name="Dashboard" component={Dashboard} options={{headerShown: true}}/>
+                <Drawer.Screen name="BanksRoot" component={BanksRoot} options={{title: "Banks"}}/>
+                <Drawer.Screen name="SettingsRoot" component={SettingsRoot} options={{title: "Settings"}}/>
         </Drawer.Navigator>
     )
 }

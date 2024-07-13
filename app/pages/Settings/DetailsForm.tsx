@@ -51,7 +51,7 @@ export const DetailsForm = ({navigation}: any) => {
                 <TouchableOpacity style={styles.btn} onPress={() => submitDetails(details, setSubmitError, setSubmitSuccess)
                     .then(success => {
                         if (success) { 
-                            navigation.navigate("SettingsPage")
+                            navigation.navigate("Settings")
                             getUserData().then(data => {
                                 setUserData(data)
                             })
@@ -59,10 +59,6 @@ export const DetailsForm = ({navigation}: any) => {
                     }
                 )}>
                     <Text style={styles.btnText}>SUBMIT</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={{...styles.btn, backgroundColor: "#e01414"}} onPress={() => navigation.navigate("SettingsPage")}>
-                    <Text style={styles.btnText}>BACK</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
