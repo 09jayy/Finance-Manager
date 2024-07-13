@@ -9,6 +9,7 @@ import { banksContext } from "./BanksContext"
 export const BanksPage = ({navigation}: any) => {
     const [banks, setBanks] = useState([] as Bank[])
     const {editObject, setEditObject, setTitle} = useContext(banksContext)
+    const [newBank, setNewBank] = useState({_id: "", name: "", balance: 0} as Bank)
 
     useEffect(()=> {
         getBankData()
@@ -19,7 +20,7 @@ export const BanksPage = ({navigation}: any) => {
 
     return (
         <View>
-            <Widget title="Bank Accounts" showAdd={true}>
+            <Widget title="Bank Accounts" showAdd={true} addFunction={() => {setEditObject(newBank); setTitle("Add Bank Account"); navigation.navigate("EditForm")}}>
                 <View style={styles.bankList}>
                     {banks.map((bank: Bank) => (
                         <TouchableOpacity onPress={() => {setEditObject(bank); setTitle("Edit Bank Account"); navigation.navigate("EditForm")}} key={bank._id}>

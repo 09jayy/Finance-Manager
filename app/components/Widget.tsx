@@ -4,7 +4,7 @@ import { TouchableOpacity, View, Text, StyleSheet } from "react-native"
 type ParentWidgetProps = {
     title: string
     showAdd: boolean
-    addFunction?: () => {}
+    addFunction?: () => void
     children: ReactNode
 }
 
@@ -15,7 +15,7 @@ export const Widget = ({title, showAdd, addFunction, children}: ParentWidgetProp
                 <Text style={styles.title}>{title}</Text>
 
                 { showAdd && 
-                    <TouchableOpacity onPress={() => addFunction} style={styles.plusBtn}>
+                    <TouchableOpacity onPress={addFunction} style={styles.plusBtn}>
                         <Text style={styles.textBtn}>+</Text>
                     </TouchableOpacity> 
                 }
