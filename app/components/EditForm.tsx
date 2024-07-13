@@ -27,10 +27,6 @@ export const EditForm = () => {
                 <TouchableOpacity style={styles.btn}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity style={{...styles.btn, backgroundColor: "#e01414"}}>
-                        <Text style={styles.btnText}>BACK</Text>
-                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
