@@ -27,17 +27,11 @@ export default function App() {
   return (
     <loginContext.Provider value={{loggedIn, setLoggedIn}}>
       <NavigationContainer>
-        <Stack.Navigator>
           { loggedIn == false ? (
-            <Stack.Group>
-              <Stack.Screen name="SignRoot" component={SignRoot} options={ { headerShown: false}}/>
-            </Stack.Group>
+            <SignRoot/>
           ) : (
-            <Stack.Group>
-              <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/> 
-            </Stack.Group>
+            <Home/>
           )}
-        </Stack.Navigator>
       </NavigationContainer>
     </loginContext.Provider>
   )

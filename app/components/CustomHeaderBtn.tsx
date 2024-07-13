@@ -16,10 +16,10 @@ export const CustomHeaderBtn = () => {
                 <FontAwesome6 name="bars" size={22} color="black" />
             </Pressable>
         : 
-            <TouchableOpacity onPress={useCallback(()=>{
+            <Pressable onPress={useCallback(()=>{
                 navigation.goBack()
             },[navigation,route])}>
                 <Ionicons name="arrow-back" size={22} color="black"/>
-            </TouchableOpacity>
+            </Pressable>
     )
 }
