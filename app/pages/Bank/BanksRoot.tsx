@@ -18,7 +18,7 @@ export const BanksRoot = () => {
             <Stack.Navigator screenOptions={{headerLeft: () => <CustomHeaderBtn/>, headerTitleAlign: "center"}}>
                 <Stack.Screen component={BanksPage} name="Banks"/>
                 <Stack.Screen component={TransactionForm} name="TransactionForm"/>
-                <Stack.Screen component={EditForm} name="EditForm"/>
+                <Stack.Screen component={EditForm} name="EditForm" options={{headerTitle: title}}/>
             </Stack.Navigator>
         </banksContext.Provider>
     )

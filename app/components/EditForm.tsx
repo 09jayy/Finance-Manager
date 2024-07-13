@@ -7,14 +7,10 @@ const capitalise = (word: string) => {
 }
 
 export const EditForm = () => {
-    const {editObject, setEditObject, title} = useContext(banksContext)
+    const {editObject, setEditObject} = useContext(banksContext)
 
     return (
         <SafeAreaView>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
-            </View>
-
             <View>
             {
                 Object.entries(editObject).map(([key, value], index) => (
