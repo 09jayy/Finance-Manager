@@ -12,9 +12,9 @@ export const BanksPage = ({navigation}: any) => {
 
     useEffect(()=> {
         getBankData()
-        .then( (data: Bank[]) => {
-            setBanks(data)
-        })
+            .then( (data: Bank[]) => {
+                setBanks(data)
+            })
     },[])
 
     return (

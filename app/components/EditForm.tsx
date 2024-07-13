@@ -11,7 +11,7 @@ export const EditForm = () => {
 
     return (
         <SafeAreaView>
-            <View>
+            <View style={styles.inputContainer}>
             {
                 Object.entries(editObject).map(([key, value], index) => (
                     key != "_id" && 
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     key: {
         fontSize: 18,
         paddingLeft: 20,
-        paddingBottom: 5
+        paddingBottom: 5,
+        marginTop: 10
     },
     valueInput: {
         width: "100%",
@@ -48,13 +49,6 @@ const styles = StyleSheet.create({
     fieldContainer: {
         marginTop: 5,
         marginBottom: 5
-    },
-    title: {
-        fontSize: 18, 
-        margin: 10
-    },
-    titleContainer: {
-        alignItems: "center"
     },
     btn: {
         backgroundColor: "#1776e3",
@@ -72,5 +66,8 @@ const styles = StyleSheet.create({
     btnContainer: {
         marginTop: 60,
         alignItems: "center"
+    },
+    inputContainer: {
+        marginTop: 15
     }
 })
