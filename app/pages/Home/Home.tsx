@@ -8,6 +8,7 @@ import {SettingsRoot} from "../Settings/SettingsRoot"
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import {CustomDrawer} from "./CustomDrawer"
+import { CustomBackBtn } from "../../components/CustomBackBtn"
 
 const Drawer = createDrawerNavigator()
 
@@ -32,12 +33,12 @@ export const Home = () => {
                     } else {
                         return <MaterialIcons name={iconName} size={size} color={color}/>
                     }
-                }, headerTitleAlign: "center", drawerType: "front"
+                }, headerTitleAlign: "center", drawerType: "front", headerShown: false
             })
         } 
         drawerContent={(props) => <CustomDrawer {...props}/>}
         >
-            <Drawer.Screen name="Dashboard" component={Dashboard}/>
+            <Drawer.Screen name="Dashboard" component={Dashboard} options={{headerShown: true}}/>
             <Drawer.Screen name="Banks" component={BanksRoot}/>
             <Drawer.Screen name="Settings" component={SettingsRoot}/>
         </Drawer.Navigator>

@@ -5,6 +5,7 @@ import {TransactionForm} from "./TransactionForm"
 import { useState } from "react"
 import {banksContext} from "./BanksContext"
 import { EditForm } from "../../components/EditForm"
+import { CustomBackBtn } from "../../components/CustomBackBtn"
 
 const Stack = createNativeStackNavigator()
 
@@ -13,8 +14,8 @@ export const BanksRoot = () => {
     const [title, setTitle] = useState("")
 
     return (
-        <banksContext.Provider value={{editObject, setEditObject, title, setTitle}}>
-            <Stack.Navigator screenOptions={{headerShown: false}}>
+        <banksContext.Provider value={{editObject, setEditObject, title, setTitle}} >
+            <Stack.Navigator screenOptions={{headerLeft: () => <CustomBackBtn/>}}>
                 <Stack.Screen component={BanksPage} name="BanksPage"/>
                 <Stack.Screen component={TransactionForm} name="TransactionForm"/>
                 <Stack.Screen component={EditForm} name="EditForm"/>
