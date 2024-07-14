@@ -5,6 +5,10 @@ import { Error as MongooseError } from "mongoose"
 
 export const addBank = async (req: Request<{},{},{userId: String, name: String, balance: Number}>, res: Response): Promise<void> => {
     try {   
+        console.log("add bank")
+
+        console.log(req.body)
+
         const {name, balance} = req.body
         const userId: String = res.locals.userId
 
@@ -24,6 +28,7 @@ export const addBank = async (req: Request<{},{},{userId: String, name: String, 
         }
 
         res.status(200).send("Success")
+        console.log("success")
     } catch (err){
         if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
