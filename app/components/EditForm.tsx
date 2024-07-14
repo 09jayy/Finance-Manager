@@ -1,12 +1,32 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {View, Text, SafeAreaView, TextInput, TouchableOpacity, StyleSheet} from "react-native"
 
 const capitalise = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
 }
 
+const createObjectEmptyValues = (obj: {[key: string]: any}) => {
+    const newObj: { [key: string]: any } = {}
+
+    Object.keys(obj).forEach(key => {
+        newObj[key] = null
+    })
+
+    return newObj
+}
+
 export const EditForm = ({route, navigation}: any) => {
     const {editObject, title} = route.params
     navigation.setOptions({title: title})
+    const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
+
+    useEffect(()=>{
+        setInputObject(createObjectEmptyValues(editObject))
+    },[editObject])
+
+    const updateDetail = (key: string, value: string) => {
+        setInputObject(prev => ({...prev, [key]: value}))
+    }
 
     return (
         <SafeAreaView>
@@ -16,14 +36,20 @@ export const EditForm = ({route, navigation}: any) => {
                     key != "_id" && 
                     <View key={index} style={styles.fieldContainer}>
                         <Text style={styles.key}>{capitalise(key)}</Text>
-                        <TextInput placeholder={ !(typeof value == "string") ? `£${value}` : value} style={styles.valueInput}/>
+                        <TextInput 
+                            placeholder={ !(typeof value == "string") ? `£${value}` : value}
+                            keyboardType={ (typeof value == "number") ? "numeric" : "default"} 
+                            style={styles.valueInput} 
+                            value={inputObject[key]} 
+                            onChangeText={val => updateDetail(key, val)}
+                        />
                     </View>
                 ))
             }
             </View>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity style={styles.btn} onPress={() =>console.log(inputObject)}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
             </View>
