@@ -17,10 +17,10 @@ const createObjectEmptyValues = (obj: {[key: string]: any}) => {
 
 export const EditForm = ({route, navigation}: any) => {
     const {editObject, title} = route.params
-    navigation.setOptions({title: title})
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
 
     useEffect(()=>{
+        navigation.setOptions({title: title})
         setInputObject(createObjectEmptyValues(editObject))
     },[editObject])
 
