@@ -1,5 +1,6 @@
 import { ReactNode } from "react"
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native"
+import { AntDesign } from '@expo/vector-icons'
 
 type ParentWidgetProps = {
     title: string
@@ -16,7 +17,7 @@ export const Widget = ({title, showAdd, addFunction, children}: ParentWidgetProp
 
                 { showAdd && 
                     <TouchableOpacity onPress={addFunction} style={styles.plusBtn}>
-                        <Text style={styles.textBtn}>+</Text>
+                        <AntDesign name="plus" size={18} color="black"/>
                     </TouchableOpacity> 
                 }
             </View>
