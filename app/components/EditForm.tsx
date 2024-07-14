@@ -1,4 +1,3 @@
-import { useContext, useState } from "react"
 import {View, Text, SafeAreaView, TextInput, TouchableOpacity, StyleSheet} from "react-native"
 
 const capitalise = (word: string) => {
