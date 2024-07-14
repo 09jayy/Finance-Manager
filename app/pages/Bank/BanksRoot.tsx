@@ -3,7 +3,6 @@ import {View, Text} from "react-native"
 import {BanksPage} from "./BanksPage"
 import {TransactionForm} from "./TransactionForm"
 import { useState } from "react"
-import {banksContext} from "./BanksContext"
 import { EditForm } from "../../components/EditForm"
 import { CustomHeaderBtn } from "../../components/CustomHeaderBtn"
 
@@ -14,12 +13,10 @@ export const BanksRoot = () => {
     const [title, setTitle] = useState("")
 
     return (
-        <banksContext.Provider value={{editObject, setEditObject, title, setTitle}} >
-            <Stack.Navigator screenOptions={{headerLeft: () => <CustomHeaderBtn/>, headerTitleAlign: "center"}}>
-                <Stack.Screen component={BanksPage} name="Banks"/>
-                <Stack.Screen component={TransactionForm} name="TransactionForm"/>
-                <Stack.Screen component={EditForm} name="EditForm" options={{headerTitle: title}}/>
-            </Stack.Navigator>
-        </banksContext.Provider>
+        <Stack.Navigator screenOptions={{headerLeft: () => <CustomHeaderBtn/>, headerTitleAlign: "center"}}>
+            <Stack.Screen component={BanksPage} name="Banks"/>
+            <Stack.Screen component={TransactionForm} name="TransactionForm"/>
+            <Stack.Screen component={EditForm} name="EditForm"/>
+        </Stack.Navigator>
     )
 }

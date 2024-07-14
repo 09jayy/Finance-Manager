@@ -1,13 +1,13 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import {View, Text, SafeAreaView, TextInput, TouchableOpacity, StyleSheet} from "react-native"
-import { banksContext } from "../pages/Bank/BanksContext"
 
 const capitalise = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
 }
 
-export const EditForm = () => {
-    const {editObject, setEditObject} = useContext(banksContext)
+export const EditForm = ({route, navigation}: any) => {
+    const {editObject, title} = route.params
+    navigation.setOptions({title: title})
 
     return (
         <SafeAreaView>
@@ -69,5 +69,10 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         marginTop: 15
-    }
+    },
+    submitError: {
+        color: "#d12304",
+        textAlign: "center",
+        padding: 10
+    },
 })
