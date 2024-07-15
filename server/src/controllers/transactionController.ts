@@ -12,8 +12,9 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
         const newTransaction = await Transaction.create({
             date: transactionData.date,
             name: transactionData.name,
-            des: transactionData.des, 
-            pay: transactionData.pay
+            description: transactionData.description, 
+            pay: transactionData.pay,
+            bank: transactionData.bank
         })
 
         const user = await User.findOne({_id: id})

@@ -4,7 +4,7 @@ export interface ITransaction {
     _id: String
     date: Date
     name: String
-    des: String
+    description: String
     pay: Number
     bank: mongoose.Schema.Types.ObjectId
 }
@@ -12,7 +12,7 @@ export interface ITransaction {
 export const transactionSchema: Schema = new Schema<ITransaction>({
     date: {type: Date, required: true, default: () => Date.now()},
     name: String, 
-    des: String,
+    description: String,
     pay: { type: Number, required: true},
     bank: {
         type: mongoose.Schema.Types.ObjectId,
