@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import {View, Text, SafeAreaView, TextInput, TouchableOpacity, StyleSheet} from "react-native"
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable} from "react-native"
+import { updateBank } from "../pages/Bank/functions/banksPageFunction"
 
 const capitalise = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
@@ -9,18 +10,21 @@ const createObjectEmptyValues = (obj: {[key: string]: any}) => {
     const newObj: { [key: string]: any } = {}
 
     Object.keys(obj).forEach(key => {
-        newObj[key] = null
+        newObj[key] = ""
     })
-
     return newObj
 }
 
-export const EditForm = ({route, navigation}: any) => {
-    const {editObject, title} = route.params
+type props = {
+    editObject: Object
+    modalVisible: boolean
+    setModalVisible: Dispatch<SetStateAction<boolean>>
+}
+
+export const EditForm = ({editObject, modalVisible, setModalVisible}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
 
     useEffect(()=>{
-        navigation.setOptions({title: title})
         setInputObject(createObjectEmptyValues(editObject))
     },[editObject])
 
@@ -29,7 +33,14 @@ export const EditForm = ({route, navigation}: any) => {
     }
 
     return (
-        <SafeAreaView>
+        <Modal
+            visible={modalVisible}
+            animationType="slide"
+        >
+            <Pressable onPress={() => setModalVisible(false)}>
+                <Text>Close</Text>
+            </Pressable>
+
             <View style={styles.inputContainer}>
             {
                 Object.entries(editObject).map(([key, value], index) => (
@@ -49,11 +60,11 @@ export const EditForm = ({route, navigation}: any) => {
             </View>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.btn} onPress={() =>console.log(inputObject)}>
+                <TouchableOpacity style={styles.btn} onPress={() => {updateBank(inputObject); setModalVisible(false)}}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+        </Modal>
     )
 }
 

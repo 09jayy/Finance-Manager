@@ -1,4 +1,3 @@
-import React, {Dispatch, SetStateAction, useContext} from "react"
 import {loginContext} from "../../AppContext"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import {createDrawerNavigator, DrawerContent} from "@react-navigation/drawer"
@@ -39,9 +38,9 @@ export const Home = () => {
         } 
         drawerContent={(props) => <CustomDrawer {...props}/>}
         >
-                <Drawer.Screen name="Dashboard" component={Dashboard} options={{headerShown: true}}/>
-                <Drawer.Screen name="BanksRoot" component={BanksRoot} options={{title: "Banks"}}/>
-                <Drawer.Screen name="SettingsRoot" component={SettingsRoot} options={{title: "Settings"}}/>
-        </Drawer.Navigator>
+            <Drawer.Screen name="Dashboard" component={Dashboard} options={{headerShown: true}}/>
+            <Drawer.Screen name="BanksRoot" component={BanksRoot} options={{title: "Banks"}}/>
+            <Drawer.Screen name="SettingsRoot" component={SettingsRoot} options={{title: "Settings"}}/>
+        </Drawer.Navigator>    
     )
 }

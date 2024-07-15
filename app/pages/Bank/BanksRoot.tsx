@@ -9,14 +9,10 @@ import { CustomHeaderBtn } from "../../components/CustomHeaderBtn"
 const Stack = createNativeStackNavigator()
 
 export const BanksRoot = () => {
-    const [editObject, setEditObject] = useState({})
-    const [title, setTitle] = useState("")
-
     return (
         <Stack.Navigator screenOptions={{headerLeft: () => <CustomHeaderBtn/>, headerTitleAlign: "center"}}>
             <Stack.Screen component={BanksPage} name="Banks"/>
             <Stack.Screen component={TransactionForm} name="TransactionForm"/>
-            <Stack.Screen component={EditForm} name="EditForm"/>
         </Stack.Navigator>
     )
 }
