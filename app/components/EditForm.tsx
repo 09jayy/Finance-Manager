@@ -90,7 +90,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                                 <View key={index}>
                                     <Text style={styles.label}>{capitalise(key)}</Text>
                                     <TextInput 
-                                        placeholder={ !(typeof value == "string") ? `£${value}` : value}
+                                        placeholder={ !(typeof value == "string") ? `£${value.toLocaleString()}` : value}
                                         keyboardType={ (typeof value == "number") ? "numeric" : "default"} 
                                         value={inputObject[key]} 
                                         onChangeText={val => updateDetail(key, val)}

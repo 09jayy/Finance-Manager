@@ -1,15 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import {useState, useEffect, useContext} from "react"
-import {Widget} from "../../components/Widget"
-import {TitleValueWidget} from "../../components/TitleValueWidget"
-import {EditForm} from "../../components/EditForm"
+import { View, Text, StyleSheet, ScrollView} from "react-native"
 import {BankAccountSection} from "./components/BankAccountSection"
 
 export const BanksPage = ({navigation}: any) => {
     return (
-        <View>
+        <ScrollView>
             <BankAccountSection/>
-        </View>
+        </ScrollView>
     )
 }
 
