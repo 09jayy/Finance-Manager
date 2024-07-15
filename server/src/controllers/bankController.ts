@@ -3,13 +3,13 @@ import User, {IUser} from "../models/user"
 import Bank, {bankSchema, IBank} from "../models/bank"
 import { Error as MongooseError } from "mongoose"
 
-export const addBank = async (req: Request<{},{},{userId: String, name: String, balance: Number}>, res: Response): Promise<void> => {
+export const addBank = async (req: Request<{},{},{bank: {name: String, balance: Number}}>, res: Response): Promise<void> => {
     try {   
         console.log("add bank")
 
         console.log(req.body)
 
-        const {name, balance} = req.body
+        const {name, balance} = req.body.bank
         const userId: String = res.locals.userId
 
         const newBank = await Bank.create({
@@ -75,7 +75,7 @@ export const updateBank = async (req: Request<{},{},{userId: String, bankId: Str
     }
 }
 
-export const deleteBank = async (req: Request<{},{},{userId: String, bankId: String}>, res: Response): Promise<void> => {
+export const deleteBank = async (req: Request<{},{},{bankId: String}>, res: Response): Promise<void> => {
     try {
         const {bankId} = req.body
         const userId: String = res.locals.userId
