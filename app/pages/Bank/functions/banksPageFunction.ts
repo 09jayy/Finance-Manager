@@ -52,7 +52,7 @@ const removeBlank = (obj: {[key: string]: any}): Object => {
     return newObj
 }
 
-export const updateBank = async (inputObject: Object, bankId: string) => { 
+export const updateBank = async (inputObject: Object, bankId: string): Promise<Response> => { 
     const update: Object = removeBlank(inputObject)
     const token = await AsyncStorage.getItem("token")
 
@@ -69,13 +69,4 @@ export const updateBank = async (inputObject: Object, bankId: string) => {
     }
 
     return fetch(`http://${API_URL}/finance-manager/banks/update`, request)
-        .then(response => {
-            if(!response.ok){
-                throw new Error(`${response.text()}`)
-            } 
-
-            return ""
-        }).catch( (error: Error) => {
-            return error.message
-        })
 }

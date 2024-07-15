@@ -7,7 +7,6 @@ import {EditForm} from "../../components/EditForm"
 
 export const BanksPage = ({navigation}: any) => {
     const [banks, setBanks] = useState([] as Bank[])
-    const [newBank, setNewBank] = useState({name: "", balance: 0} as Bank)
     const [modalVisible, setModalVisible] = useState(false)
     const [currentObject, setCurrentObject] = useState({})
     const [bankId, setBankId] = useState("")
@@ -16,7 +15,6 @@ export const BanksPage = ({navigation}: any) => {
         getBankData()
             .then( (data: Bank[]) => {
                 setBanks(data)
-                console.log(data)
             })
     },[])
 

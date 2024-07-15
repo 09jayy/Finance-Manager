@@ -25,10 +25,12 @@ type props = {
 
 export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, setBanks}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
+    const [errorMessage, setErrorMessage] = useState("")
 
     useEffect(()=>{
         setInputObject(createObjectEmptyValues(editObject))
-    },[editObject])
+        setErrorMessage("")
+    },[editObject, modalVisible])
 
     const updateDetail = (key: string, value: string) => {
         setInputObject(prev => ({...prev, [key]: value}))
@@ -61,16 +63,22 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, set
             }
             </View>
 
+            <Text>{errorMessage}</Text>
+
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.btn} onPress={() => {
                     updateBank(inputObject, bankId)
-                        .then(msg => {
-                            if (msg == ""){
-                                setModalVisible(false)
-                                getBankData().then( (data: Bank[]) => {
-                                    setBanks(data)
-                                })
+                        .then(response => {
+                            if (!response.ok){
+                                return response.text().then(text => {throw new Error(text)})
                             }
+
+                            setModalVisible(false)
+                            getBankData().then( (data: Bank[]) => {
+                                setBanks(data)
+                            })
+                        }).catch( (error: Error) => {
+                            setErrorMessage(error.message)
                         })
                     }}>
                     <Text style={styles.btnText}>SUBMIT</Text>
