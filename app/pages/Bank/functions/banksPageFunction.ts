@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import {API_URL} from "react-native-dotenv"
 
 export type Bank = {
-    _id?: string
+    _id: string
     name: string
     balance: number
 }
@@ -52,31 +52,30 @@ const removeBlank = (obj: {[key: string]: any}): Object => {
     return newObj
 }
 
-export const updateBank = async (inputObject: Object) => { 
-    //const updateDetails: Object = removeBlank(inputDetails)
-    //const token = await AsyncStorage.getItem("token")
-    console.log("submit")
-    console.log(inputObject)
+export const updateBank = async (inputObject: Object, bankId: string) => { 
+    const update: Object = removeBlank(inputObject)
+    const token = await AsyncStorage.getItem("token")
 
-    // const request = {
-    //     method: "PATCH",
-    //     headers: {
-    //         "Authorization": `Bearer ${token}`,
-    //         "Content-Type": "application/json"
-    //     }, 
-    //     body: JSON.stringify(
-    //         updateDetails
-    //     )
-    // }
+    const request = {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }, 
+        body: JSON.stringify({
+            update,
+            bankId: bankId
+        })
+    }
 
-    // return fetch(`http://${API_URL}/finance-manager/banks/update`, request)
-    //     .then(response => {
-    //         if(!response.ok){
-    //             throw new Error(`${response.text()}`)
-    //         } 
+    return fetch(`http://${API_URL}/finance-manager/banks/update`, request)
+        .then(response => {
+            if(!response.ok){
+                throw new Error(`${response.text()}`)
+            } 
 
-    //         return ""
-    //     }).catch( (error: Error) => {
-    //         return error.message
-    //     })
+            return ""
+        }).catch( (error: Error) => {
+            return error.message
+        })
 }

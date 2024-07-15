@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable} from "react-native"
-import { updateBank } from "../pages/Bank/functions/banksPageFunction"
+import { Bank, getBankData, updateBank } from "../pages/Bank/functions/banksPageFunction"
 
 const capitalise = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
@@ -19,9 +19,11 @@ type props = {
     editObject: Object
     modalVisible: boolean
     setModalVisible: Dispatch<SetStateAction<boolean>>
+    bankId: string
+    setBanks: Dispatch<SetStateAction<Bank[]>>
 }
 
-export const EditForm = ({editObject, modalVisible, setModalVisible}: props) => {
+export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, setBanks}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
 
     useEffect(()=>{
@@ -44,7 +46,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible}: props) => 
             <View style={styles.inputContainer}>
             {
                 Object.entries(editObject).map(([key, value], index) => (
-                    key != "_id" && 
+                    (key != "_id" && key != "__v") && 
                     <View key={index} style={styles.fieldContainer}>
                         <Text style={styles.key}>{capitalise(key)}</Text>
                         <TextInput 
@@ -60,7 +62,17 @@ export const EditForm = ({editObject, modalVisible, setModalVisible}: props) => 
             </View>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.btn} onPress={() => {updateBank(inputObject); setModalVisible(false)}}>
+                <TouchableOpacity style={styles.btn} onPress={() => {
+                    updateBank(inputObject, bankId)
+                        .then(msg => {
+                            if (msg == ""){
+                                setModalVisible(false)
+                                getBankData().then( (data: Bank[]) => {
+                                    setBanks(data)
+                                })
+                            }
+                        })
+                    }}>
                     <Text style={styles.btnText}>SUBMIT</Text>
                 </TouchableOpacity>
             </View>
@@ -104,7 +116,8 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     inputContainer: {
-        marginTop: 15
+        marginTop: 15,
+        backgroundColor: "gray "
     },
     submitError: {
         color: "#d12304",
