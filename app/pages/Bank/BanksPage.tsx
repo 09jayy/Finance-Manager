@@ -1,46 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import {useState, useEffect, useContext} from "react"
-import {getBankData, Bank, updateBank, deleteBank} from "./functions/banksPageFunction"
 import {Widget} from "../../components/Widget"
 import {TitleValueWidget} from "../../components/TitleValueWidget"
 import {EditForm} from "../../components/EditForm"
+import {BankAccountSection} from "./components/BankAccountSection"
 
 export const BanksPage = ({navigation}: any) => {
-    const [banks, setBanks] = useState([] as Bank[])
-    const [modalVisible, setModalVisible] = useState(false)
-    const [currentObject, setCurrentObject] = useState({})
-    const [bankId, setBankId] = useState("")
-    const [modalTitle, setModalTitle] = useState("")
-
-    useEffect(()=> {
-        getBankData()
-            .then( (data: Bank[]) => {
-                setBanks(data)
-            })
-    },[])
-
     return (
         <View>
-            <EditForm 
-                modalVisible={modalVisible} 
-                setModalVisible={setModalVisible} 
-                editObject={currentObject} 
-                selectedId={bankId} 
-                setBanks={setBanks} 
-                title={modalTitle} 
-                submitFunction={updateBank} 
-                showDelete={true}
-                deleteFunction={deleteBank}
-            />
-            <Widget title="Bank Accounts" showAdd={true} addFunction={() => {}}>
-                <View style={styles.bankList}>
-                    {banks.map((bank: Bank) => (
-                        <TouchableOpacity onPress={() => {setCurrentObject(bank); setBankId(bank._id); setModalTitle("Edit Bank Account");setModalVisible(true)}} key={bank._id}>
-                            <TitleValueWidget title={bank.name} value={`£${bank.balance}`} key={bank._id} direction="column" styleProp={bankAccountStyles}/>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </Widget>
+            <BankAccountSection/>
         </View>
     )
 }

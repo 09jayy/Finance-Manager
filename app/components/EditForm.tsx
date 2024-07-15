@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable, TouchableHighlight, Alert} from "react-native"
-import { Bank, getBankData, updateBank } from "../pages/Bank/functions/banksPageFunction"
 import { AntDesign } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 
@@ -22,14 +21,13 @@ type props = {
     modalVisible: boolean
     setModalVisible: Dispatch<SetStateAction<boolean>>
     selectedId: string
-    setBanks: Dispatch<SetStateAction<Bank[]>>
     title: string
-    submitFunction: (inputObject: {[key: string]: any}, selectedId: string) => Promise<Response>
+    submitFunction: (arg0?: any, ...args: any[]) => Promise<Response>
     showDelete: boolean
     deleteFunction?: (selectedId: string) => Promise<Response>
 }
 
-export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, setBanks, title, submitFunction, showDelete, deleteFunction}: props) => {
+export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, title, submitFunction, showDelete, deleteFunction}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -53,9 +51,6 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                         }
 
                         setModalVisible(false)
-                        getBankData().then( (data: Bank[]) => {
-                            setBanks(data)
-                        })
                     }).catch((error: Error) => {
                         setErrorMessage(error.message)
                     })
@@ -118,9 +113,6 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                                         }
 
                                         setModalVisible(false)
-                                        getBankData().then( (data: Bank[]) => {
-                                            setBanks(data)
-                                        })
                                     }).catch( (error: Error) => {
                                         console.error(error.message)
                                         setErrorMessage(error.message)
