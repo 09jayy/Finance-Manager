@@ -10,6 +10,7 @@ export const BanksPage = ({navigation}: any) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [currentObject, setCurrentObject] = useState({})
     const [bankId, setBankId] = useState("")
+    const [modalTitle, setModalTitle] = useState("")
 
     useEffect(()=> {
         getBankData()
@@ -20,11 +21,11 @@ export const BanksPage = ({navigation}: any) => {
 
     return (
         <View>
-            <EditForm modalVisible={modalVisible} setModalVisible={setModalVisible} editObject={currentObject} bankId={bankId} setBanks={setBanks}/>
+            <EditForm modalVisible={modalVisible} setModalVisible={setModalVisible} editObject={currentObject} bankId={bankId} setBanks={setBanks} title={modalTitle} submitFunction={updateBank}/>
             <Widget title="Bank Accounts" showAdd={true} addFunction={() => {}}>
                 <View style={styles.bankList}>
                     {banks.map((bank: Bank) => (
-                        <TouchableOpacity onPress={() => {setCurrentObject(bank); setBankId(bank._id);setModalVisible(true)}} key={bank._id}>
+                        <TouchableOpacity onPress={() => {setCurrentObject(bank); setBankId(bank._id); setModalTitle("Edit Bank Account");setModalVisible(true)}} key={bank._id}>
                             <TitleValueWidget title={bank.name} value={`£${bank.balance}`} key={bank._id} direction="column" styleProp={bankAccountStyles}/>
                         </TouchableOpacity>
                     ))}
