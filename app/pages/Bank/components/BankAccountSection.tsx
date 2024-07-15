@@ -47,7 +47,7 @@ export const BankAccountSection = () => {
             />
 
             <Widget title="Bank Accounts" showAdd={true} addFunction={() => {setAddModalVisible(true)}}>
-                <View style={styles.bankList}>
+                <View>
                     {banks.map((bank: Bank) => (
                         <TouchableOpacity key={bank._id} onPress={() => {
                             setCurrentObject(bank); 
@@ -63,13 +63,6 @@ export const BankAccountSection = () => {
         </View>
     )
 }
-
-
-const styles = StyleSheet.create({
-    bankList: {
-        marginTop: 20
-    }
-})
 
 const bankAccountStyles = StyleSheet.create({
     title: {

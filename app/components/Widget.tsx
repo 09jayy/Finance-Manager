@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     children: {
-
+        marginTop: 10
     }
 })
