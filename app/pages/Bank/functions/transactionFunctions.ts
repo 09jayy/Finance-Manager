@@ -22,3 +22,15 @@ export const getTransactions = async (): Promise<Response> => {
 
     return fetch(`http://${API_URL}/finance-manager/transactions/get`, request)
 }
+
+export const addTransaction = async (): Promise<Response> => {
+    return fetch("http")
+}
+
+export const deleteTransaction = async () => {
+    return fetch("http")
+}
+
+export const updateTransaction = async () => {
+    return fetch("http")
+}

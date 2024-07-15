@@ -2,10 +2,15 @@ import { TouchableOpacity, View, StyleSheet } from "react-native"
 import { Widget } from "../../../components/Widget"
 import { TitleValueWidget } from "../../../components/TitleValueWidget"
 import { useEffect, useState } from "react"
-import { getTransactions, Transaction } from "../functions/transactionFunctions"
+import { getTransactions, Transaction, addTransaction, deleteTransaction, updateTransaction } from "../functions/transactionFunctions"
+import { EditForm } from "../../../components/EditForm"
 
 export const TransactionsSection = () => {
     const [transactions, setTransactions] = useState([] as Transaction[])
+    const [editModalVisible, setEditModalVisible] = useState(false)
+    const [objectToEdit, setObjectToEdit] = useState({})
+    const [transactionId, setTransactionId] = useState("")
+    const [addModalVisible, setAddModalVisible] = useState(false)
 
     useEffect(()=>{
         getTransactions().then(response => {
@@ -23,10 +28,31 @@ export const TransactionsSection = () => {
 
     return (
         <View>
-            <Widget title="Transactions" showAdd={true}>
+            <EditForm 
+                modalVisible={editModalVisible}
+                setModalVisible={setEditModalVisible} 
+                editObject={objectToEdit} 
+                selectedId={transactionId}
+                title={"Edit Transaction"} 
+                submitFunction={updateTransaction} 
+                showDelete={true}
+                deleteFunction={deleteTransaction}
+            />
+
+            <EditForm
+                modalVisible={addModalVisible}
+                setModalVisible={setAddModalVisible}
+                editObject={{"name": "Name...", "pay": 0, "date": "", "description": "", "bank": ""}}
+                selectedId={""}
+                title={"Add Transaction"}
+                submitFunction={addTransaction}
+                showDelete={false}
+            />
+
+            <Widget title="Transactions" showAdd={true} addFunction={() => {setAddModalVisible(true)}}>
                 <View>
                     {transactions.map((transaction) => (
-                        <TouchableOpacity key={transaction._id} onPress={() => {}}>
+                        <TouchableOpacity key={transaction._id} onPress={() => {setTransactionId(transaction._id); setObjectToEdit(transaction); setEditModalVisible(true)}}>
                             <TitleValueWidget title={transaction.name} value={`£${transaction.pay.toLocaleString()}`} key={transaction._id} direction="row" styleProp={transactionStyles}/>
                         </TouchableOpacity>
                     ))

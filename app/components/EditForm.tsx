@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable, TouchableHighlight, Alert} from "react-native"
 import { AntDesign } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
@@ -25,9 +25,10 @@ type props = {
     submitFunction: (arg0?: any, ...args: any[]) => Promise<Response>
     showDelete: boolean
     deleteFunction?: (selectedId: string) => Promise<Response>
+    children?: ReactNode
 }
 
-export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, title, submitFunction, showDelete, deleteFunction}: props) => {
+export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, title, submitFunction, showDelete, deleteFunction, children}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -100,6 +101,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                                 </View>
                             ))
                         }
+                        {children}
                         </View>
 
                         <View style={styles.controlContainer}>
