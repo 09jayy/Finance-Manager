@@ -83,7 +83,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                             </View>
 
                             <Pressable style={styles.close} onPress={() => setModalVisible(false)}>
-                                <AntDesign name="close" size={20} color="black" />
+                                <AntDesign name="close" size={24} color="black" />
                             </Pressable>
                         </View>
 

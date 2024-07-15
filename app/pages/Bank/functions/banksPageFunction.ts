@@ -70,3 +70,20 @@ export const updateBank = async (inputObject: Object, bankId: string): Promise<R
 
     return fetch(`http://${API_URL}/finance-manager/banks/update`, request)
 }
+
+export const deleteBank = async (bankId: string): Promise<Response> => {
+    const token = await AsyncStorage.getItem("token")
+
+    const request = {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            bankId: bankId
+        })
+    }
+
+    return fetch(`http://${API_URL}/finance-manager/banks/delete`,request)
+}
