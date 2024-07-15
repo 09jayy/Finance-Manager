@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable} from "react-native"
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable, TouchableHighlight, Alert} from "react-native"
 import { Bank, getBankData, updateBank } from "../pages/Bank/functions/banksPageFunction"
 import { AntDesign } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
 const capitalise = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
@@ -20,18 +21,47 @@ type props = {
     editObject: Object
     modalVisible: boolean
     setModalVisible: Dispatch<SetStateAction<boolean>>
-    bankId: string
+    selectedId: string
     setBanks: Dispatch<SetStateAction<Bank[]>>
     title: string
-    submitFunction: (inputObject: {[key: string]: any}, bankId: string) => Promise<Response>
+    submitFunction: (inputObject: {[key: string]: any}, selectedId: string) => Promise<Response>
+    showDelete: boolean
+    deleteFunction?: (selectedId: string) => Promise<Response>
 }
 
-export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, setBanks, title, submitFunction}: props) => {
+export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, setBanks, title, submitFunction, showDelete, deleteFunction}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
     const [errorMessage, setErrorMessage] = useState("")
 
     const updateDetail = (key: string, value: string) => {
         setInputObject(prev => ({...prev, [key]: value}))
+    }
+
+    const deleteAlert = () => {
+        Alert.alert("Delete", "Are you sure you want to delete this?",[
+            {
+                text: "Cancel",
+                onPress: () => {},
+                style: "cancel"
+            },
+            {
+                text: "Confirm",
+                onPress: () => {deleteFunction && deleteFunction(selectedId)
+                    .then(response => {
+                        if (!response.ok){
+                            return response.text().then(text => {throw new Error(text)})
+                        }
+
+                        setModalVisible(false)
+                        getBankData().then( (data: Bank[]) => {
+                            setBanks(data)
+                        })
+                    }).catch((error: Error) => {
+                        setErrorMessage(error.message)
+                    })
+                }
+            }
+        ])
     }
 
     return (
@@ -53,7 +83,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, set
                             </View>
 
                             <Pressable style={styles.close} onPress={() => setModalVisible(false)}>
-                                <AntDesign name="close" size={24} color="black" />
+                                <AntDesign name="close" size={20} color="black" />
                             </Pressable>
                         </View>
 
@@ -81,7 +111,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, set
                             <Text style={styles.errorMessage}>{errorMessage}</Text>
 
                             <TouchableOpacity style={styles.submitBtn}onPress={() => {
-                                submitFunction(inputObject, bankId)
+                                submitFunction(inputObject, selectedId)
                                     .then(response => {
                                         if (!response.ok){
                                             return response.text().then(text => {throw new Error(text)})
@@ -92,12 +122,19 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, bankId, set
                                             setBanks(data)
                                         })
                                     }).catch( (error: Error) => {
+                                        console.error(error.message)
                                         setErrorMessage(error.message)
                                     })
                                 }}>
                                 <Text style={styles.submitText}>SUBMIT</Text>
                             </TouchableOpacity>
                         </View>
+
+                        { showDelete && 
+                            <Pressable style={styles.deleteBtn} onPress={()=>{deleteAlert()}}>
+                                <Feather name="trash-2" size={20} color="black" />
+                            </Pressable>
+                        }
                     </View>
                 </View>
             </Modal>
@@ -126,17 +163,17 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
     },
     header: {
-        position: "relative",
-        flexDirection: "row"
+        flexDirection: "row",
+        marginBottom: 10
     },
     titleContainer: {
-        flex: 1
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
     },
     close: {
+        marginLeft: "auto"
     },
     label: {
         fontSize: 18,
@@ -155,7 +192,7 @@ const styles = StyleSheet.create({
     errorMessage:{
         color: "#d12304",
         textAlign: "center",
-        padding: 10
+        padding: 5
     },
     submitBtn: {
         backgroundColor: "#1776e3",
@@ -168,5 +205,9 @@ const styles = StyleSheet.create({
     },
     submitText: {
         color: "white"
+    },
+    deleteBtn: {
+        marginLeft: "auto",
+        paddingTop: 20
     }
 })

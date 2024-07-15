@@ -21,7 +21,7 @@ export const BanksPage = ({navigation}: any) => {
 
     return (
         <View>
-            <EditForm modalVisible={modalVisible} setModalVisible={setModalVisible} editObject={currentObject} bankId={bankId} setBanks={setBanks} title={modalTitle} submitFunction={updateBank}/>
+            <EditForm modalVisible={modalVisible} setModalVisible={setModalVisible} editObject={currentObject} selectedId={bankId} setBanks={setBanks} title={modalTitle} submitFunction={updateBank} showDelete={true}/>
             <Widget title="Bank Accounts" showAdd={true} addFunction={() => {}}>
                 <View style={styles.bankList}>
                     {banks.map((bank: Bank) => (
