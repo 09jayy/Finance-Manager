@@ -11,7 +11,7 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
 
         const newTransaction = await Transaction.create({
             date: transactionData.date,
-            transType: transactionData.name,
+            name: transactionData.name,
             des: transactionData.des, 
             pay: transactionData.pay
         })
