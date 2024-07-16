@@ -87,7 +87,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                         <View>
                         {
                             Object.entries(editObject).map(([key, value], index) => (
-                                (key != "_id" && key != "__v") && 
+                                (key != "_id" && key != "__v" && key!="date" && key!="bank") && 
                                 <View key={index}>
                                     <Text style={styles.label}>{capitalise(key)}</Text>
                                     <TextInput 

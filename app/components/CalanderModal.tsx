@@ -1,16 +1,16 @@
 import {Modal, View, StyleSheet} from "react-native"
 import DateTimePicker from "react-native-ui-datepicker"
 import dayjs from "dayjs"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 type CalandarModalProps = {
     modalVisible: boolean
     setModalVisible: Dispatch<SetStateAction<boolean>>
+    date: dayjs.Dayjs
+    setDate: Dispatch<SetStateAction<dayjs.Dayjs>>
 }
 
-const CalandarModal = ({modalVisible, setModalVisible}: CalandarModalProps) => {
-    const [date, setDate] = useState(dayjs())
-
+export const CalandarModal = ({modalVisible, setModalVisible, date, setDate}: CalandarModalProps) => {
     return (
         <View style={styles.parent}>
             <Modal

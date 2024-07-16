@@ -1,9 +1,11 @@
-import { TouchableOpacity, View, StyleSheet } from "react-native"
+import { TouchableOpacity, View, StyleSheet, Pressable, Text } from "react-native"
 import { Widget } from "../../../components/Widget"
 import { TitleValueWidget } from "../../../components/TitleValueWidget"
 import { useEffect, useState } from "react"
 import { getTransactions, Transaction, addTransaction, deleteTransaction, updateTransaction } from "../functions/transactionFunctions"
 import { EditForm } from "../../../components/EditForm"
+import {CalandarModal} from "../../../components/CalanderModal"
+import dayjs from "dayjs"
 
 export const TransactionsSection = () => {
     const [transactions, setTransactions] = useState([] as Transaction[])
@@ -11,6 +13,9 @@ export const TransactionsSection = () => {
     const [objectToEdit, setObjectToEdit] = useState({})
     const [transactionId, setTransactionId] = useState("")
     const [addModalVisible, setAddModalVisible] = useState(false)
+
+    const [calandarVisible,setCalandarVisible] = useState(false)
+    const [date, setDate] = useState(dayjs())
 
     useEffect(()=>{
         getTransactions().then(response => {
@@ -47,7 +52,12 @@ export const TransactionsSection = () => {
                 title={"Add Transaction"}
                 submitFunction={addTransaction}
                 showDelete={false}
-            />
+            >
+                <Pressable onPress={() => {setCalandarVisible(true)}}>
+                    <Text>{date.toString()}</Text>
+                    <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
+                </Pressable>
+            </EditForm>
 
             <Widget title="Transactions" showAdd={true} addFunction={() => {setAddModalVisible(true)}}>
                 <View>
