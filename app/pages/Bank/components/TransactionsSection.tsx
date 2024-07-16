@@ -42,7 +42,7 @@ export const TransactionsSection = () => {
             <EditForm
                 modalVisible={addModalVisible}
                 setModalVisible={setAddModalVisible}
-                editObject={{"name": "Name...", "pay": 0, "date": "", "description": "", "bank": ""}}
+                editObject={{"name": "Name...", "pay": 0, "date": "", "description": ""}}
                 selectedId={""}
                 title={"Add Transaction"}
                 submitFunction={addTransaction}
