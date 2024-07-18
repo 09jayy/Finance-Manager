@@ -1,5 +1,5 @@
-import {Modal, View, StyleSheet} from "react-native"
-import DateTimePicker from "react-native-ui-datepicker"
+import {Modal, View, StyleSheet, Pressable, Text, TouchableOpacity} from "react-native"
+import DateTimePicker, { DateType } from "react-native-ui-datepicker"
 import dayjs from "dayjs"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
@@ -23,7 +23,11 @@ export const CalandarModal = ({modalVisible, setModalVisible, date, setDate}: Ca
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
-                        <DateTimePicker mode="single" date={date} onChange={(params) => setDate(dayjs(params.date))}/>
+                        <DateTimePicker mode="single" date={date.toDate()} onChange={(params) => {setDate(dayjs(params.date).add(1, "hour"))}}/>
+
+                        <TouchableOpacity onPress={()=>{setModalVisible(false)}} style={styles.confirmBtn}>
+                            <Text style={styles.confirmText}>CONFIRM</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
@@ -55,4 +59,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5FCFF',
     },
+    confirmBtn: {
+        marginLeft: "auto"
+    },
+    confirmText: {
+        color: "#1776e3",
+        fontWeight: "500"
+    }
 })

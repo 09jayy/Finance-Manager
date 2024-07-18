@@ -6,6 +6,7 @@ import { getTransactions, Transaction, addTransaction, deleteTransaction, update
 import { EditForm } from "../../../components/EditForm"
 import {CalandarModal} from "../../../components/CalanderModal"
 import dayjs from "dayjs"
+import {styles} from "../../../styles/EditFormStyles"
 
 export const TransactionsSection = () => {
     const [transactions, setTransactions] = useState([] as Transaction[])
@@ -54,7 +55,9 @@ export const TransactionsSection = () => {
                 showDelete={false}
             >
                 <Pressable onPress={() => {setCalandarVisible(true)}}>
-                    <Text>{date.toString()}</Text>
+                    <Text style={styles.label}>Date</Text>
+                    <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
+                    <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
                     <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
                 </Pressable>
             </EditForm>
