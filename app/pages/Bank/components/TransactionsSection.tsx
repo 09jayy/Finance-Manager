@@ -1,18 +1,24 @@
 import { TouchableOpacity, View, StyleSheet, Pressable, Text } from "react-native"
 import { Widget } from "../../../components/Widget"
 import { TitleValueWidget } from "../../../components/TitleValueWidget"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { getTransactions, Transaction, addTransaction, deleteTransaction, updateTransaction } from "../functions/transactionFunctions"
 import { EditForm } from "../../../components/EditForm"
 import {CalandarModal} from "../../../components/CalanderModal"
 import dayjs from "dayjs"
 import {styles} from "../../../styles/EditFormStyles"
+import { Bank, getBankData } from "../functions/banksPageFunction"
 
-export const TransactionsSection = () => {
+type TransactionSectionProps = {
+    banks: Bank[] 
+    setBanks: Dispatch<SetStateAction<Bank[]>>
+}
+
+export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) => {
     const [transactions, setTransactions] = useState([] as Transaction[])
     const [editModalVisible, setEditModalVisible] = useState(false)
     const [objectToEdit, setObjectToEdit] = useState({})
-    const [transactionId, setTransactionId] = useState("")
+    const [transactionIdToEdit, setTransactionIdToEdit] = useState("")
     const [addModalVisible, setAddModalVisible] = useState(false)
 
     const [calandarVisible,setCalandarVisible] = useState(false)
@@ -28,6 +34,10 @@ export const TransactionsSection = () => {
                 return response.json()
             }).then(body => {
                 setTransactions(body)
+                getBankData()
+                    .then( (data: Bank[]) => {
+                        setBanks(data)
+                    })
             }).catch( (error: Error) => {
                 console.error(error.message)
             })
@@ -40,7 +50,7 @@ export const TransactionsSection = () => {
                 modalVisible={editModalVisible}
                 setModalVisible={setEditModalVisible} 
                 editObject={objectToEdit} 
-                selectedId={transactionId}
+                selectedId={transactionIdToEdit}
                 title={"Edit Transaction"} 
                 submitFunction={updateTransaction} 
                 showDelete={true}
@@ -68,7 +78,7 @@ export const TransactionsSection = () => {
             <Widget title="Transactions" showAdd={true} addFunction={() => {setAddModalVisible(true)}}>
                 <View>
                     {transactions.map((transaction) => (
-                        <TouchableOpacity key={transaction._id} onPress={() => {setTransactionId(transaction._id); setObjectToEdit(transaction); setEditModalVisible(true)}}>
+                        <TouchableOpacity key={transaction._id} onPress={() => {setTransactionIdToEdit(transaction._id); setObjectToEdit(transaction); setEditModalVisible(true)}}>
                             <TitleValueWidget title={transaction.name} value={`£${transaction.pay.toLocaleString()}`} key={transaction._id} direction="row" styleProp={transactionStyles}/>
                         </TouchableOpacity>
                     ))
