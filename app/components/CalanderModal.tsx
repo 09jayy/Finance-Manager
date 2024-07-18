@@ -2,6 +2,7 @@ import {Modal, View, StyleSheet, Pressable, Text, TouchableOpacity} from "react-
 import DateTimePicker, { DateType } from "react-native-ui-datepicker"
 import dayjs from "dayjs"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { AntDesign } from "@expo/vector-icons"
 
 type CalandarModalProps = {
     modalVisible: boolean
@@ -23,6 +24,10 @@ export const CalandarModal = ({modalVisible, setModalVisible, date, setDate}: Ca
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
+                            <Pressable onPress={() => setModalVisible(false)}>
+                                <AntDesign name="close" size={24} color="black"/>
+                            </Pressable>
+
                         <DateTimePicker mode="single" date={date.toDate()} onChange={(params) => {setDate(dayjs(params.date).add(1, "hour"))}}/>
 
                         <TouchableOpacity onPress={()=>{setModalVisible(false)}} style={styles.confirmBtn}>
