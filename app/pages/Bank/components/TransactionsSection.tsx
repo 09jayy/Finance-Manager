@@ -19,18 +19,20 @@ export const TransactionsSection = () => {
     const [date, setDate] = useState(dayjs())
 
     useEffect(()=>{
-        getTransactions().then(response => {
-            if (!response.ok){
-                return response.text().then(text => {throw new Error(text)})
-            }
+        if (addModalVisible == false || editModalVisible == false){
+            getTransactions().then(response => {
+                if (!response.ok){
+                    return response.text().then(text => {throw new Error(text)})
+                }
 
-            return response.json()
-        }).then(body => {
-            setTransactions(body)
-        }).catch( (error: Error) => {
-            console.error(error.message)
-        })
-    },[])
+                return response.json()
+            }).then(body => {
+                setTransactions(body)
+            }).catch( (error: Error) => {
+                console.error(error.message)
+            })
+        }
+    },[addModalVisible, editModalVisible])
 
     return (
         <View>
@@ -48,11 +50,12 @@ export const TransactionsSection = () => {
             <EditForm
                 modalVisible={addModalVisible}
                 setModalVisible={setAddModalVisible}
-                editObject={{"name": "Name...", "pay": 0, "date": "", "description": ""}}
+                editObject={{"name": "Name...", "pay": 0, "date": date, "description": ""}}
                 selectedId={""}
                 title={"Add Transaction"}
                 submitFunction={addTransaction}
                 showDelete={false}
+                date={date}
             >
                 <Pressable onPress={() => {setCalandarVisible(true)}}>
                     <Text style={styles.label}>Date</Text>

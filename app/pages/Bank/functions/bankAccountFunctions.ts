@@ -18,9 +18,10 @@ const removeBlank = (obj: {[key: string]: any}): Object => {
     return newObj
 }
 
-export const updateBank = async (inputObject: Object, bankId: string): Promise<Response> => { 
+export const updateBank = async (inputObject: Object, params: {selectedId: string}): Promise<Response> => { 
     const update: Object = removeBlank(inputObject)
     const token = await AsyncStorage.getItem("token")
+    const bankId = params.selectedId
 
     const request = {
         method: "PATCH",

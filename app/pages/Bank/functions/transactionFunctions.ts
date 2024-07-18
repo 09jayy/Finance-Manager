@@ -23,8 +23,23 @@ export const getTransactions = async (): Promise<Response> => {
     return fetch(`http://${API_URL}/finance-manager/transactions/get`, request)
 }
 
-export const addTransaction = async (): Promise<Response> => {
-    return fetch("http")
+export const addTransaction = async (transaction: Object): Promise<Response> => {
+    console.log(transaction)
+
+    const token = await AsyncStorage.getItem("token")
+
+    const request = {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            transaction: transaction
+        })
+    }
+
+    return fetch(`http://${API_URL}/finance-manager/transactions/add`,request)
 }
 
 export const deleteTransaction = async () => {

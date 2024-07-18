@@ -3,6 +3,7 @@ import {View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Pressable, T
 import { AntDesign } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import {styles} from "../styles/EditFormStyles"
+import dayjs from "dayjs"
 
 const capitalise = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
@@ -12,7 +13,11 @@ const createObjectEmptyValues = (obj: {[key: string]: any}) => {
     const newObj: { [key: string]: any } = {}
 
     Object.keys(obj).forEach(key => {
-        newObj[key] = ""
+        if (key != "date"){
+            newObj[key] = ""
+        } else {
+            newObj[key] = obj[key]
+        } 
     })
     return newObj
 }
@@ -27,15 +32,20 @@ type props = {
     showDelete: boolean
     deleteFunction?: (selectedId: string) => Promise<Response>
     children?: ReactNode
+    date?: dayjs.Dayjs
 }
 
-export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, title, submitFunction, showDelete, deleteFunction, children}: props) => {
-    const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<object>>] = useState({})
+export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, title, submitFunction, showDelete, deleteFunction, children, date}: props) => {
+    const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<Object>>] = useState({})
     const [errorMessage, setErrorMessage] = useState("")
 
     const updateDetail = (key: string, value: string) => {
         setInputObject(prev => ({...prev, [key]: value}))
     }
+
+    useEffect(()=>{
+        setInputObject(prev => ({...prev, date: date}))
+    },[date])
 
     const deleteAlert = () => {
         Alert.alert("Delete", "Are you sure you want to delete this?",[
@@ -109,7 +119,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                             <Text style={styles.errorMessage}>{errorMessage}</Text>
 
                             <TouchableOpacity style={styles.submitBtn}onPress={() => {
-                                submitFunction(inputObject, selectedId)
+                                submitFunction(inputObject, {selectedId: selectedId})
                                     .then(response => {
                                         if (!response.ok){
                                             return response.text().then(text => {throw new Error(text)})
