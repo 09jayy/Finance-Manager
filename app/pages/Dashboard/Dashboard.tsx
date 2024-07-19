@@ -5,11 +5,12 @@ import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
 import { getBankData } from "../Bank/functions/banksPageFunction"
 import { getTransactions } from "../Bank/functions/transactionFunctions"
-import { ExpensesAndIncome, getSpending } from "./functions/functions"
+import { ExpensesAndIncome, getOverallBalance, getSpending } from "./functions/functions"
 
 export const Dashboard = () => {
     const {banks, transactions, setBanks, setTransactions} = useContext(homeContext)
     let expensesAndIncome: ExpensesAndIncome 
+    let overallBalance: number
 
     useFocusEffect(useCallback(()=>{
         getBankData()
@@ -36,6 +37,10 @@ export const Dashboard = () => {
         expensesAndIncome = getSpending(transactions)
 
         console.log(expensesAndIncome)
+
+        overallBalance = getOverallBalance(banks)
+
+        console.log(overallBalance)
     },[]))
 
     return (

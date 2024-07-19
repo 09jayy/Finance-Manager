@@ -1,4 +1,4 @@
-import { Transaction } from "../../../types/types";
+import { Bank, Transaction } from "../../../types/types";
 
 export type ExpensesAndIncome = {
     expenses: number,
@@ -21,4 +21,12 @@ export const getSpending = (transactions: Transaction[]): ExpensesAndIncome => {
         expenses: expenses,
         income: income
     }
+}
+
+export const getOverallBalance = (banks: Bank[]): number => {
+    let sum = 0
+    for(const bank of banks){
+        sum += bank.balance
+    }
+    return sum
 }
