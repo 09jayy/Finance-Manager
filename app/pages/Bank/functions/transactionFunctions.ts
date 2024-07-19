@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import dayjs from "dayjs"
 import { API_URL } from "react-native-dotenv"
 
 export type Transaction =  {
     _id: string
-    data: Date
+    date: dayjs.Dayjs
     name: string 
     description: string
     pay: number

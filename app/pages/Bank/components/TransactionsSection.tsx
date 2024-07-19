@@ -19,7 +19,7 @@ type TransactionSectionProps = {
 export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) => {
     const [transactions, setTransactions] = useState([] as Transaction[])
     const [editModalVisible, setEditModalVisible] = useState(false)
-    const [objectToEdit, setObjectToEdit] = useState({})
+    const [objectToEdit, setObjectToEdit] = useState({} as Transaction)
     const [transactionIdToEdit, setTransactionIdToEdit] = useState("")
     const [addModalVisible, setAddModalVisible] = useState(false)
 
@@ -63,7 +63,15 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
                 submitFunction={updateTransaction} 
                 showDelete={true}
                 deleteFunction={deleteTransaction}
-            />
+            >
+                {/* DATE CALANDAR SELECT */}
+                <Pressable onPress={() => {setDate(objectToEdit.date); setCalandarVisible(true)}}>
+                    <Text style={styles.label}>Date</Text>
+                    <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
+                    <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
+                    <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
+                </Pressable>
+            </EditForm>
 
             <EditForm
                 modalVisible={addModalVisible}
@@ -89,7 +97,7 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
                 <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
             </EditForm>
 
-            <Widget title="Transactions" showAdd={true} addFunction={() => {setAddModalVisible(true)}}>
+            <Widget title="Transactions" showAdd={true} addFunction={() => {setDate(dayjs()); setAddModalVisible(true)}}>
                 <View>
                     {transactions.map((transaction) => (
                         <TouchableOpacity key={transaction._id} onPress={() => {setTransactionIdToEdit(transaction._id); setObjectToEdit(transaction); setEditModalVisible(true)}}>
