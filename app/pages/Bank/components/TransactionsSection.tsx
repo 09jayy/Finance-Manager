@@ -28,7 +28,10 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
     // BANK SELECT STATE
     const [bankSelectList, setBankSelectList] = useState<{ title: string; id: string; }[]>([])
-    const [selectedId, setSelectedId] = useState("")
+    // This state records the bankId currently selected in the bank dropdown select
+    // Editing a transaction the value will be set to the bankId within that transaction
+    // Opening a new transaction its value will be set to an empty string so that no bank is chosen by default
+    const [bankIdOfOpenTransaction, setBankIdOfOpenTransaction] = useState("") 
 
     useEffect(()=>{
         if (addModalVisible == false || editModalVisible == false){
@@ -54,6 +57,7 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
     return (
         <View>
+            {/* EDIT TRANSACTION MODAL */}
             <EditForm 
                 modalVisible={editModalVisible}
                 setModalVisible={setEditModalVisible} 
@@ -65,7 +69,7 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
                 deleteFunction={deleteTransaction}
             >
                 {/* DATE CALANDAR SELECT */}
-                <Pressable onPress={() => {setDate(objectToEdit.date); setCalandarVisible(true)}}>
+                <Pressable onPress={() => {setCalandarVisible(true)}}>
                     <Text style={styles.label}>Date</Text>
                     <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
                     <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
@@ -74,15 +78,16 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
                 {/*  BANK ASSOCIATED SELECT */}
                 <Text style={styles.label}>Bank</Text>
-                <AppDropdown data={bankSelectList} setSelectedId={setSelectedId} defaultValue={bankSelectList.find(bank => bank.id == objectToEdit.bank)}/>
+                <AppDropdown data={bankSelectList} setSelectedId={setBankIdOfOpenTransaction} defaultValue={bankSelectList.find(bank => bank.id == objectToEdit.bank)}/>
                 <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
             </EditForm>
 
+            {/* ADD TRANSACTION MODAL */}
             <EditForm
                 modalVisible={addModalVisible}
                 setModalVisible={setAddModalVisible}
                 editObject={{"name": "Name...", "pay": 0, "date": date, "description": "Description...", "_id": ""}}
-                selectedId={selectedId}
+                selectedId={bankIdOfOpenTransaction}
                 title={"Add Transaction"}
                 submitFunction={addTransaction}
                 showDelete={false}
@@ -98,14 +103,14 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
                 {/*  BANK ASSOCIATED SELECT */}
                 <Text style={styles.label}>Bank</Text>
-                <AppDropdown data={bankSelectList} setSelectedId={setSelectedId}/>
+                <AppDropdown data={bankSelectList} setSelectedId={setBankIdOfOpenTransaction} defaultValue={bankIdOfOpenTransaction}/>
                 <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
             </EditForm>
 
-            <Widget title="Transactions" showAdd={true} addFunction={() => {setDate(dayjs()); setAddModalVisible(true)}}>
+            <Widget title="Transactions" showAdd={true} addFunction={() => {setDate(dayjs()); setBankIdOfOpenTransaction(""); setAddModalVisible(true)}}>
                 <View>
                     {transactions.map((transaction) => (
-                        <TouchableOpacity key={transaction._id} onPress={() => {setTransactionIdToEdit(transaction._id); setObjectToEdit(transaction); setEditModalVisible(true)}}>
+                        <TouchableOpacity key={transaction._id} onPress={() => {setTransactionIdToEdit(transaction._id); setObjectToEdit(transaction); setDate(dayjs(transaction.date)); setEditModalVisible(true)}}>
                             <TitleValueWidget title={transaction.name} value={`£${transaction.pay.toLocaleString()}`} key={transaction._id} direction="row" styleProp={transactionStyles}/>
                         </TouchableOpacity>
                     ))
