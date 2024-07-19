@@ -1,5 +1,5 @@
 import {createDrawerNavigator, DrawerContent} from "@react-navigation/drawer"
-import {Dashboard} from "../Dashboard/Dashboard"
+import {DashboardRoot} from "../Dashboard/DashboardRoot"
 import {BanksRoot} from "../Bank/BanksRoot"
 import {SettingsRoot} from "../Settings/SettingsRoot"
 import { MaterialIcons } from '@expo/vector-icons'
@@ -41,7 +41,7 @@ export const Home = () => {
             } 
             drawerContent={(props) => <CustomDrawer {...props}/>}
             >
-                <Drawer.Screen name="Dashboard" component={Dashboard} options={{headerShown: true}}/>
+                <Drawer.Screen name="Dashboard" component={DashboardRoot} options={{title: "DashboardRoot"}}/>
                 <Drawer.Screen name="BanksRoot" component={BanksRoot} options={{title: "Banks"}}/>
                 <Drawer.Screen name="SettingsRoot" component={SettingsRoot} options={{title: "Settings"}}/>
             </Drawer.Navigator>    
