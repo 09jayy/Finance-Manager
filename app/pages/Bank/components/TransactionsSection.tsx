@@ -71,6 +71,11 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
                     <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
                     <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
                 </Pressable>
+
+                {/*  BANK ASSOCIATED SELECT */}
+                <Text style={styles.label}>Bank</Text>
+                <AppDropdown data={bankSelectList} setSelectedId={setSelectedId} defaultValue={bankSelectList.find(bank => bank.id == objectToEdit.bank)}/>
+                <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
             </EditForm>
 
             <EditForm

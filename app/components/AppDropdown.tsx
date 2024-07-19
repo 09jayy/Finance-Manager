@@ -5,9 +5,10 @@ import SelectDropdown from "react-native-select-dropdown"
 type AppDropdownProps = {
     data: Object[]
     setSelectedId: Dispatch<SetStateAction<string>>
+    defaultValue?: Object
 }
 
-export const AppDropdown = ({data, setSelectedId}: AppDropdownProps) => {
+export const AppDropdown = ({data, setSelectedId, defaultValue}: AppDropdownProps) => {
     return (
         <SelectDropdown
                     data={data}
@@ -33,6 +34,7 @@ export const AppDropdown = ({data, setSelectedId}: AppDropdownProps) => {
                     }}
                     showsVerticalScrollIndicator={false}
                     dropdownStyle={dropDownStyles.dropdownMenuStyle}
+                    defaultValue={defaultValue}
                 />
     )
 }
