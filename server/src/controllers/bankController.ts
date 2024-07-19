@@ -43,10 +43,6 @@ export const updateBank = async (req: Request<{},{},{userId: String, bankId: Str
         const {bankId, update} = req.body
         const userId: String = res.locals.userId
 
-        //res.status(500).send("bad call")
-        //return 
-
-
         // Create object to set spesific fields
         const setObject = {} 
         for (const key in update){

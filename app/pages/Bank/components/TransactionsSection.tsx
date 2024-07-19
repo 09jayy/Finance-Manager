@@ -44,7 +44,7 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
                 return response.json()
             }).then(body => {
-                setTransactions(body)
+                setTransactions(body.reverse())
                 getBankData()
                     .then( (data: Bank[]) => {
                         setBanks(data)
