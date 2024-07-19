@@ -2,12 +2,14 @@ import { TouchableOpacity, View, StyleSheet, Pressable, Text } from "react-nativ
 import { Widget } from "../../../components/Widget"
 import { TitleValueWidget } from "../../../components/TitleValueWidget"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import SelectDropdown from "react-native-select-dropdown"
 import { getTransactions, Transaction, addTransaction, deleteTransaction, updateTransaction } from "../functions/transactionFunctions"
 import { EditForm } from "../../../components/EditForm"
 import {CalandarModal} from "../../../components/CalanderModal"
 import dayjs from "dayjs"
 import {styles} from "../../../styles/EditFormStyles"
 import { Bank, getBankData } from "../functions/banksPageFunction"
+import { AppDropdown } from "../../../components/AppDropDown"
 
 type TransactionSectionProps = {
     banks: Bank[] 
@@ -24,8 +26,13 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
     const [calandarVisible,setCalandarVisible] = useState(false)
     const [date, setDate] = useState(dayjs())
 
+    // BANK SELECT STATE
+    const [bankSelectList, setBankSelectList] = useState<{ title: string; id: string; }[]>([])
+
     useEffect(()=>{
         if (addModalVisible == false || editModalVisible == false){
+            setBankSelectList(banks.map(bank => ({title: bank.name, id: bank._id})))
+
             getTransactions().then(response => {
                 if (!response.ok){
                     return response.text().then(text => {throw new Error(text)})
@@ -67,12 +74,18 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
                 showDelete={false}
                 date={date}
             >
+                {/*  DATE CALANDAR SELECT */}
                 <Pressable onPress={() => {setCalandarVisible(true)}}>
                     <Text style={styles.label}>Date</Text>
                     <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
                     <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
                     <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
                 </Pressable>
+
+                {/*  BANK ASSOCIATED SELECT */}
+                <Text style={styles.label}>Bank</Text>
+                <AppDropdown data={bankSelectList}/>
+                <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
             </EditForm>
 
             <Widget title="Transactions" showAdd={true} addFunction={() => {setAddModalVisible(true)}}>
