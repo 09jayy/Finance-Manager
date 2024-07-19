@@ -1,16 +1,19 @@
+import { Dispatch, SetStateAction } from "react"
 import {StyleSheet, View, Text} from "react-native"
 import SelectDropdown from "react-native-select-dropdown"
 
 type AppDropdownProps = {
     data: Object[]
+    setSelectedId: Dispatch<SetStateAction<string>>
 }
 
-export const AppDropdown = ({data}: AppDropdownProps) => {
+export const AppDropdown = ({data, setSelectedId}: AppDropdownProps) => {
     return (
         <SelectDropdown
                     data={data}
                     onSelect={(selectedItem, index) => {
                         console.log(selectedItem, index)
+                        setSelectedId(selectedItem.id)
                     }}
                     renderButton={(selectedItem, isOpened) => {
                         return (

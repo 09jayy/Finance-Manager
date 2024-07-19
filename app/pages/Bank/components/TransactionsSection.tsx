@@ -9,7 +9,7 @@ import {CalandarModal} from "../../../components/CalanderModal"
 import dayjs from "dayjs"
 import {styles} from "../../../styles/EditFormStyles"
 import { Bank, getBankData } from "../functions/banksPageFunction"
-import { AppDropdown } from "../../../components/AppDropDown"
+import { AppDropdown } from "../../../components/AppDropdown"
 
 type TransactionSectionProps = {
     banks: Bank[] 
@@ -28,6 +28,7 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
     // BANK SELECT STATE
     const [bankSelectList, setBankSelectList] = useState<{ title: string; id: string; }[]>([])
+    const [selectedId, setSelectedId] = useState("")
 
     useEffect(()=>{
         if (addModalVisible == false || editModalVisible == false){
@@ -67,8 +68,8 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
             <EditForm
                 modalVisible={addModalVisible}
                 setModalVisible={setAddModalVisible}
-                editObject={{"name": "Name...", "pay": 0, "date": date, "description": ""}}
-                selectedId={""}
+                editObject={{"name": "Name...", "pay": 0, "date": date, "description": "Description...", "_id": ""}}
+                selectedId={selectedId}
                 title={"Add Transaction"}
                 submitFunction={addTransaction}
                 showDelete={false}
@@ -84,7 +85,7 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
                 {/*  BANK ASSOCIATED SELECT */}
                 <Text style={styles.label}>Bank</Text>
-                <AppDropdown data={bankSelectList}/>
+                <AppDropdown data={bankSelectList} setSelectedId={setSelectedId}/>
                 <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
             </EditForm>
 

@@ -23,9 +23,10 @@ export const getTransactions = async (): Promise<Response> => {
     return fetch(`http://${API_URL}/finance-manager/transactions/get`, request)
 }
 
-export const addTransaction = async (transaction: Object): Promise<Response> => {
+export const addTransaction = async (transaction: Object, params: {selectedId: string}): Promise<Response> => {
     console.log(transaction)
 
+    const bankId = params.selectedId 
     const token = await AsyncStorage.getItem("token")
 
     const request = {
@@ -35,7 +36,7 @@ export const addTransaction = async (transaction: Object): Promise<Response> => 
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            transaction: transaction
+            transaction: {...transaction,bank: bankId}
         })
     }
 
