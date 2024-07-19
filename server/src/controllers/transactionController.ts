@@ -42,8 +42,10 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
     }
 }
 
-export const deleteTransaction = async (req: Request<{},{}, {userId: String, transactionId: mongoose.Types.ObjectId}>, res: Response): Promise<void> => {
+export const deleteTransaction = async (req: Request<{},{}, {transactionId: mongoose.Types.ObjectId}>, res: Response): Promise<void> => {
     try {
+        console.log("Delete transaction")
+
         const {transactionId} = req.body
         const userId: String = res.locals.userId
 

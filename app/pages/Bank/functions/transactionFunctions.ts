@@ -45,8 +45,21 @@ export const addTransaction = async (transaction: Object, params: {bankId: strin
     return fetch(`http://${API_URL}/finance-manager/transactions/add`,request)
 }
 
-export const deleteTransaction = async () => {
-    return fetch("http")
+export const deleteTransaction = async (params: {transactionId: string}) => {
+    const token = await AsyncStorage.getItem("token")
+    
+    const request = {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            transactionId: params.transactionId
+        })
+    }
+    
+    return fetch(`http://${API_URL}/finance-manager/transactions/delete`, request)
 }
 
 export const updateTransaction = async (inputObject: Object, params: {bankId: string, transactionId: string}) => {
