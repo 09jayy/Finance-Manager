@@ -1,21 +1,19 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
 import { View, TouchableOpacity, StyleSheet } from "react-native"
 import { EditForm } from "../../../components/EditForm"
 import { TitleValueWidget } from "../../../components/TitleValueWidget"
 import { Widget } from "../../../components/Widget"
-import { Bank, getBankData } from "../functions/banksPageFunction"
+import { getBankData } from "../functions/banksPageFunction"
 import { updateBank, deleteBank, addBank } from "../functions/bankAccountFunctions"
+import { Bank } from "../../../types/types"
+import { homeContext } from "../../Home/HomeContext"
 
-type BankAccountSectionProps = {
-    banks: Bank[]
-    setBanks: Dispatch<SetStateAction<Bank[]>>
-}
-
-export const BankAccountSection = ({banks, setBanks}: BankAccountSectionProps) => {
+export const BankAccountSection = () => {
     const [editModalVisible, setEditModalVisible] = useState(false)
     const [currentObject, setCurrentObject] = useState({})
     const [bankId, setBankId] = useState("")
     const [addModalVisible, setAddModalVisible] = useState(false)
+    const {banks, setBanks} = useContext(homeContext)
 
     useEffect(()=> {
         if (editModalVisible == false || addModalVisible == false){

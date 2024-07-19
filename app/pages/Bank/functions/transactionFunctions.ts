@@ -3,15 +3,6 @@ import dayjs from "dayjs"
 import { API_URL } from "react-native-dotenv"
 import { removeBlank } from "../../../functions/dataFunctions"
 
-export type Transaction =  {
-    _id: string
-    date: dayjs.Dayjs
-    name: string 
-    description: string
-    pay: number
-    bank: string
-}
-
 export const getTransactions = async (): Promise<Response> => {
     const token = await AsyncStorage.getItem("token")
 

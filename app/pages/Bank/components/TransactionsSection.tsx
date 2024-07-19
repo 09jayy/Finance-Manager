@@ -1,23 +1,20 @@
 import { TouchableOpacity, View, StyleSheet, Pressable, Text } from "react-native"
 import { Widget } from "../../../components/Widget"
 import { TitleValueWidget } from "../../../components/TitleValueWidget"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
 import SelectDropdown from "react-native-select-dropdown"
-import { getTransactions, Transaction, addTransaction, deleteTransaction, updateTransaction } from "../functions/transactionFunctions"
+import { getTransactions, addTransaction, deleteTransaction, updateTransaction } from "../functions/transactionFunctions"
 import { EditForm } from "../../../components/EditForm"
 import {CalandarModal} from "../../../components/CalanderModal"
 import dayjs from "dayjs"
 import {styles} from "../../../styles/EditFormStyles"
-import { Bank, getBankData } from "../functions/banksPageFunction"
+import { getBankData } from "../functions/banksPageFunction"
 import { AppDropdown } from "../../../components/AppDropdown"
+import { Bank, Transaction } from "../../../types/types"
+import { homeContext } from "../../Home/HomeContext"
 
-type TransactionSectionProps = {
-    banks: Bank[] 
-    setBanks: Dispatch<SetStateAction<Bank[]>>
-}
-
-export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) => {
-    const [transactions, setTransactions] = useState([] as Transaction[])
+export const TransactionsSection = () => {
+    const {banks, setBanks, transactions, setTransactions} = useContext(homeContext)
     const [editModalVisible, setEditModalVisible] = useState(false)
     const [objectToEdit, setObjectToEdit] = useState({} as Transaction)
     const [transactionIdToEdit, setTransactionIdToEdit] = useState("")

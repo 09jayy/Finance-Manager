@@ -1,11 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import {API_URL} from "react-native-dotenv"
-
-export type Bank = {
-    _id: string
-    name: string
-    balance: number
-}
+import { Bank } from "../../../types/types"
 
 type Banks = {
     banks: Bank[]
