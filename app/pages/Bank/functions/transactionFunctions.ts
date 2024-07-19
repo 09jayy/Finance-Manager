@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import dayjs from "dayjs"
 import { API_URL } from "react-native-dotenv"
+import { removeBlank } from "../../../functions/dataFunctions"
 
 export type Transaction =  {
     _id: string
@@ -48,9 +49,27 @@ export const deleteTransaction = async () => {
     return fetch("http")
 }
 
-export const updateTransaction = async (inputObject: Object, params: {selectedId: string}) => {
+export const updateTransaction = async (inputObject: Object, params: {bankId: string, transactionId: string}) => {
     console.log(inputObject)
-    console.log(params.selectedId)
+    console.log(params)
+    const token = await AsyncStorage.getItem("token")
+    const transactionUpdate = removeBlank(inputObject)
     
-    return fetch("http")
+    console.log(transactionUpdate)
+
+    const request = {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            transactionId: params.transactionId,
+            update: transactionUpdate
+        })
+    }
+
+    console.log(request)
+
+    return fetch(`http://${API_URL}/finance-manager/transactions/update`, request)
 }
