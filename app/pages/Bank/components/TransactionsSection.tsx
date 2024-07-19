@@ -57,55 +57,57 @@ export const TransactionsSection = ({banks, setBanks}: TransactionSectionProps) 
 
     return (
         <View>
-            {/* EDIT TRANSACTION MODAL */}
-            <EditForm 
-                modalVisible={editModalVisible}
-                setModalVisible={setEditModalVisible} 
-                editObject={objectToEdit} 
-                selectedId={transactionIdToEdit}
-                title={"Edit Transaction"} 
-                submitFunction={updateTransaction} 
-                showDelete={true}
-                deleteFunction={deleteTransaction}
-            >
-                {/* DATE CALANDAR SELECT */}
-                <Pressable onPress={() => {setCalandarVisible(true)}}>
-                    <Text style={styles.label}>Date</Text>
-                    <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
+            <>
+                {/* EDIT TRANSACTION MODAL */}
+                <EditForm 
+                    modalVisible={editModalVisible}
+                    setModalVisible={setEditModalVisible} 
+                    editObject={objectToEdit} 
+                    selectedId={transactionIdToEdit}
+                    title={"Edit Transaction"} 
+                    submitFunction={updateTransaction} 
+                    showDelete={true}
+                    deleteFunction={deleteTransaction}
+                >
+                    {/* DATE CALANDAR SELECT */}
+                    <Pressable onPress={() => {setCalandarVisible(true)}}>
+                        <Text style={styles.label}>Date</Text>
+                        <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
+                        <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
+                        <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
+                    </Pressable>
+
+                    {/*  BANK ASSOCIATED SELECT */}
+                    <Text style={styles.label}>Bank</Text>
+                    <AppDropdown data={bankSelectList} setSelectedId={setBankIdOfOpenTransaction} defaultValue={bankSelectList.find(bank => bank.id == objectToEdit.bank)}/>
                     <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
-                    <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
-                </Pressable>
+                </EditForm>
 
-                {/*  BANK ASSOCIATED SELECT */}
-                <Text style={styles.label}>Bank</Text>
-                <AppDropdown data={bankSelectList} setSelectedId={setBankIdOfOpenTransaction} defaultValue={bankSelectList.find(bank => bank.id == objectToEdit.bank)}/>
-                <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
-            </EditForm>
+                {/* ADD TRANSACTION MODAL */}
+                <EditForm
+                    modalVisible={addModalVisible}
+                    setModalVisible={setAddModalVisible}
+                    editObject={{"name": "Name...", "pay": 0, "date": date, "description": "Description...", "_id": ""}}
+                    selectedId={bankIdOfOpenTransaction}
+                    title={"Add Transaction"}
+                    submitFunction={addTransaction}
+                    showDelete={false}
+                    date={date}
+                >
+                    {/*  DATE CALANDAR SELECT */}
+                    <Pressable onPress={() => {setCalandarVisible(true)}}>
+                        <Text style={styles.label}>Date</Text>
+                        <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
+                        <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
+                        <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
+                    </Pressable>
 
-            {/* ADD TRANSACTION MODAL */}
-            <EditForm
-                modalVisible={addModalVisible}
-                setModalVisible={setAddModalVisible}
-                editObject={{"name": "Name...", "pay": 0, "date": date, "description": "Description...", "_id": ""}}
-                selectedId={bankIdOfOpenTransaction}
-                title={"Add Transaction"}
-                submitFunction={addTransaction}
-                showDelete={false}
-                date={date}
-            >
-                {/*  DATE CALANDAR SELECT */}
-                <Pressable onPress={() => {setCalandarVisible(true)}}>
-                    <Text style={styles.label}>Date</Text>
-                    <Text style={styles.input}>{date.format("ddd DD / MMM / YYYY")}</Text>
+                    {/*  BANK ASSOCIATED SELECT */}
+                    <Text style={styles.label}>Bank</Text>
+                    <AppDropdown data={bankSelectList} setSelectedId={setBankIdOfOpenTransaction} defaultValue={bankIdOfOpenTransaction}/>
                     <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
-                    <CalandarModal modalVisible={calandarVisible} setModalVisible={setCalandarVisible} date={date} setDate={setDate}/>
-                </Pressable>
-
-                {/*  BANK ASSOCIATED SELECT */}
-                <Text style={styles.label}>Bank</Text>
-                <AppDropdown data={bankSelectList} setSelectedId={setBankIdOfOpenTransaction} defaultValue={bankIdOfOpenTransaction}/>
-                <View style={{backgroundColor: "black", width: "100%",height: 2, marginBottom: 10}}></View>
-            </EditForm>
+                </EditForm>
+            </>
 
             <Widget title="Transactions" showAdd={true} addFunction={() => {setDate(dayjs()); setBankIdOfOpenTransaction(""); setAddModalVisible(true)}}>
                 <View>

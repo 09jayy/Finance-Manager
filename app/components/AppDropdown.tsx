@@ -11,38 +11,37 @@ type AppDropdownProps = {
 export const AppDropdown = ({data, setSelectedId, defaultValue}: AppDropdownProps) => {
     return (
         <SelectDropdown
-                    data={data}
-                    onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index)
-                        setSelectedId(selectedItem.id)
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                        return (
-                            <View style={dropDownStyles.dropdownButtonStyle}>
-                                <Text style={dropDownStyles.dropdownButtonTxtStyle}>
-                                    {(selectedItem && selectedItem.title) || 'Select Bank'}
-                                </Text>
-                            </View>
-                        )
-                    }}
-                    renderItem={(item, index, isSelected) => {
-                        return (
-                            <View style={{...dropDownStyles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-                                <Text style={dropDownStyles.dropdownItemTxtStyle}>{item.title}</Text>
-                            </View>
-                        )
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    dropdownStyle={dropDownStyles.dropdownMenuStyle}
-                    defaultValue={defaultValue}
-                />
+            data={data}
+            onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                setSelectedId(selectedItem.id)
+            }}
+            renderButton={(selectedItem, isOpened) => {
+                return (
+                    <View style={dropDownStyles.dropdownButtonStyle}>
+                        <Text style={dropDownStyles.dropdownButtonTxtStyle}>
+                            {(selectedItem && selectedItem.title) || 'Select Bank'}
+                        </Text>
+                    </View>
+                )
+            }}
+            renderItem={(item, index, isSelected) => {
+                return (
+                    <View style={{...dropDownStyles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
+                        <Text style={dropDownStyles.dropdownItemTxtStyle}>{item.title}</Text>
+                    </View>
+                )
+            }}
+            showsVerticalScrollIndicator={true}
+            dropdownStyle={dropDownStyles.dropdownMenuStyle}
+            defaultValue={defaultValue}
+        />
     )
 }
 
 const dropDownStyles = StyleSheet.create({
     dropdownButtonStyle: {
-        height: 50,
-        width: 200, 
+        height: 30,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -56,19 +55,22 @@ const dropDownStyles = StyleSheet.create({
     dropdownMenuStyle: {
         backgroundColor: '#E9ECEF',
         borderRadius: 8,
+        height: 200
     },
     dropdownItemStyle: {
         width: '100%',
         flexDirection: 'row',
-        paddingHorizontal: 15,
+        paddingHorizontal: 12,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 10,
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#B1BDC8',
     },
     dropdownItemTxtStyle: {
         flex: 1,
         fontSize: 18,
-        fontWeight: '500',
         color: '#151E26',
-    }
+        textAlign: 'center',
+    },
 })
