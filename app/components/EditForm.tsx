@@ -26,16 +26,16 @@ type props = {
     editObject: Object
     modalVisible: boolean
     setModalVisible: Dispatch<SetStateAction<boolean>>
-    selectedId: string
+    params: {bankId: string, transactionId: string}
     title: string
     submitFunction: (arg0?: any, ...args: any[]) => Promise<Response>
     showDelete: boolean
-    deleteFunction?: (selectedId: string) => Promise<Response>
+    deleteFunction?: (params: {bankId: string, transactionId: string}) => Promise<Response>
     children?: ReactNode
     date?: dayjs.Dayjs
 }
 
-export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId, title, submitFunction, showDelete, deleteFunction, children, date}: props) => {
+export const EditForm = ({editObject, modalVisible, setModalVisible, params, title, submitFunction, showDelete, deleteFunction, children, date}: props) => {
     const [inputObject, setInputObject]: [{[key: string]: any}, Dispatch<SetStateAction<Object>>] = useState({})
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -56,7 +56,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
             },
             {
                 text: "Confirm",
-                onPress: () => {deleteFunction && deleteFunction(selectedId)
+                onPress: () => {deleteFunction && deleteFunction(params)
                     .then(response => {
                         if (!response.ok){
                             return response.text().then(text => {throw new Error(text)})
@@ -119,7 +119,7 @@ export const EditForm = ({editObject, modalVisible, setModalVisible, selectedId,
                             <Text style={styles.errorMessage}>{errorMessage}</Text>
 
                             <TouchableOpacity style={styles.submitBtn}onPress={() => {
-                                submitFunction(inputObject, {selectedId: selectedId})
+                                submitFunction(inputObject, params)
                                     .then(response => {
                                         if (!response.ok){
                                             return response.text().then(text => {throw new Error(text)})

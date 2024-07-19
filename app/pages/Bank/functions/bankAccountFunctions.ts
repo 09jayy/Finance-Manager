@@ -18,10 +18,10 @@ const removeBlank = (obj: {[key: string]: any}): Object => {
     return newObj
 }
 
-export const updateBank = async (inputObject: Object, params: {selectedId: string}): Promise<Response> => { 
+export const updateBank = async (inputObject: Object, params: {bankId: string}): Promise<Response> => { 
     const update: Object = removeBlank(inputObject)
     const token = await AsyncStorage.getItem("token")
-    const bankId = params.selectedId
+    const bankId = params.bankId
 
     const request = {
         method: "PATCH",
@@ -38,7 +38,7 @@ export const updateBank = async (inputObject: Object, params: {selectedId: strin
     return fetch(`http://${API_URL}/finance-manager/banks/update`, request)
 }
 
-export const deleteBank = async (bankId: string): Promise<Response> => {
+export const deleteBank = async (params: {bankId: string}): Promise<Response> => {
     const token = await AsyncStorage.getItem("token")
 
     const request = {
@@ -48,7 +48,7 @@ export const deleteBank = async (bankId: string): Promise<Response> => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            bankId: bankId
+            bankId: params.bankId
         })
     }
 

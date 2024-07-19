@@ -32,7 +32,7 @@ export const BankAccountSection = ({banks, setBanks}: BankAccountSectionProps) =
                 modalVisible={editModalVisible} 
                 setModalVisible={setEditModalVisible} 
                 editObject={currentObject} 
-                selectedId={bankId}
+                params={{bankId: bankId, transactionId: ""}}
                 title={"Edit Bank Account"} 
                 submitFunction={updateBank} 
                 showDelete={true}
@@ -43,7 +43,7 @@ export const BankAccountSection = ({banks, setBanks}: BankAccountSectionProps) =
                 modalVisible={addModalVisible}
                 setModalVisible={setAddModalVisible}
                 editObject={{"name": "Name...", "balance": 0}}
-                selectedId={""}
+                params={{bankId: "", transactionId: ""}}
                 title={"Add Bank Account"}
                 submitFunction={addBank}
                 showDelete={false}

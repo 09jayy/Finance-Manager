@@ -24,10 +24,10 @@ export const getTransactions = async (): Promise<Response> => {
     return fetch(`http://${API_URL}/finance-manager/transactions/get`, request)
 }
 
-export const addTransaction = async (transaction: Object, params: {selectedId: string}): Promise<Response> => {
+export const addTransaction = async (transaction: Object, params: {bankId: string}): Promise<Response> => {
     console.log(transaction)
 
-    const bankId = params.selectedId 
+    const bankId = params.bankId
     const token = await AsyncStorage.getItem("token")
 
     const request = {
@@ -48,6 +48,9 @@ export const deleteTransaction = async () => {
     return fetch("http")
 }
 
-export const updateTransaction = async () => {
+export const updateTransaction = async (inputObject: Object, params: {selectedId: string}) => {
+    console.log(inputObject)
+    console.log(params.selectedId)
+    
     return fetch("http")
 }
