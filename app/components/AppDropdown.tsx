@@ -39,6 +39,8 @@ export const AppDropdown = ({data, setSelectedId}: AppDropdownProps) => {
 
 const dropDownStyles = StyleSheet.create({
     dropdownButtonStyle: {
+        height: 50,
+        width: 200, 
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -46,7 +48,7 @@ const dropDownStyles = StyleSheet.create({
     },
     dropdownButtonTxtStyle: {
         flex: 1,
-        fontSize: 18,
+        fontSize: 16,
         color: '#151E26',
     },
     dropdownMenuStyle: {

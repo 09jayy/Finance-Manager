@@ -24,7 +24,11 @@ export const addTransaction = async (req: Request<{},{},{id: String, transaction
             return
         }
 
-        user.transactions.push(newTransaction._id as mongoose.ObjectId);
+        user.transactions.push(newTransaction._id as mongoose.ObjectId)
+
+        // update the balance of the relevant bank the transaction is associated with 
+        const bank = user.banks.find(bank => bank._id == transactionData.bank as Object)
+        bank.balance = Number(bank.balance) + Number(transactionData.pay)
 
         await user.save() 
 
