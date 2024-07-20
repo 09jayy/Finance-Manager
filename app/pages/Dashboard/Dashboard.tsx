@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native"
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useState } from "react"
 import { View, Text } from "react-native"
 import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
@@ -9,8 +9,8 @@ import { ExpensesAndIncome, getOverallBalance, getSpending } from "./functions/f
 
 export const Dashboard = () => {
     const {banks, transactions, setBanks, setTransactions} = useContext(homeContext)
-    let expensesAndIncome: ExpensesAndIncome 
-    let overallBalance: number
+    const [expensesAndIncome, setExpensesAndIncome] = useState({} as ExpensesAndIncome) 
+    const [overallBalance, setOverallBalance] = useState(0)
 
     useFocusEffect(useCallback(()=>{
         getBankData()
@@ -34,19 +34,15 @@ export const Dashboard = () => {
             console.error(error.message)
         })
 
-        expensesAndIncome = getSpending(transactions)
+        setExpensesAndIncome(getSpending(transactions))
 
-        console.log(expensesAndIncome)
-
-        overallBalance = getOverallBalance(banks)
-
-        console.log(overallBalance)
+        setOverallBalance(getOverallBalance(banks))
     },[]))
 
     return (
         <View>
             <Text>Dashboard</Text>
-            <Text></Text>
+            <Text>{overallBalance}</Text>
         </View>
     )
 }

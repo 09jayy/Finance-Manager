@@ -23,7 +23,7 @@ export const Home = () => {
                         let iconName: "dashboard" | "settings" | undefined = undefined
 
                         switch (route.name){
-                            case "Dashboard":
+                            case "DashboardRoot":
                                 iconName = "dashboard"
                                 break
                             case "SettingsRoot":
@@ -41,7 +41,7 @@ export const Home = () => {
             } 
             drawerContent={(props) => <CustomDrawer {...props}/>}
             >
-                <Drawer.Screen name="Dashboard" component={DashboardRoot} options={{title: "DashboardRoot"}}/>
+                <Drawer.Screen name="DashboardRoot" component={DashboardRoot} options={{title: "Dashboard"}}/>
                 <Drawer.Screen name="BanksRoot" component={BanksRoot} options={{title: "Banks"}}/>
                 <Drawer.Screen name="SettingsRoot" component={SettingsRoot} options={{title: "Settings"}}/>
             </Drawer.Navigator>    
