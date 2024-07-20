@@ -5,7 +5,7 @@ import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
 import { getBankData } from "../Bank/functions/banksPageFunction"
 import { getTransactions } from "../Bank/functions/transactionFunctions"
-import { ExpensesAndIncome, getOverallBalance, getSpending } from "./functions/functions"
+import { ExpensesAndIncome, getOverallBalance, getSpending, getThisMonthIncomeOvertime } from "./functions/functions"
 import { Widget } from "../../components/Widget"
 import { TitleValueWidget } from "../../components/TitleValueWidget"
 
@@ -13,6 +13,9 @@ export const Dashboard = () => {
     const {banks, transactions, setBanks, setTransactions} = useContext(homeContext)
     const [expensesAndIncome, setExpensesAndIncome] = useState({expenses: 0, income: 0} as ExpensesAndIncome) 
     const [overallBalance, setOverallBalance] = useState(0)
+
+    //This month overtime states
+    const [monthIncomeOvertimeData, setMonthIncomeOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
 
     useFocusEffect(useCallback(()=>{
         getBankData()
@@ -39,6 +42,7 @@ export const Dashboard = () => {
 
     useEffect(()=>{
         setExpensesAndIncome(getSpending(transactions))
+        setMonthIncomeOvertimeData(getThisMonthIncomeOvertime(transactions))
     },[transactions])
 
     useEffect(()=>{

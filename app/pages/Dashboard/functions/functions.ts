@@ -30,3 +30,17 @@ export const getOverallBalance = (banks: Bank[]): number => {
     }
     return sum
 }
+
+export const getThisMonthIncomeOvertime = (transactions: Transaction[]) => {
+    let income = [0,0,0,0,0,0,0,0,0,0,0,0]
+    const now = new Date()
+    for(const transaction of transactions){
+        const date = new Date(transaction.date.toString())
+        if (date.getFullYear() === now.getFullYear()){
+            if (transaction.pay > 0){
+                income[date.getMonth()] += transaction.pay
+            }
+        }
+    }
+    return income
+}
