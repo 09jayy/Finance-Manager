@@ -1,15 +1,17 @@
 import { useFocusEffect } from "@react-navigation/native"
-import { useCallback, useContext, useState } from "react"
-import { View, Text } from "react-native"
+import { useCallback, useContext, useEffect, useState } from "react"
+import { View, Text, StyleSheet, ScrollView } from "react-native"
 import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
 import { getBankData } from "../Bank/functions/banksPageFunction"
 import { getTransactions } from "../Bank/functions/transactionFunctions"
 import { ExpensesAndIncome, getOverallBalance, getSpending } from "./functions/functions"
+import { Widget } from "../../components/Widget"
+import { TitleValueWidget } from "../../components/TitleValueWidget"
 
 export const Dashboard = () => {
     const {banks, transactions, setBanks, setTransactions} = useContext(homeContext)
-    const [expensesAndIncome, setExpensesAndIncome] = useState({} as ExpensesAndIncome) 
+    const [expensesAndIncome, setExpensesAndIncome] = useState({expenses: 0, income: 0} as ExpensesAndIncome) 
     const [overallBalance, setOverallBalance] = useState(0)
 
     useFocusEffect(useCallback(()=>{
@@ -33,16 +35,51 @@ export const Dashboard = () => {
         }).catch( (error: Error) => {
             console.error(error.message)
         })
-
-        setExpensesAndIncome(getSpending(transactions))
-
-        setOverallBalance(getOverallBalance(banks))
     },[]))
 
+    useEffect(()=>{
+        setExpensesAndIncome(getSpending(transactions))
+    },[transactions])
+
+    useEffect(()=>{
+        setOverallBalance(getOverallBalance(banks))
+    },[overallBalance])
+
     return (
-        <View>
-            <Text>Dashboard</Text>
-            <Text>{overallBalance}</Text>
-        </View>
+        <ScrollView>
+            <Widget showAdd={false} title="Overall Balance">
+                <Text style={styles.overallBalanceText}>{`£${overallBalance.toLocaleString()}`}</Text>
+            </Widget>
+
+            <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 25}}>
+                <Widget showAdd={false} title="Income" styles={halfWidget}>
+                    <Text>{`£${expensesAndIncome.income.toLocaleString()}`}</Text>
+                </Widget>
+
+                <Widget showAdd={false} title="Expenses" styles={halfWidget}>
+                    <Text>{`£${expensesAndIncome.expenses.toLocaleString()}`}</Text>
+                </Widget>
+            </View>
+
+        </ScrollView>
     )
 }
+
+const halfWidget = StyleSheet.create({
+    widget: {
+        marginHorizontal: 20,
+        marginVertical: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20, 
+        borderRadius: 10,
+        backgroundColor: "white",
+        width: "50%"
+    }
+})
+
+const styles = StyleSheet.create({
+    overallBalanceText: {
+        fontSize: 20,
+        fontWeight: "500"
+    }
+})

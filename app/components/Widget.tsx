@@ -7,31 +7,34 @@ type ParentWidgetProps = {
     showAdd: boolean
     addFunction?: () => void
     children: ReactNode
+    styles?: any
 }
 
-export const Widget = ({title, showAdd, addFunction, children}: ParentWidgetProps) => {
+export const Widget = ({title, showAdd, addFunction, children,styles={}}: ParentWidgetProps) => {
     return (
-        <View style={styles.widget}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{title}</Text>
+        <View style={styles.widget || defaultStyles.widget}>
+            <View style={styles.header || defaultStyles.header}>
+                <Text style={styles.title || defaultStyles.title}>{title}</Text>
 
                 { showAdd && 
-                    <TouchableOpacity onPress={addFunction} style={styles.plusBtn}>
+                    <TouchableOpacity onPress={addFunction} style={ styles.plusBtn || defaultStyles.plusBtn}>
                         <AntDesign name="plus" size={18} color="black"/>
                     </TouchableOpacity> 
                 }
             </View>
-            <View style={styles.children}>
+            <View style={styles.children || defaultStyles.children}>
                 {children}
             </View>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
+const defaultStyles = StyleSheet.create({
     widget: {
-        margin: 20,
-        padding: 10,
+        marginHorizontal: 20,
+        marginVertical: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20, 
         borderRadius: 10,
         backgroundColor: "white"
     }, 
