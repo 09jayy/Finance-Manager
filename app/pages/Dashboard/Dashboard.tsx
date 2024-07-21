@@ -5,7 +5,7 @@ import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
 import { getBankData } from "../Bank/functions/banksPageFunction"
 import { getTransactions } from "../Bank/functions/transactionFunctions"
-import { ExpensesAndIncome, getOverallBalance, getSpending, getThisMonthIncomeOvertime } from "./functions/functions"
+import { ExpensesAndIncome, getOverallBalance, getSpending, getThisMonthIncomeOvertime, getThisMonthExpensesOvertime } from "./functions/functions"
 import { Widget } from "../../components/Widget"
 import { TitleValueWidget } from "../../components/TitleValueWidget"
 import { MinimalLineChart } from "./components/MinimalLineChart"
@@ -17,6 +17,7 @@ export const Dashboard = () => {
 
     //This month overtime states
     const [monthIncomeOvertimeData, setMonthIncomeOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
+    const [monthExpensesOvertimeData, setMonthExpensesOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
 
     useFocusEffect(useCallback(()=>{
         getBankData()
@@ -44,6 +45,7 @@ export const Dashboard = () => {
     useEffect(()=>{
         setExpensesAndIncome(getSpending(transactions))
         setMonthIncomeOvertimeData(getThisMonthIncomeOvertime(transactions))
+        setMonthExpensesOvertimeData(getThisMonthExpensesOvertime(transactions))
     },[transactions])
 
     useEffect(()=>{
@@ -59,7 +61,7 @@ export const Dashboard = () => {
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 25}}>
                 <Widget showAdd={false} title="Income" styles={halfWidget}>
                     <Text>{`£${expensesAndIncome.income.toLocaleString()}`}</Text>
-                    <Text>This month: </Text>
+                    <Text>This Year: </Text>
                     <MinimalLineChart 
                         labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
                         hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
@@ -71,6 +73,14 @@ export const Dashboard = () => {
 
                 <Widget showAdd={false} title="Expenses" styles={halfWidget}>
                     <Text>{`£${expensesAndIncome.expenses.toLocaleString()}`}</Text>
+                    <Text>This Year: </Text>
+                    <MinimalLineChart 
+                        labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
+                        hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
+                        data={{data: monthExpensesOvertimeData}} 
+                        width={Dimensions.get("window").width/3} 
+                        height={200}
+                    />
                 </Widget>
             </View>
 

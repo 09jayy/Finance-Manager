@@ -44,3 +44,17 @@ export const getThisMonthIncomeOvertime = (transactions: Transaction[]) => {
     }
     return income
 }
+
+export const getThisMonthExpensesOvertime = (transactions: Transaction[]) => {
+    let expenses = [0,0,0,0,0,0,0,0,0,0,0,0]
+    const now = new Date()
+    for(const transaction of transactions){
+        const date = new Date(transaction.date.toString())
+        if (date.getFullYear() === now.getFullYear()){
+            if (transaction.pay < 0){
+                expenses[date.getMonth()] += transaction.pay * -1
+            }
+        }
+    }
+    return expenses
+}
