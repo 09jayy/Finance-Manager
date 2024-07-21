@@ -1,6 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback, useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView } from "react-native"
+import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native"
 import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
 import { getBankData } from "../Bank/functions/banksPageFunction"
@@ -8,6 +8,7 @@ import { getTransactions } from "../Bank/functions/transactionFunctions"
 import { ExpensesAndIncome, getOverallBalance, getSpending, getThisMonthIncomeOvertime } from "./functions/functions"
 import { Widget } from "../../components/Widget"
 import { TitleValueWidget } from "../../components/TitleValueWidget"
+import { MinimalLineChart } from "./components/MinimalLineChart"
 
 export const Dashboard = () => {
     const {banks, transactions, setBanks, setTransactions} = useContext(homeContext)
@@ -58,6 +59,14 @@ export const Dashboard = () => {
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 25}}>
                 <Widget showAdd={false} title="Income" styles={halfWidget}>
                     <Text>{`£${expensesAndIncome.income.toLocaleString()}`}</Text>
+                    <Text>This month: </Text>
+                    <MinimalLineChart 
+                        labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
+                        hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
+                        data={{data: monthIncomeOvertimeData}} 
+                        width={Dimensions.get("window").width/3} 
+                        height={200}
+                    />
                 </Widget>
 
                 <Widget showAdd={false} title="Expenses" styles={halfWidget}>
