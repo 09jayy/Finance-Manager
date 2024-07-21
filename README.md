@@ -6,8 +6,10 @@ Introducing your friend in finance. This full-stack application aims to assist y
 
 ### Features
 
-- Virtual Bank Account splitting to separate balances and budgets
-- Add Transactions and view overall spending overtime
+- Add multiple Bank accounts to track spending
+- Add Transactions associated with existing bank accounts
+- Sign up and Login to access data stored in server from any device
+- Track overall spending displayed via graphs
 
 ## Tech Stack
 
@@ -20,4 +22,5 @@ Introducing your friend in finance. This full-stack application aims to assist y
 
 - Nodejs & Expressjs
 - MongoDB & Mongoose
+- JWT Authentication
 - Typescript
