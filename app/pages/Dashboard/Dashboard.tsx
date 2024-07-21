@@ -55,13 +55,13 @@ export const Dashboard = () => {
     return (
         <ScrollView>
             <Widget showAdd={false} title="Overall Balance">
-                <Text style={styles.overallBalanceText}>{`£${overallBalance.toLocaleString()}`}</Text>
+                <Text style={styles.overallBalanceText}>{(overallBalance > 0) ? `£${overallBalance.toLocaleString()}` : `-£${overallBalance*-1}`}</Text>
             </Widget>
 
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 25}}>
                 <Widget showAdd={false} title="Income" styles={halfWidget}>
-                    <Text>{`£${expensesAndIncome.income.toLocaleString()}`}</Text>
-                    <Text>This Year: </Text>
+                    <Text style={styles.expensesIncomeText}>{`£${expensesAndIncome.income.toLocaleString()}`}</Text>
+                    <Text style={styles.graphTitle}>This Year: </Text>
                     <MinimalLineChart 
                         labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
                         hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
@@ -72,8 +72,8 @@ export const Dashboard = () => {
                 </Widget>
 
                 <Widget showAdd={false} title="Expenses" styles={halfWidget}>
-                    <Text>{`£${expensesAndIncome.expenses.toLocaleString()}`}</Text>
-                    <Text>This Year: </Text>
+                    <Text style={styles.expensesIncomeText}>{`£${expensesAndIncome.expenses.toLocaleString()}`}</Text>
+                    <Text style={styles.graphTitle}>This Year: </Text>
                     <MinimalLineChart 
                         labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
                         hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
@@ -104,5 +104,14 @@ const styles = StyleSheet.create({
     overallBalanceText: {
         fontSize: 20,
         fontWeight: "500"
+    },
+    graphTitle: {
+        fontSize: 16,
+        fontWeight: "500",
+    },
+    expensesIncomeText: {
+        fontSize: 18,
+        fontWeight: "500",
+        marginBottom: 10
     }
 })
