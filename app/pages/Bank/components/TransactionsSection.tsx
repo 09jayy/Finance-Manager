@@ -110,7 +110,7 @@ export const TransactionsSection = () => {
                 <View>
                     {transactions.map((transaction) => (
                         <TouchableOpacity key={transaction._id} onPress={() => {setTransactionIdToEdit(transaction._id); setObjectToEdit(transaction); setDate(dayjs(transaction.date)); setEditModalVisible(true)}}>
-                            <TitleValueWidget title={transaction.name} value={`£${transaction.pay.toLocaleString()}`} key={transaction._id} direction="row" styleProp={transactionStyles}/>
+                            <TitleValueWidget title={transaction.name} value={ (transaction.pay >= 0) ? `£${transaction.pay.toLocaleString()}` : `-£${(transaction.pay*-1).toLocaleString()}`} key={transaction._id} direction="row" styleProp={transactionStyles}/>
                         </TouchableOpacity>
                     ))
                     }
