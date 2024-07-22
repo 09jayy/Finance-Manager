@@ -101,7 +101,7 @@ export const getAllBanks = async (req: Request,res: Response): Promise<void> => 
 
         const banks = await User.findOne({_id: userId}, "banks -_id")
 
-        res.status(200).json(banks)
+        res.status(200).json(banks.banks)
     } catch (err){
         if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)

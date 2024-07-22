@@ -1,12 +1,28 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import {API_URL} from "react-native-dotenv"
-import { Bank } from "../../../types/types"
+import { Bank, Transaction } from "../../../types/types"
 
-type Banks = {
-    banks: Bank[]
+const getBalanceForBanks = (transactions: Transaction[]): Map<string,number> => {
+    let bankBalances: Map<string, number> = new Map()
+
+    for(const transaction of transactions){
+        if (bankBalances.has(transaction.bank)){
+            const currentBalance = bankBalances.get(transaction.bank)
+            currentBalance !== undefined && bankBalances.set(transaction.bank, currentBalance + transaction.pay)
+        } else {
+            bankBalances.set(transaction.bank, transaction.pay)
+        }
+    }
+    return bankBalances
 }
 
-export const getBankData = async (): Promise<Bank[]> => {
+const assignBalance = (banks: Bank[],transactions: Transaction[]): Bank[] => {
+    const balanceMap = getBalanceForBanks(transactions)
+    return banks.map((bank)=>{bank.balance = balanceMap.get(bank._id) as number; return bank})
+}
+
+
+export const getBankData = async (transactions: Transaction[]): Promise<Bank[]> => {
     const token = await AsyncStorage.getItem("token")
 
     const request = {
@@ -23,8 +39,8 @@ export const getBankData = async (): Promise<Bank[]> => {
             }
 
             return response.json()
-        }).then( (data: Banks) => {
-            return data.banks
+        }).then( (banks: Bank[]) => {
+            return assignBalance(banks, transactions)
         }).catch((error: Error) => {
             return []
         })

@@ -13,16 +13,15 @@ export const BankAccountSection = () => {
     const [currentObject, setCurrentObject] = useState({})
     const [bankId, setBankId] = useState("")
     const [addModalVisible, setAddModalVisible] = useState(false)
-    const {banks, setBanks} = useContext(homeContext)
+    const {banks, setBanks, transactions} = useContext(homeContext)
 
     useEffect(()=> {
-        if (editModalVisible == false || addModalVisible == false){
-            getBankData()
-                .then( (data: Bank[]) => {
-                    setBanks(data)
-                })
-        }
-    },[editModalVisible, addModalVisible])
+        if(!addModalVisible && !editModalVisible)
+        getBankData(transactions)
+            .then( (data: Bank[]) => {
+                setBanks(data)
+            })
+    },[addModalVisible, editModalVisible, transactions])
 
     return (
         <View>

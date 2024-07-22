@@ -20,7 +20,7 @@ export const Dashboard = () => {
     const [monthExpensesOvertimeData, setMonthExpensesOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
 
     useFocusEffect(useCallback(()=>{
-        getBankData()
+        getBankData(transactions)
                 .then( (data: Bank[]) => {
                     setBanks(data)
                 })
@@ -33,7 +33,7 @@ export const Dashboard = () => {
             return response.json()
         }).then(body => {
             setTransactions(body.reverse())
-            getBankData()
+            getBankData(transactions)
                 .then( (data: Bank[]) => {
                     setBanks(data)
                 })

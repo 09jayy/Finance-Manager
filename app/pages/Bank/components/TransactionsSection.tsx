@@ -42,7 +42,7 @@ export const TransactionsSection = () => {
                 return response.json()
             }).then(body => {
                 setTransactions(body.reverse())
-                getBankData()
+                getBankData(transactions)
                     .then( (data: Bank[]) => {
                         setBanks(data)
                     })
