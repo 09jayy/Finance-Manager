@@ -19,7 +19,10 @@ export const Dashboard = () => {
     const [monthIncomeOvertimeData, setMonthIncomeOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
     const [monthExpensesOvertimeData, setMonthExpensesOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
 
-    useFocusEffect(useCallback(()=>{
+    /*
+    This is the first page that opens when the app starts, therefore the transactions and banks will need to be fetched to display data for this screen at on initial startup 
+    */
+    useEffect(()=>{
         getBankData(transactions)
                 .then( (data: Bank[]) => {
                     setBanks(data)
@@ -31,16 +34,16 @@ export const Dashboard = () => {
             }
 
             return response.json()
-        }).then(body => {
-            setTransactions(body.reverse())
-            getBankData(transactions)
+        }).then(fetchedTransactions => {
+            setTransactions(fetchedTransactions.reverse())
+            getBankData(fetchedTransactions)
                 .then( (data: Bank[]) => {
                     setBanks(data)
                 })
         }).catch( (error: Error) => {
             console.error(error.message)
         })
-    },[]))
+    },[])
 
     useEffect(()=>{
         setExpensesAndIncome(getSpending(transactions))
@@ -50,12 +53,12 @@ export const Dashboard = () => {
 
     useEffect(()=>{
         setOverallBalance(getOverallBalance(banks))
-    },[overallBalance])
+    },[banks])
 
     return (
         <ScrollView>
             <Widget showAdd={false} title="Overall Balance">
-                <Text style={styles.overallBalanceText}>{(overallBalance > 0) ? `£${overallBalance.toLocaleString()}` : `-£${overallBalance*-1}`}</Text>
+                <Text style={styles.overallBalanceText}>{(overallBalance >= 0) ? `£${overallBalance.toLocaleString()}` : `-£${overallBalance*-1}`}</Text>
             </Widget>
 
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 25}}>
