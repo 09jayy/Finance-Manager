@@ -55,7 +55,7 @@ export const BankAccountSection = () => {
                             setEditModalVisible(true)
                             }}
                         >
-                            <TitleValueWidget title={bank.name} value={(bank.balance > 0) ? `£${bank.balance.toLocaleString()}` : `-£${(bank.balance * -1).toLocaleString()}`} key={bank._id} direction="column" styleProp={bankAccountStyles}/>
+                            <TitleValueWidget title={bank.name} value={(bank.balance >= 0) ? `£${bank.balance.toLocaleString()}` : `-£${(bank.balance * -1).toLocaleString()}`} key={bank._id} direction="column" styleProp={bankAccountStyles}/>
                         </TouchableOpacity>
                     ))}
                 </View>

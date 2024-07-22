@@ -18,7 +18,7 @@ const getBalanceForBanks = (transactions: Transaction[]): Map<string,number> => 
 
 const assignBalance = (banks: Bank[],transactions: Transaction[]): Bank[] => {
     const balanceMap = getBalanceForBanks(transactions)
-    return banks.map((bank)=>{bank.balance = balanceMap.get(bank._id) as number; return bank})
+    return banks.map((bank)=>{const balance = balanceMap.get(bank._id); bank.balance = (balance) ? balance : 0; return bank})
 }
 
 
