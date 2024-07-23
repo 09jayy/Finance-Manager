@@ -5,7 +5,7 @@ import { homeContext } from "../Home/HomeContext"
 import { Bank } from "../../types/types"
 import { getBankData } from "../Bank/functions/banksPageFunction"
 import { getTransactions } from "../Bank/functions/transactionFunctions"
-import { ExpensesAndIncome, getOverallBalance, getSpending, getThisMonthIncomeOvertime, getThisMonthExpensesOvertime } from "./functions/functions"
+import { ExpensesAndIncome, getOverallBalance, getSpending, getThisMonthIncomeOvertime, getThisMonthExpensesOvertime, calculateMonthLabel, monthLabel } from "./functions/functions"
 import { Widget } from "../../components/Widget"
 import { TitleValueWidget } from "../../components/TitleValueWidget"
 import { MinimalLineChart } from "./components/MinimalLineChart"
@@ -14,6 +14,7 @@ export const Dashboard = () => {
     const {banks, transactions, setBanks, setTransactions} = useContext(homeContext)
     const [expensesAndIncome, setExpensesAndIncome] = useState({expenses: 0, income: 0} as ExpensesAndIncome) 
     const [overallBalance, setOverallBalance] = useState(0)
+    const [graphMonthLabel, setGraphMonthLabel] = useState({label: [""], hidePointsAtIndex: [0]} as monthLabel)
 
     //This month overtime states
     const [monthIncomeOvertimeData, setMonthIncomeOvertimeData] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
@@ -49,6 +50,7 @@ export const Dashboard = () => {
         setExpensesAndIncome(getSpending(transactions))
         setMonthIncomeOvertimeData(getThisMonthIncomeOvertime(transactions))
         setMonthExpensesOvertimeData(getThisMonthExpensesOvertime(transactions))
+        setGraphMonthLabel(calculateMonthLabel(transactions))
     },[transactions])
 
     useEffect(()=>{
@@ -66,8 +68,8 @@ export const Dashboard = () => {
                     <Text style={styles.expensesIncomeText}>{`£${expensesAndIncome.income.toLocaleString()}`}</Text>
                     <Text style={styles.graphTitle}>This Year: </Text>
                     <MinimalLineChart 
-                        labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
-                        hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
+                        labels={graphMonthLabel.label} 
+                        hidePointsAtIndex={graphMonthLabel.hidePointsAtIndex} 
                         data={{data: monthIncomeOvertimeData}} 
                         width={Dimensions.get("window").width/3} 
                         height={200}
@@ -78,8 +80,8 @@ export const Dashboard = () => {
                     <Text style={styles.expensesIncomeText}>{`£${expensesAndIncome.expenses.toLocaleString()}`}</Text>
                     <Text style={styles.graphTitle}>This Year: </Text>
                     <MinimalLineChart 
-                        labels={["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]} 
-                        hidePointsAtIndex={[0,1,2,3,4,5,6,7,8,9,10,11]} 
+                        labels={graphMonthLabel.label} 
+                        hidePointsAtIndex={graphMonthLabel.hidePointsAtIndex} 
                         data={{data: monthExpensesOvertimeData}} 
                         width={Dimensions.get("window").width/3} 
                         height={200}

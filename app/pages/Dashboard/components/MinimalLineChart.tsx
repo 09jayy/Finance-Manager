@@ -24,7 +24,7 @@ export const MinimalLineChart = ({labels, hidePointsAtIndex ,data, width, height
                             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                             style: {
-                                borderRadius: 16,
+                                borderRadius: 1,
                             },
                             propsForDots:{
                                 r: "6",
