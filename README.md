@@ -24,3 +24,15 @@ Introducing your friend in finance. This full-stack application aims to assist y
 - MongoDB & Mongoose
 - JWT Authentication
 - Typescript
+
+### Demo
+
+<img src="./readme/demo1.gif" width=500 alt=".gif of app">
+
+#### Account Screen
+
+<img src="./readme/accountscreen.jpg" width=500 alt="Account settings screen">
+
+#### Signup and Login
+
+<img src="./readme/signuplogin.jpg" width=500 alt="Login screen and sign up screen">
