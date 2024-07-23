@@ -32,7 +32,6 @@ export const MinimalLineChart = ({labels, hidePointsAtIndex ,data, width, height
                         }}
                         withHorizontalLabels={false}
                         withVerticalLabels={false}
-                        bezier
                         style={{
                             marginVertical: 8,
                             borderRadius: 16,
