@@ -1,4 +1,4 @@
-import {Request, Response} from "express"
+import {NextFunction, Request, Response} from "express"
 import User, {IUser} from "../models/user"
 import Bank, {bankSchema, IBank} from "../models/bank"
 import { Error as MongooseError } from "mongoose"
@@ -70,7 +70,7 @@ export const updateBank = async (req: Request<{},{},{userId: String, bankId: Str
     }
 }
 
-export const deleteBank = async (req: Request<{},{},{bankId: String}>, res: Response): Promise<void> => {
+export const deleteBank = async (req: Request<{},{},{bankId: String}>, res: Response, next: NextFunction): Promise<void> => {
     try {
         const {bankId} = req.body
         const userId: String = res.locals.userId
@@ -81,11 +81,11 @@ export const deleteBank = async (req: Request<{},{},{bankId: String}>, res: Resp
         )
 
         if (user.modifiedCount == 0) {
-            res.status(404).send("User or Bank not found");
+            res.status(404).send("User or Bank not found")
             return
         }
 
-        res.status(200).send("Bank successfully deleted")
+        next()
     } catch (err){
         if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
