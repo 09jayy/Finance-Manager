@@ -122,7 +122,7 @@ export const getTransactions = async (req: Request<{},{},{userId: String}>, res:
             return
         }
 
-        res.status(200).send(user.transactions)
+        res.status(200).send(user.transactions.reverse())
     } catch (err){
         if (err instanceof MongooseError.CastError){
             res.status(400).send(err.message)
