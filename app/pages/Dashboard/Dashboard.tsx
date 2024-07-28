@@ -36,7 +36,7 @@ export const Dashboard = () => {
 
             return response.json()
         }).then(fetchedTransactions => {
-            setTransactions(fetchedTransactions.reverse())
+            setTransactions(fetchedTransactions)
             getBankData(fetchedTransactions)
                 .then( (data: Bank[]) => {
                     setBanks(data)

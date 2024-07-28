@@ -5,15 +5,16 @@ import { TitleValueWidget } from "../../../components/TitleValueWidget"
 import { Widget } from "../../../components/Widget"
 import { getBankData } from "../functions/banksPageFunction"
 import { updateBank, deleteBank, addBank } from "../functions/bankAccountFunctions"
-import { Bank } from "../../../types/types"
+import { Bank, Transaction } from "../../../types/types"
 import { homeContext } from "../../Home/HomeContext"
+import { getTransactions } from "../functions/transactionFunctions"
 
 export const BankAccountSection = () => {
     const [editModalVisible, setEditModalVisible] = useState(false)
     const [currentObject, setCurrentObject] = useState({})
     const [bankId, setBankId] = useState("")
     const [addModalVisible, setAddModalVisible] = useState(false)
-    const {banks, setBanks, transactions} = useContext(homeContext)
+    const {banks, setBanks, transactions, setTransactions} = useContext(homeContext)
 
     useEffect(()=> {
         if(!addModalVisible && !editModalVisible)
@@ -21,7 +22,16 @@ export const BankAccountSection = () => {
             .then( (data: Bank[]) => {
                 setBanks(data)
             })
-    },[addModalVisible, editModalVisible, transactions])
+    },[addModalVisible, editModalVisible])
+
+    useEffect(()=>{
+        getTransactions()
+            .then(response => {
+                return response.json()
+            }).then((transactions: Transaction[]) => {
+                setTransactions(transactions)
+            })
+    },[])
 
     return (
         <View>
@@ -34,6 +44,14 @@ export const BankAccountSection = () => {
                 submitFunction={updateBank} 
                 showDelete={true}
                 deleteFunction={deleteBank}
+                postDeleteFunction={() => {
+                    getTransactions()
+                        .then(response => {
+                            return response.json()
+                        }).then((transactions: Transaction[]) => {
+                            setTransactions(transactions)
+                        })
+                }}
             />
 
             <EditForm
